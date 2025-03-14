@@ -43,7 +43,7 @@ export function Copyright({ disableLink, ...props }) {
             RED CAT MULTIVERSE
           </Link>
         )}
-        <span style={{ color: '#00CC00' }}> // ALL RIGHTS RESERVED</span>
+        <span style={{ color: '#00CC00' }}>{' // ALL RIGHTS RESERVED'}</span>
       </Box>
     </Box>
   );
