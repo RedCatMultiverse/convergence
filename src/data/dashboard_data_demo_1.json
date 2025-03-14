@@ -1,0 +1,200 @@
+{
+    "dashboard_data_demo_1": {
+        "overview_tab": {
+            "hero_metrics": [
+                {
+                    "metric_title": "[bold]AXA Team Skill Uplift (Projected)[/bold]",
+                    "metric_value": "+22%",
+                    "value_interpretation": "Average Critical Skill Improvement Across AXA Teams in Pilot Program",
+                    "icon": "trending_up_icon.png",
+                    "trend_indicator": "positive"
+                },
+                {
+                    "metric_title": "[bold]Team Engagement Levels (Pilot)[/bold]",
+                    "metric_value": "Consistent Max Team Streaks",
+                    "value_interpretation": "High Team Engagement - Indicating Strong Collaborative Immersion",
+                    "icon": "heatmap_icon.png",
+                    "trend_indicator": "positive"
+                },
+                {
+                    "metric_title": "[bold]Projected AXA Teams ROI (Pilot)[/bold]",
+                    "metric_value": "$1.95M",
+                    "value_interpretation": "Conservative Annualized ROI Projection for 100-Manager Pilot Across AXA Teams",
+                    "icon": "roi_icon.png",
+                    "trend_indicator": "positive"
+                }
+            ],
+            "engagement_charts": [
+                {
+                    "chart_title": "Engagement Score Over Demo (Monica - Team Leader Rep)",
+                    "chart_type": "line_graph",
+                    "data_ref": "engagement_score_data",
+                    "data_interpretation": "Monica's Demo as Team Leader: High Engagement - Indicative of Team Participation Potential"
+                },
+                {
+                    "chart_title": "Team Response Time Efficiency (Monica - Team Leader Rep)",
+                    "chart_type": "bar_chart",
+                    "data_ref": "response_time_data",
+                    "data_interpretation": "Monica's Demo as Team Leader: Fast Reflexes - Indicative of Team Agility Gains"
+                }
+            ],
+            "key_insights_summary": [
+                "[bold]RedCat Multiverse Pilot Program Projected to Deliver Significant ROI and Skill Uplift for AXA Teams.[/bold]",
+                "Monica's demo performance as a team leader exemplifies the program's team-level impact, showcasing enhanced Critical Thinking and EQ Leadership within team context.",
+                "Pilot program engagement metrics are projected to be high across AXA teams, based on team-focused gamification and collaborative design, indicating strong team retention potential.",
+                "Conservative ROI projections for the 100-manager pilot across AXA teams indicate a potential annualized productivity gain of $1.95M.",
+                "Scaling the program to 250 managers across AXA teams is projected to unlock $4.7M in annualized ROI, enhancing collaborative performance organization-wide.",
+                "[bold]Recommendation:[/bold] Proceed with the $30K pilot program for 100 managers across AXA teams to validate team-level ROI and initiate AXA's Cognitive Team Transformation."
+            ]
+        },
+        "skills_deep_dive_tab": {
+            "skill_pillar_charts": [
+                {
+                    "pillar_title": "Critical Thinking Skill Pillar (Monica - Team Leader Demo)",
+                    "chart_type": "radar_chart",
+                    "data_ref": "critical_thinking_pillar_data",
+                    "data_interpretation": "[bold]Apex Level Team Critical Thinking Proficiency (Demo)[/bold] - Monica's demo as a team leader demonstrates mastery across core critical thinking skills relevant to team decision-making."
+                },
+                {
+                    "pillar_title": "EQ & Soft Skills Pillar (Monica - Team Leader Demo)",
+                    "chart_type": "radar_chart",
+                    "data_ref": "eq_soft_skills_pillar_data",
+                    "data_interpretation": "[bold]Exceptional Team EQ & Leadership Skills (Demo)[/bold] -  Monica excels in team communication, collaboration, and emotional intelligence as a team leader in critical situations within the demo."
+                }
+            ],
+            "skill_breakdown_metrics": [
+                {
+                    "skill_name": "Inference (Team Context Demo)",
+                    "accuracy": "100%",
+                    "response_time": "Avg. 55ms",
+                    "performance_level": "Apex Team Leader",
+                    "insight": "Monica's Demo as Team Leader: Exceptional ability to infer team needs and interpret complex team dynamics."
+                },
+                {
+                    "skill_name": "Deduction (Team Problem Solving Demo)",
+                    "accuracy": "100%",
+                    "response_time": "Avg. 60ms",
+                    "performance_level": "Apex Team Leader",
+                    "insight": "Monica's Demo as Team Leader: Flawless deductive reasoning in team problem-solving and logical guidance."
+                },
+                {
+                    "skill_name": "Evaluation (Team Decisions Demo)",
+                    "accuracy": "100%",
+                    "response_time": "Avg. 50ms",
+                    "performance_level": "Apex Team Leader",
+                    "insight": "Monica's Demo as Team Leader: Consistently strong evaluation of team decision quality and relevance in team scenarios."
+                },
+                {
+                    "skill_name": "Interpretation/EQ (Team Crisis Comms Demo)",
+                    "accuracy": "95%",
+                    "response_time": "Avg. 80ms",
+                    "performance_level": "God Mode Team Leader",
+                    "insight": "Monica's Demo as Team Leader: Demonstrates masterful command of team EQ and leadership in high-pressure team crisis communication scenarios."
+                },
+                {
+                    "skill_name": "Team Crisis Overriding (Integrated Team Skills Demo)",
+                    "accuracy": "98%",
+                    "response_time": "Avg. 120ms",
+                    "performance_level": "Legendary Team Leader",
+                    "insight": "[bold]Legendary Team Crisis Management Capability (Demo)[/bold] -  Monica effectively integrates critical thinking and EQ to override extreme team crisis scenarios, demonstrating exceptional team leadership potential."
+                }
+            ],
+            "skill_gap_analysis": [
+                "[bold]No significant skill gaps identified in core team critical thinking or EQ leadership based on team-context demo performance.[/bold]",
+                "Monica's demo performance as a team leader demonstrates consistently high proficiency across all assessed team skill areas.",
+                "For pilot cohort teams, further development will focus on [u]strategic application of team critical thinking in increasingly complex, real-world AXA team business scenarios[/u].",
+                "Consider advanced modules in [bold]Strategic Foresight, Systemic Team Thinking, and VUCA Team Navigation[/bold] for pilot participant teams to further enhance strategic team leadership capabilities across AXA."
+            ]
+        },
+        "engagement_analytics_tab": {
+            "engagement_heatmap_chart": {
+                "chart_title": "Team Engagement Heatmap - Demo Immersion (Monica - Team Leader Rep)",
+                "chart_type": "heatmap",
+                "data_ref": "engagement_heatmap_data",
+                "data_interpretation": "[bold]Maximum Team Engagement & Immersion (Demo)[/bold] -  Monica's demo as team leader shows consistent peak engagement throughout the experience, indicative of high pilot team participation potential."
+            },
+            "streak_analysis_chart": {
+                "chart_title": "Team Critical Streak Performance (Monica - Team Leader Rep)",
+                "chart_type": "line_graph",
+                "data_ref": "streak_analysis_data",
+                "data_interpretation": "[bold]Unbroken Team Critical Streak (Demo)[/bold] -  Monica maintained a maximum critical streak in the demo as a team leader, demonstrating sustained team focus and accuracy, projected to be representative of pilot team engagement."
+            },
+            "benchmark_comparison": [
+                {
+                    "benchmark_group": "Team A (Industry Standard AXA Teams)",
+                    "average_accuracy": "92%",
+                    "average_response_time": "75ms",
+                    "summary_interpretation": "Industry Standard AXA Teams Benchmark: Pilot program is designed to significantly outperform typical AXA teams in critical skill proficiency."
+                },
+                {
+                    "benchmark_group": "Team B (AXA High-Performing Teams Benchmark)",
+                    "average_accuracy": "89%",
+                    "average_response_time": "85ms",
+                    "summary_interpretation": "AXA High-Performing Teams Benchmark: Pilot program aims to elevate AXA teams beyond even internal high-performance team standards."
+                },
+                {
+                    "benchmark_group": "Monica (Team Leader Demo - Pilot Team Rep)",
+                    "average_accuracy": "97%",
+                    "average_response_time": "65ms",
+                    "summary_interpretation": "[bold]Monica's Team Leader Demo Sets New AXA Team Benchmark[/bold] - Demonstrates exceptional team critical skill proficiency and efficiency, exceeding both industry and internal high-performer team standards, indicative of pilot team program potential."
+                }
+            ],
+            "immersion_index_score": {
+                "index_name": "Team Immersion Index (Demo - Monica as Team Leader)",
+                "index_value": "98/100",
+                "index_interpretation": "[bold]Near-Perfect Team Immersion Index (Demo)[/bold] -  Monica's demo as team leader indicates exceptionally high levels of focus and engagement, projected to translate to strong pilot team program participation and team cohesion."
+            }
+        },
+        "personalized_roadmap_tab": {
+            "personalized_skill_matrix": {
+                "matrix_title": "Monica's Personalized Team Critical Skill Matrix (Demo)",
+                "matrix_data_ref": "skill_matrix_data",
+                "matrix_interpretation": "[bold]Critical Team Mastery UNLOCKED (Demo)[/bold] - Monica's demo performance as team leader demonstrates mastery across the core critical thinking skill matrix relevant for AXA teams."
+            },
+            "recommended_modules": [
+                {
+                    "module_title": "League 10 - Boss Level Circuits: Strategic Team Apex (Pilot Program - Teams Focus)",
+                    "module_description": "Advanced circuits focusing on strategic foresight, systemic [bold]team[/bold] thinking, and navigating extreme VUCA environments [bold]as a team[/bold].  Develop critical thinking for C-suite level strategic [bold]team[/bold] challenges. [bold]Recommended for pilot program teams reaching advanced skill levels.[/bold]",
+                    "estimated_completion_time": "4-6 weeks",
+                    "key_skills_focus": [
+                        "Strategic Foresight (Team)",
+                        "Systemic Team Thinking",
+                        "VUCA Team Navigation",
+                        "Chaos Theory (Team)",
+                        "Team Decision-Making under Extreme Uncertainty"
+                    ]
+                },
+                {
+                    "module_title": "EQ Leadership Mastery Program - Hyper-Crisis Team Comms Protocol (Pilot Teams Focus)",
+                    "module_description": "Intensive program focused on mastering communication and team leadership in hyper-crisis scenarios [bold]within teams[/bold]. Develop 'calm command' and strategic comms for extreme pressure situations [bold]in team contexts[/bold]. [bold]Recommended for pilot program teams to enhance collaborative leadership capabilities.[/bold]",
+                    "estimated_completion_time": "2-3 weeks",
+                    "key_skills_focus": [
+                        "Crisis Communication (Team)",
+                        "Team De-escalation",
+                        "Strategic Team Comms under Pressure",
+                        "Team Emotional Regulation",
+                        "Team Influence & Persuasion in Crisis"
+                    ]
+                },
+                {
+                    "module_title": "Strategic Futures & Chaos Markets Simulation (Pilot Program - Team Strategy)",
+                    "module_description": "Immersive simulation designed to hone strategic [bold]team[/bold] thinking and decision-making in highly volatile and unpredictable markets.  Master 'chaos-proof' [bold]team[/bold] strategies and adaptive [bold]team[/bold] planning. [bold]Recommended for pilot program teams aiming for strategic team roles and collaborative innovation.[/bold]",
+                    "estimated_completion_time": "3-4 weeks",
+                    "key_skills_focus": [
+                        "Strategic Planning in VUCA (Team)",
+                        "Adaptive Team Strategy",
+                        "Team Scenario Planning",
+                        "Black Swan Event Navigation (Team)",
+                        "Team Resilience & Anti-fragility"
+                    ]
+                }
+            ],
+            "key_takeaways_roadmap": [
+                "[bold]Pilot program is designed to elevate AXA teams to advanced League 10 strategic leadership capabilities, fostering high-performing collaborative units.[/bold]",
+                "Personalized roadmap for pilot participant teams focuses on [u]strategic application of team critical thinking and advanced EQ team leadership[/u] for maximum collaborative impact at AXA.",
+                "Recommended modules will further enhance pilot teams' ability to lead in complex, uncertain, and high-pressure team environments, driving team-level ROI for AXA.",
+                "[bold]Next Step:[/bold] Initiate $30K Pilot Program for 100 managers across AXA teams to unlock projected $1.95M team-level ROI and build AXA's Cognitive Team Edge."
+            ]
+        }
+    }
+}

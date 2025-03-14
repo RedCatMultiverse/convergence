@@ -1,0 +1,748 @@
+{
+    "gameplay_demo": {
+        "demo_title": "RCM Labs  CLI - Critical Thinking Demo (CHRO Edition)",
+        "player_name": "Monica",
+        "player_role": "AXA Manager - High Potential (Critical Thinker)",
+        "start_time": "2024-03-15T10:00:00Z",
+        "end_time": "TBD",
+        "player_journey": "League 10 Ascent - Mastering Critical Thinking for AXA Leadership",
+        "turns": [
+            {
+                "turn_number": 1,
+                "speaker": "R.C.",
+                "message_type": "system_message",
+                "content": "[cyan]+---------------------------+[/cyan]\n| RCM Labs  CLI - v2.0 ⚡️ | [Sound: Startup Jingle - Synthwave]",
+                "delay_ms": 500
+            },
+            {
+                "turn_number": 2,
+                "speaker": "R.C.",
+                "message_type": "prompt",
+                "content": "[red bold]RCM Labs  – your solution for *critical thinking at scale*.  R.C. here, your guide. AXA needs *resilience*—driven by *sharp minds*. [pause 1.2s] Monica's about to show you how *our program* cultivates *next-gen critical thinkers* in just 12 weeks.  Five skill pillars, laser-focused drills, 20-min sprints—*boost AXA's cognitive edge* and debug market chaos? [Sound: R.C. Digital Growl - Low-fi]  Hit Enter to see *critical thinking in action.*[/red bold]",
+                "expected_response_type": "press_enter",
+                "delay_ms": 1800
+            },
+            {
+                "turn_number": 2.1,
+                "speaker": "System",
+                "message_type": "dashboard_report_snippet",
+                "dashboard_tab": "overview",
+                "content": "[cyan][Dashboard Snippet - Initial Engagement]: [bold]Engagement Heatmap (Real-Time)[/bold] - Monica: Initial Engagement - *Max Streak Engaged, Lightning Reflex Responses*. [Sound: Data Short Beep]\n[cyan]>> Initial Engagement Metrics Live - Tracking Immersion <<[/cyan]",
+                "delay_ms": 2500
+            },
+            {
+                "turn_number": 3,
+                "speaker": "Monica",
+                "message_type": "response",
+                "input_type": "press_enter",
+                "content": "[Engage Critical Thinking Program - Ready to think!]",
+                "delay_ms": 300
+            },
+            {
+                "turn_number": 4,
+                "speaker": "R.C.",
+                "message_type": "prompt",
+                "content": "[red bold]*Monica's stepping into the arena—*critical thinking sandbox activated*. [Sound:  Level Up - Short, Energetic]  We're benchmarking against industry standards—Team A & B—but Monica's specs? *Top percentile*.  This 12-week sprint—AXA's workforce *cognitively upgraded*.  Sharpen minds, cut through market noise—*critical insights*, AXA's future.  Ready to see *data-driven critical thinking insights*? Hit Enter…[/red bold]",
+                "expected_response_type": "press_enter",
+                "delay_ms": 1800
+            },
+            {
+                "turn_number": 5,
+                "speaker": "Monica",
+                "message_type": "response",
+                "input_type": "press_enter",
+                "content": "[Initiate Critical Thinking Drill Sequence - Let's begin.]",
+                "delay_ms": 800
+            },
+            {
+                "turn_number": 6,
+                "speaker": "R.C.",
+                "message_type": "prompt",
+                "content": "[red bold]*Strategic move*! [Sound: Power Up - Bass Drop]  Caliban’s *Market Meltdown*—perfect *critical thinking stress test*.  3 Base Cuts to calibrate, then League 10 drills for 12 weeks. Points, streaks—Team A’s at 92% critical thinking accuracy… *Monica's about to redefine ‘high performance’*.  [Pause 0.8s]  Ready to witness *AXA's critical thinking potential unleashed*? Smash Enter—*Let's code for a smarter workforce!*[/red bold]",
+                "expected_response_type": "press_enter",
+                "delay_ms": 2200,
+                "performance_update": {
+                    "points": 0,
+                    "streak": 0,
+                    "team_a_accuracy": 92,
+                    "team_b_accuracy": 89,
+                    "player_accuracy": null
+                }
+            },
+            {
+                "turn_number": 7,
+                "speaker": "Monica",
+                "message_type": "response",
+                "input_type": "press_enter",
+                "content": "[Launch Critical Thinking Calibration - Starting calibration.]",
+                "delay_ms": 300
+            },
+            {
+                "turn_number": 8,
+                "speaker": "R.C.",
+                "message_type": "system_message",
+                "content": "[cyan]+---------------------------+[/cyan]\n| League 10 - [bold]Critical Thinking Calibration[/bold]  |\n[cyan]+---------------------------+[/cyan]\n| Base Calibration (3 Cuts) |\n| [O] Cut 1 - [ ] Cut 2 - [ ] Cut 3  [Sound: Boot Up Sequence - Digital Beeps + Whoosh] [magenta] [Data Stream: Skill Performance Metrics - ENGAGED] [/magenta] [Sound: Data Beep - Faint] [/cyan]",
+                "delay_ms": 1000
+            },
+            {
+                "turn_number": 9,
+                "speaker": "R.C.",
+                "message_type": "prompt",
+                "content": "[magenta]+------------- [bold]Base Cut 1/3 - Critical Thinking Calibration[/bold] -------------+\n| Score: 0 | [red bold]Cut 1—Caliban whispers: ‘Risky trades… clients *love the gamble*.’[/red bold] |\n| Streak: 0 |  *Apply critical thinking*, Monica.  Debunk or confirm—is this legit?       |\n| Acc: N/A   | >                                 |\n| Team A: 92%| You: N/A        |\n[magenta]+-----------------------------------------------------------------+\n> ",
+                "question_type": "base_level",
+                "skill_assessed": "assumptions",
+                "correct_answer_keywords": [
+                    "losses",
+                    "lose loyalty",
+                    "risk"
+                ],
+                "delay_ms": 1500,
+                "performance_update": {
+                    "points": 0,
+                    "streak": 0,
+                    "team_a_accuracy": 92,
+                    "team_b_accuracy": 89,
+                    "player_accuracy": null
+                }
+            },
+            {
+                "turn_number": 10,
+                "speaker": "Monica",
+                "message_type": "response",
+                "input_type": "open_text",
+                "content": "No, that's simply incorrect. Banks rely on client trust, not speculative risks.",
+                "delay_ms": 700
+            },
+            {
+                "turn_number": 11,
+                "speaker": "R.C.",
+                "message_type": "feedback",
+                "content": "[red bold] *Assumption – DEBUNKED with Critical Precision!* 🔥 [Sound: Sword Slash - Sharp]  *Textbook* critical thinking, Monica. Risky trades *erode* client trust—+10 points, critical streak’s *ignited* at 1![/red bold] [cyan]-- Calibration: [O-----] 1/3 Cuts  [Assumptions Icon - Critical Thinking Skill] [/cyan]",
+                "feedback_type": "positive",
+                "points_awarded": 10,
+                "streak_update": 1,
+                "badges_earned": [],
+                "skill_diagnosis": {
+                    "accuracy": 90,
+                    "response_time_ms": 60000,
+                    "skill": "Assumptions",
+                    "skill_pillar": "Critical Thinking"
+                },
+                "roadmap_snippet_data": {
+                    "current_tier": "Base Calibration - Critical Thinking",
+                    "tasks_completed_in_tier": 1,
+                    "total_tasks_in_tier": 3,
+                    "skill_icon": "assumptions_icon.txt"
+                },
+                "delay_ms": 1500
+            },
+            {
+                "turn_number": 12,
+                "speaker": "R.C.",
+                "message_type": "system_message",
+                "content": "[cyan]+---------------------------+[/cyan]\n| League 10 - [bold]Critical Thinking Calibration[/bold]  |\n[cyan]+---------------------------+[/cyan]\n| Base Calibration (2/3)  [X] Cut 1 - [ ] Cut 2 - [ ] Cut 3 [/cyan]",
+                "delay_ms": 500
+            },
+            {
+                "turn_number": 13,
+                "speaker": "R.C.",
+                "message_type": "prompt",
+                "content": "[magenta]+------------- [bold]Base Cut 2/3 - Critical Deduction Drill[/bold] -------------+\n| Score: 10| [red bold]Cut 2—Caliban’s drop: ‘$2M trade, 20% risk—*solo greenlight*.’[/red bold] |\n| Streak: 1 |  *Critical deduction* needed, Monica.  Logic gap—spot it.       |\n| Acc: 90%   | >                                 |\n| Team A: 92%| You: 90%        |\n[magenta]+-----------------------------------------------------------------+\n> ",
+                "question_type": "base_level",
+                "skill_assessed": "deduction",
+                "correct_answer_keywords": [
+                    "VP check",
+                    "approval",
+                    "overreach"
+                ],
+                "delay_ms": 1500,
+                "performance_update": {
+                    "points": 10,
+                    "streak": 1,
+                    "team_a_accuracy": 92,
+                    "team_b_accuracy": 89,
+                    "player_accuracy": 90
+                }
+            },
+            {
+                "turn_number": 14,
+                "speaker": "Monica",
+                "message_type": "response",
+                "input_type": "open_text",
+                "content": "Is VP approval not required for trades of that magnitude? That deviates from standard procedure.",
+                "delay_ms": 700
+            },
+            {
+                "turn_number": 15,
+                "speaker": "R.C.",
+                "message_type": "feedback",
+                "content": "[red bold]*Critical Deduction – FLAWLESS!* 🧠 [Sound: Logic Click - Satisfying]  *Correct*—protocol *breach* is the critical flaw. +10, critical streak *surging* to 2! Your logic engine’s *calibrated for critical insight*. [/red bold] [cyan]-- Calibration: [OX----] 2/3 Cuts  [Deduction Icon - Critical Thinking Skill] [/cyan]",
+                "feedback_type": "positive",
+                "points_awarded": 10,
+                "streak_update": 2,
+                "badges_earned": [],
+                "skill_diagnosis": {
+                    "accuracy": 100,
+                    "response_time_ms": 60000,
+                    "skill": "Deduction",
+                    "skill_pillar": "Critical Thinking"
+                },
+                "roadmap_snippet_data": {
+                    "current_tier": "Base Calibration - Critical Thinking",
+                    "tasks_completed_in_tier": 2,
+                    "total_tasks_in_tier": 3,
+                    "skill_icon": "deduction_icon.txt"
+                },
+                "delay_ms": 1500
+            },
+            {
+                "turn_number": 16,
+                "speaker": "R.C.",
+                "message_type": "system_message",
+                "content": "[cyan]+---------------------------+[/cyan]\n| League 10 - [bold]Critical Thinking Calibration[/bold]  |\n[cyan]+---------------------------+[/cyan]\n| Base Calibration (3/3)  [X] Cut 1 - [X] Cut 2 - [ ] Cut 3 [magenta] [Data Stream: Skill Performance Metrics - ENGAGED] [/magenta] [Sound: Data Beep - Faint] [/cyan]",
+                "delay_ms": 500
+            },
+            {
+                "turn_number": 17,
+                "speaker": "R.C.",
+                "message_type": "prompt",
+                "content": "[magenta]+------------- [bold]Base Cut 3/3 - EQ Check for Critical Leadership[/bold] -------------+\n| Score: 20| [red bold]Cut 3—*Urgent!* Fake spike *panics* your squad—‘Market’s *collapsing!*’[/red bold] |\n| Streak: 2 |  Team’s losing critical focus, Monica.  Apply *EQ-driven critical leadership*.  Guide them.          |\n| Acc: 95%   | >  *Command critical calm, Leader!*                  |\n| Team A: 92%| You: 95%        |\n[magenta]+------------------------------------------------------------------------------+\n> ",
+                "question_type": "base_level",
+                "skill_assessed": "interpretation/eq",
+                "correct_answer_keywords": [
+                    "data off",
+                    "stay sharp",
+                    "got this",
+                    "reassure team"
+                ],
+                "delay_ms": 2000,
+                "performance_update": {
+                    "points": 20,
+                    "streak": 2,
+                    "team_a_accuracy": 92,
+                    "team_b_accuracy": 89,
+                    "player_accuracy": 95
+                }
+            },
+            {
+                "turn_number": 18,
+                "speaker": "Monica",
+                "message_type": "response",
+                "input_type": "open_text",
+                "content": "Team, everyone take a breath. This looks like a data anomaly. We need to focus on verified metrics and our established strategy.",
+                "delay_ms": 700
+            },
+            {
+                "turn_number": 19,
+                "speaker": "R.C.",
+                "message_type": "feedback",
+                "content": "[red bold]*EQ-Powered Critical Leadership - BOSS LEVEL!* 🚀 [Sound: Team Rallying - Upbeat Anthem]  ‘*Data glitch*’—*critically calm* command, Leader Monica. Team *re-engaging critical thinking*—morale *stabilized*! +15, critical streak *unstoppable* at 3, *Crew Stabilizer* badge—*lead with that critical EQ and a *growth-focused mindset*!*![/red bold] [cyan]-- Calibration: [XXX] 3/3 Cuts - BASE CRITICAL THINKING CALIBRATION COMPLETE!  [EQ Icon - Critical Leadership Skill] [/cyan] [Sound: Level Up Jingle - 8-bit]",
+                "feedback_type": "badge_earned",
+                "points_awarded": 15,
+                "streak_update": 3,
+                "badges_earned": [
+                    "Crew Stabilizer"
+                ],
+                "skill_diagnosis": {
+                    "accuracy": 90,
+                    "response_time_ms": 90000,
+                    "skill": "Interpretation/EQ",
+                    "skill_pillar": "EQ & Soft Skills"
+                },
+                "roadmap_snippet_data": {
+                    "current_tier": "Base Calibration - Critical Thinking",
+                    "tasks_completed_in_tier": 3,
+                    "total_tasks_in_tier": 3,
+                    "tier_complete": true,
+                    "skills_mastered_in_tier": [
+                        "Assumptions",
+                        "Deduction",
+                        "Interpretation/EQ"
+                    ],
+                    "badges_earned_in_tier": [
+                        "Crew Stabilizer"
+                    ],
+                    "next_tier_preview": "Tier 1 - Core Logic - Critical Analysis",
+                    "league_10_progress": 10
+                },
+                "delay_ms": 2000
+            },
+            {
+                "turn_number": 20,
+                "speaker": "R.C.",
+                "message_type": "system_message",
+                "content": "[cyan]+-----------------------------------------------------+[/cyan]\n| [bold]BASE CRITICAL THINKING CALIBRATION - BOOTED.  *Crew Stabilizer* Badge Dropped[/bold] |\n|  [magenta] [Data Analysis: Initial Critical Skill Profile - GENERATED] [/magenta] [Sound: Data Processing - Short] |\n|  [red bold]Launching TIER 1 - CORE LOGIC - CRITICAL ANALYSIS Challenges[/red bold]    |\n|  [magenta]Inference & Evaluation ON DECK 🔥[/magenta] [Sound: Tier Unlock - Trap Beat] |\n[cyan]+-----------------------------------------------------+[/cyan]\n| Tier 1: Core Logic - Critical Analysis (0/2)      |\n| [O] Logic Drill 1 - [ ] Logic Drill 2             |",
+                "delay_ms": 2000
+            },
+            {
+                "turn_number": 20.1,
+                "speaker": "System",
+                "message_type": "dashboard_report_snippet",
+                "dashboard_tab": "skills_deep_dive",
+                "content": "[cyan][Dashboard Snippet - Skill Progress]: [bold]Critical Thinking Skill Pillar - Progress:[/bold] [████░░░░░░] 40% Calibrated. [Sound: Data Progress Bar]\n[cyan]>> Critical Thinking Skill Development - Tracking Pillar Progress <<[/cyan]",
+                "delay_ms": 2500
+            },
+            {
+                "turn_number": 21,
+                "speaker": "R.C.",
+                "message_type": "prompt",
+                "content": "[magenta]+------------- [bold]Tier 1 - Core Logic Drill 1/2 - Critical Inference[/bold] -------------+\n| Score: 35| [red bold]Logic Drill 1—Caliban’s spin: ‘Portfolio *moonshotting* 15% after 40% dip—*HODL!*’[/red bold] |\n| Streak: 3 |  *Critical inference* needed, Monica—*real* signal or *fake hype*?  Analyze critically.      |\n| Acc: 93%   | >                                 |\n| Team A: 92%| You: 93%        |\n[magenta]+-----------------------------------------------------------------------+\n> ",
+                "question_type": "tier1",
+                "skill_assessed": "inference",
+                "correct_answer_keywords": [
+                    "spike is trap",
+                    "fake spike",
+                    "not real growth"
+                ],
+                "delay_ms": 1500,
+                "performance_update": {
+                    "points": 35,
+                    "streak": 3,
+                    "team_a_accuracy": 92,
+                    "team_b_accuracy": 89,
+                    "player_accuracy": 93
+                }
+            },
+            {
+                "turn_number": 22,
+                "speaker": "Monica",
+                "message_type": "response",
+                "input_type": "open_text",
+                "content": "Ah, the *moonshot* fairytale.  Likely an artificial rebound, I expect.",
+                "delay_ms": 700
+            },
+            {
+                "turn_number": 23,
+                "speaker": "R.C.",
+                "message_type": "feedback",
+                "content": "[red bold]*Critical Inference - EXECUTION FLAWLESS!* 🎯 [Sound: Target Lock - Sci-Fi]  *Hype*… *critically debunked*—Caliban’s bait is *novice* to your critical analysis. +15 score, critical streak *amped* to 4—Caliban’s *owned*![/red bold] [cyan]-- Core Logic: [XO---] 1/2 Drills  [Inference Icon - Critical Thinking Skill] [/cyan]",
+                "feedback_type": "positive",
+                "points_awarded": 15,
+                "streak_update": 4,
+                "badges_earned": [],
+                "skill_diagnosis": {
+                    "accuracy": 100,
+                    "response_time_ms": 60000,
+                    "skill": "Inference",
+                    "skill_pillar": "Critical Thinking"
+                },
+                "roadmap_snippet_data": {
+                    "current_tier": "Tier 1 - Core Logic - Critical Analysis",
+                    "tasks_completed_in_tier": 1,
+                    "total_tasks_in_tier": 2,
+                    "skill_icon": "inference_icon.txt"
+                },
+                "delay_ms": 1500
+            },
+            {
+                "turn_number": 23.1,
+                "speaker": "System",
+                "message_type": "dashboard_report_snippet",
+                "dashboard_tab": "engagement_analytics",
+                "content": "[cyan][Dashboard Snippet - Benchmarking]: [bold]Critical Skill Performance vs. Teams A & B[/bold] - Monica: *Outperforming Benchmarks in Critical Proficiency & Efficiency*. [Sound: Data Chart Upward Sweep]\n[cyan]>> Competitive Critical Skill Advantage - Benchmarking Live <<[/cyan]",
+                "delay_ms": 2500
+            },
+            {
+                "turn_number": 24,
+                "speaker": "R.C.",
+                "message_type": "prompt",
+                "content": "[red bold] *Critical Challenge Alert!* 🚨 [Sound: Urgent Alert - Siren]  Missed yesterday’s Logic Drill, Legend?  *Critical thinking comeback* time!  Nail this bonus for a *massive* +20 critical points.  Your critical rep… *demands mastery.*[/red bold]",
+                "question_type": "catch_up",
+                "skill_assessed": "evaluation",
+                "correct_answer_keywords": [
+                    "previous day",
+                    "missed challenge",
+                    "bonus points"
+                ],
+                "delay_ms": 1500,
+                "performance_update": {
+                    "points": 50,
+                    "streak": 4,
+                    "team_a_accuracy": 92,
+                    "team_b_accuracy": 89,
+                    "player_accuracy": 93
+                }
+            },
+            {
+                "turn_number": 25,
+                "speaker": "Monica",
+                "message_type": "response",
+                "input_type": "open_text",
+                "content": "A challenge is always welcome. Let's correct the record then.",
+                "delay_ms": 700
+            },
+            {
+                "turn_number": 26,
+                "speaker": "R.C.",
+                "message_type": "feedback",
+                "content": "[red bold]*Challenge RE-SOLVED - Critical DOMINANCE!* 💥 [Sound: Power Slash - Energy]  Yesterday… *critically handled*. +20 critical score *surging* in, critical streak *maxed* at 5! Your critical focus… *unmatched*. [/red bold] [cyan]-- Core Logic: [XX---] 2/2 Drills  [Evaluation Icon - Critical Thinking Skill] [/cyan]",
+                "feedback_type": "positive",
+                "points_awarded": 20,
+                "streak_update": 5,
+                "badges_earned": [],
+                "skill_diagnosis": {
+                    "accuracy": 100,
+                    "response_time_ms": 45000,
+                    "skill": "Evaluation",
+                    "skill_pillar": "Critical Thinking"
+                },
+                "roadmap_snippet_data": {
+                    "current_tier": "Tier 1 - Core Logic - Critical Analysis",
+                    "tasks_completed_in_tier": 2,
+                    "total_tasks_in_tier": 2,
+                    "tier_complete": true,
+                    "skills_mastered_in_tier": [
+                        "Inference",
+                        "Evaluation"
+                    ],
+                    "badges_earned_in_tier": [],
+                    "next_tier_preview": "Tier 2 - Intermediate Circuits - Advanced Critical Thinking",
+                    "league_10_progress": 25
+                },
+                "delay_ms": 2000
+            },
+            {
+                "turn_number": 27,
+                "speaker": "R.C.",
+                "message_type": "system_message",
+                "content": "[cyan]+-----------------------------------------------------+[/cyan]\n| [bold]TIER 1 - CORE LOGIC - CRITICAL ANALYSIS - DOMINATED. Edge Upgraded![/bold]      |\n|  [red bold]Launching TIER 2 - INTERMEDIATE CIRCUITS - ADVANCED CRITICAL THINKING[/red bold] |\n|  [magenta]Inference & [u]Data Glitch[/u] - LOADED! 🔥[/magenta] [Sound: Tier Unlock - EDM Drop + Glitchy Sound] [magenta] [Data Stream: Skill Performance Metrics - ENGAGED] [/magenta] [Sound: Data Beep - Faint] [/cyan]|\n[cyan]+-----------------------------------------------------+[/cyan]\n| Tier 2: Intermediate Circuits - Advanced Critical Thinking (0/3) |\n| [ ] Circuit 1 - [ ] Circuit 2 - [ ] Circuit 3  |",
+                "delay_ms": 2500
+            },
+            {
+                "turn_number": 28,
+                "speaker": "R.C.",
+                "message_type": "prompt",
+                "content": "[magenta]+------------- [bold]Tier 2 - Circuit 1/3 - DATA ANOMALY IMMINENT - Critical Data Hack[/bold] -------------+\n| Score: 70| [red bold]Circuit 1—*Anomaly Alert!* Data feed's *glitched*—critical data *compromised*! Numbers *distorted*![/red bold] [Sound: Data Glitch - Intense] ⚠️\n| Streak: 5 |  *Critical data hack* needed, Ace. Real trends *buried* in static.  *Critically reclaim* the signal! |\n| Acc: 96%   | >                                 |\n| Team A: 92%| You: 96%        |\n[magenta]+-------------------------------------------------------------------------------------+\n> ",
+                "question_type": "tier2",
+                "skill_assessed": "inference",
+                "correct_answer_keywords": [
+                    "glitch",
+                    "data error",
+                    "unreliable report",
+                    "ignore current report",
+                    "wait for fix"
+                ],
+                "data_glitch": true,
+                "delay_ms": 2000,
+                "performance_update": {
+                    "points": 70,
+                    "streak": 5,
+                    "team_a_accuracy": 92,
+                    "team_b_accuracy": 89,
+                    "player_accuracy": 96
+                }
+            },
+            {
+                "turn_number": 29,
+                "speaker": "Monica",
+                "message_type": "response",
+                "input_type": "open_text",
+                "content": "This data feed is… compromised. We require a verified data stream, urgently.",
+                "delay_ms": 700
+            },
+            {
+                "turn_number": 30,
+                "speaker": "R.C.",
+                "message_type": "feedback",
+                "content": "[red bold]*Critical Data Glitch DECODED - CRITICAL HACKER LEVEL!* 💻 [Sound: Data Decoding - Synthwave Success]  Data *critically reclaimed* from the chaos! +20, *Data Hacker* badge—*you’re coding critical solutions with *data agility* now, Monica*! Caliban’s *critically failing*![/red bold] [cyan]-- Circuits: [XO--] 1/3 Circuits  [Inference Icon + Glitch Icon - Critical Thinking Skill] [/cyan] [Adaptation Intel: Skill Path - Deduction Circuit Incoming - Critical Path Analysis]",
+                "feedback_type": "badge_earned",
+                "points_awarded": 20,
+                "streak_update": 6,
+                "badges_earned": [
+                    "Data Hacker"
+                ],
+                "skill_diagnosis": {
+                    "accuracy": 100,
+                    "response_time_ms": 60000,
+                    "skill": "Inference",
+                    "skill_pillar": "Critical Thinking",
+                    "surprise_element_success": "data_glitch"
+                },
+                "roadmap_snippet_data": {
+                    "current_tier": "Tier 2 - Intermediate Circuits - Advanced Critical Thinking",
+                    "tasks_completed_in_tier": 1,
+                    "total_tasks_in_tier": 3,
+                    "skill_icon": "inference_data_glitch_icon.txt"
+                },
+                "adaptive_feedback": "[cyan]R.C. Intel Update:  Analyzing your Critical Data Hacking skills… [pause 0.8s] *Critical Skill Path optimized* - Next Circuit: Critical Deduction Logic.  Brace for deeper critical code cuts, Ace.[/cyan]",
+                "dashboard_snippet": {
+                    "dashboard_tab": "personalized_roadmap",
+                    "content": "[cyan][Dashboard Snippet - Personalized Roadmap]:  EQ Leadership Modules - [bold]Priority: Critical Team Dynamics Under Pressure, Strategic Crisis Comms[/bold] -  Dashboard for full critical skill roadmap intel![/cyan]"
+                },
+                "delay_ms": 3000
+            },
+            {
+                "turn_number": 30.1,
+                "speaker": "System",
+                "message_type": "dashboard_report_snippet",
+                "dashboard_tab": "personalized_roadmap",
+                "content": "[cyan][Dashboard Snippet - Personalized Roadmap]: [bold]Personalized Critical Edge Focus[/bold] - Monica: Deduction & Evaluation - *Critical Mastery Trending*. [Sound: Data Roadmap Preview]\n- [bold]Strategic Critical Imperative - League 10 Circuits:[/bold] *Critical Squad Dynamics Under Fire, Hyper-Crisis Comms Protocol, Strategic Futures in Chaos Markets*[/cyan]",
+                "delay_ms": 2500
+            },
+            {
+                "turn_number": 31,
+                "speaker": "R.C.",
+                "message_type": "system_message",
+                "content": "[cyan]+---------------------------+[/cyan]\n| Tier 2: Intermediate Circuits - Advanced Critical Thinking (1/3) |\n| [X] Circuit 1 - [ ] Circuit 2 - [ ] Circuit 3 [magenta] [Data Stream: Skill Performance Metrics - ENGAGED] [/magenta] [Sound: Data Beep - Faint] [/cyan]",
+                "delay_ms": 500
+            },
+            {
+                "turn_number": 32,
+                "speaker": "R.C.",
+                "message_type": "surprise",
+                "surprise_type": "team_intervention_intro",
+                "content": "[red bold]Urgent Incoming—*Squad SOS!* 🚨 [Sound: Distress Signal - Glitchy]  Team comms *imploding*—critical team cohesion *failing*! AXA lines *stressed*! Your crew… *fracturing*—critical breakdown in team dynamics.  This is *critical leadership* now, Monica—Tier 2 - Squad Intervention Circuit… *incoming hot*. Critical team command… awaiting.[/red bold]",
+                "delay_ms": 2500
+            },
+            {
+                "turn_number": 33,
+                "speaker": "R.C.",
+                "message_type": "system_message",
+                "content": "[cyan]+-----------------------------------------------------+[/cyan]\n| Tier 2: Intermediate Circuits (2/3) - [bold]Squad Intervention - Critical Team Leadership[/bold] |\n|  [red bold]EQ Leadership Booting Up - For Critical Team Command[/red bold] [Sound: Team Comm Channel -  Lo-fi Hip Hop Beat with Comms Static] |\n[cyan]+-----------------------------------------------------+[/cyan]\n| [X] Circuit 1 - [ ] Circuit 2 - [ ] Circuit 3  |",
+                "delay_ms": 2000
+            },
+            {
+                "turn_number": 34,
+                "speaker": "R.C.",
+                "message_type": "prompt",
+                "content": "[magenta]+------------- [bold]Tier 2 - Squad Intervention Circuit 2/3 - Critical Team Dynamics[/bold] -------------+\n| Score: 110| [red bold]Circuit 2—*Squad Split Alert!*  ‘Meltdown *IS* real!’ camp VS ‘*Critical hold strategy, no panic*!’ camp… critical team conflict in the chat![/red bold] [Sound: Team Comms - Chaotic Chatter + Meme Soundbite] ⚔️\n| Streak: 6 |  *Critical team leadership* needed, Monica—*god-tier EQ* command *essential*.  Response options… choose for *critical team alignment*. |\n| Acc: 97%   | >  Select: 1, 2, or 3                  |\n| Team A: 92%| You: 97%        |\n[magenta]+---------------------------------------------------------------------------------+\n  1. ‘Data’s glitched—*critical team focus*: level-headed analysis, *facts only*.’\n  2. ‘Market’s *tanking*—*critical team action*: *bail NOW*, team safety *first*!’\n  3. ‘Emotions override critical data—*critical team directive*: *stick to strategy*, team *hold strong*!’",
+                "question_type": "tier2",
+                "skill_assessed": "interpretation/eq",
+                "correct_answer_option": "1",
+                "team_intervention_options": [
+                    {
+                        "option_number": "1",
+                        "option_text": "‘Data’s glitched—*critical team focus*: stay frosty, squad.  Level-headed analysis, *facts only*.’",
+                        "outcome": "positive_team_rally"
+                    },
+                    {
+                        "option_number": "2",
+                        "option_text": "‘Market’s *dropping hard*—*critical team action*: *bail NOW*, squad safety *first*!’",
+                        "outcome": "negative_panic_selloff"
+                    },
+                    {
+                        "option_number": "3",
+                        "option_text": "‘Emotions hijacking data—*critical team directive*: *stick to strategy*, team *hold strong*!’",
+                        "outcome": "neutral_uncertainty"
+                    }
+                ],
+                "delay_ms": 2000,
+                "performance_update": {
+                    "points": 110,
+                    "streak": 6,
+                    "team_a_accuracy": 92,
+                    "team_b_accuracy": 89,
+                    "player_accuracy": 97
+                }
+            },
+            {
+                "turn_number": 35,
+                "speaker": "Monica",
+                "message_type": "response",
+                "input_type": "option_choice",
+                "content": "1",
+                "delay_ms": 700
+            },
+            {
+                "turn_number": 36,
+                "speaker": "R.C.",
+                "message_type": "feedback",
+                "content": "[red bold]*Critical Squad Uplift - CRITICAL LEADERSHIP ACHIEVED!* 🙌 [Sound: Team Cheers - EDM Build Up]  ‘Level-headed analysis’—*critically sound* command for team stability. Squad morale *recovering critical focus*! +15 score, *Squad Savior* badge—*critical EQ leadership unlocked, Monica!*[/red bold] [cyan]-- Circuits: [XX--] 2/3 Circuits  [EQ + Squad Icon - Critical Team Leadership Skill] [/cyan] [Adaptation Intel: Dashboard Deep Dive - Critical Skill Roadmap Optimized]",
+                "feedback_type": "badge_earned",
+                "points_awarded": 20,
+                "streak_update": 7,
+                "badges_earned": [
+                    "Squad Savior"
+                ],
+                "skill_diagnosis": {
+                    "accuracy": 95,
+                    "response_time_ms": 75000,
+                    "skill": "Interpretation/EQ",
+                    "skill_pillar": "EQ & Soft Skills"
+                },
+                "team_sentiment_update": "positive",
+                "roadmap_snippet_data": {
+                    "current_tier": "Tier 2 - Intermediate Circuits - Advanced Critical Thinking",
+                    "tasks_completed_in_tier": 2,
+                    "total_tasks_in_tier": 3,
+                    "skill_icon": "eq_squad_icon.txt"
+                },
+                "adaptive_feedback": "[cyan]Dashboard Intel:  Analyzing your Critical Squad Command skills… [pause 0.5s] *Critical Deep Dive Intel incoming* - Personalized Critical Skill Roadmap *optimized* for next-level Critical Team Dynamics Circuits.  Check Dashboard - prepare for next-gen critical insights.[/cyan]",
+                "dashboard_snippet": {
+                    "dashboard_tab": "personalized_roadmap",
+                    "content": "[cyan][Dashboard Snippet - Personalized Roadmap]:  EQ Leadership Modules - [bold]Priority: Critical Team Dynamics Under Pressure, Strategic Crisis Comms[/bold] -  Dashboard for full critical skill roadmap intel![/cyan]"
+                },
+                "delay_ms": 3000
+            },
+            {
+                "turn_number": 36.1,
+                "speaker": "System",
+                "message_type": "dashboard_report_snippet",
+                "dashboard_tab": "personalized_roadmap",
+                "content": "[cyan][Dashboard Snippet - Adaptive Roadmap]: [bold]Critical Skill Roadmap - ADAPTIVE UPDATE:[/bold] Personalized Critical Skill Path *Optimized* based on Squad Command Performance. [Sound: Data Adaptive Algorithm]\n[cyan]>>  Check Full Dashboard - Next-Level Critical Team Dynamics Circuits Intel Ready <<[/cyan]",
+                "delay_ms": 2500
+            },
+            {
+                "turn_number": 37,
+                "speaker": "R.C.",
+                "message_type": "system_message",
+                "content": "[cyan]+---------------------------+[/cyan]\n| Tier 2: Intermediate Circuits - Advanced Critical Thinking (2/3) |\n| [X] Circuit 1 - [X] Circuit 2 - [ ] Circuit 3 [magenta] [Data Stream: Skill Performance Metrics - ENGAGED] [/magenta] [Sound: Data Beep - Faint] [/cyan]",
+                "delay_ms": 500
+            },
+            {
+                "turn_number": 38,
+                "speaker": "R.C.",
+                "message_type": "prompt",
+                "content": "[magenta]+------------- [bold]Tier 2 - Circuit 3/3 - FULL MELTDOWN TRIGGERED - Ultimate Critical Test[/bold] -------------+\n| Score: 130| [red bold]*MAX MELTDOWN - CODE RED!* Market *in freefall*! Critical data feeds *glitching hardcore*! Squad comms *critical mass panic*! Pressure… *ULTIMATE CRITICAL THINKING TEST*.![/red bold] [Sound: Meltdown Siren - Full Volume + Chaotic Squad Chatter] 🚨🚨🚨\n| Streak: 7 |  *Critical Boss Mode* activated, Monica.  AXA’s fate—*critical call*.  Command sequence… GO.  [Pause 1.5s]  *Code your critical command… keep it critically cool*… |\n| Acc: 97%   | >  *Critical Command Input… NOW.* |\n| Team A: 92%| You: 97%        |\n[magenta]+--------------------------------------------------------------------------------------------+\n> ",
+                "question_type": "meltdown",
+                "skill_assessed": [
+                    "inference",
+                    "deduction",
+                    "evaluation",
+                    "interpretation/eq"
+                ],
+                "correct_answer_keywords": [
+                    "stabilize",
+                    "data priority",
+                    "calm team",
+                    "strategic hold",
+                    "focus long term"
+                ],
+                "delay_ms": 3000,
+                "performance_update": {
+                    "points": 130,
+                    "streak": 7,
+                    "team_a_accuracy": 92,
+                    "team_b_accuracy": 89,
+                    "player_accuracy": 97
+                }
+            },
+            {
+                "turn_number": 39,
+                "speaker": "Monica",
+                "message_type": "response",
+                "input_type": "open_text",
+                "content": "Data integrity is priority one. Team, maintain strategic hold and focus on the long term. We must think critically now.",
+                "delay_ms": 900
+            },
+            {
+                "turn_number": 40,
+                "speaker": "R.C.",
+                "message_type": "feedback",
+                "content": "[red bold]*MELTDOWN OVERRIDDEN - CRITICAL LEGEND STATUS: UNLOCKED!* 🏆 [Sound: Heroic Anthem - Epic Orchestral]  Crisis… *CRITICALLY ABORTED*. Market… *rebooting*. You… *hacked the critical matrix*, Monica. AXA… *critical stability secured*… for now. +30 score, *Market Hacker* & *Crisis Overrider* badges—*critical thinking immortality in the Multiverse… confirmed*.  [Pause 2.5s]  League 10… *critical challenge awaits*. But…[/red bold]",
+                "feedback_type": "badge_earned",
+                "points_awarded": 30,
+                "streak_update": 8,
+                "badges_earned": [
+                    "Market Hacker",
+                    "Crisis Overrider"
+                ],
+                "skill_diagnosis": {
+                    "accuracy": 98,
+                    "response_time_ms": 120000,
+                    "skill": "Integrated Skills",
+                    "skill_pillar": [
+                        "Critical Thinking",
+                        "EQ & Soft Skills"
+                    ]
+                },
+                "roadmap_snippet_data": {
+                    "current_tier": "Tier 2 - Intermediate Circuits - Advanced Critical Thinking",
+                    "tasks_completed_in_tier": 3,
+                    "total_tasks_in_tier": 3,
+                    "tier_complete": true,
+                    "skills_mastered_in_tier": [
+                        "Inference (Data Glitch Hack)",
+                        "Interpretation/EQ (Squad Command)",
+                        "Crisis Overriding"
+                    ],
+                    "badges_earned_in_tier": [
+                        "Data Hacker",
+                        "Squad Savior",
+                        "Market Hacker",
+                        "Crisis Overrider"
+                    ],
+                    "next_tier_preview": "League 10 - Boss Level Circuits - Critical Strategy Apex",
+                    "league_10_progress": 45
+                },
+                "delay_ms": 3200
+            },
+            {
+                "turn_number": 41,
+                "speaker": "Caliban",
+                "message_type": "surprise",
+                "surprise_type": "caliban_message",
+                "content": "[blue bold]Caliban: (Voice glitched, deep bass) *Monica…* [Sound: Low Menacing - Deep Bass Rumble].  Critical… *adequate*, for now.  Meltdown *halted*… yeah, *temporarily*.  Critical Edge… *still fleeting*. [Pause 1.8s]  Real critical game… *unseen critical game*… *just escalated*… [/blue bold]",
+                "delay_ms": 2800
+            },
+            {
+                "turn_number": 42,
+                "speaker": "R.C.",
+                "message_type": "system_message",
+                "content": "[cyan]+---------------------------+[/cyan]\n| League 10 - [bold]Boss Level Circuits - Critical Strategy Apex[/bold] |\n| [red bold]Personalized Critical Skill Matrix - UNLOCKED[/red bold] [Sound: Unlock - Future Bass Jingle + Matrix Code Sound] |\n[cyan]+---------------------------+[/cyan]",
+                "delay_ms": 2000
+            },
+            {
+                "turn_number": 43,
+                "speaker": "R.C.",
+                "message_type": "system_message",
+                "content": "[cyan]+-----------------------------------------------------+[/cyan]\n| [bold]CHRO Dashboard - Monica's LEGEND CRITICAL STATS - Deep Dive[/bold] | [Sound: Dashboard Open - Techy Interface Whoosh] 📊\n[cyan]+-----------------------------------------------------+[/cyan]",
+                "delay_ms": 2000
+            },
+            {
+                "turn_number": 44,
+                "speaker": "R.C.",
+                "message_type": "dashboard_report_snippet",
+                "dashboard_tab": "overview",
+                "content": "[cyan][Dashboard - Overview Drop - LEGEND EDITION - CRITICAL THINKING POWERHOUSE]: [bold]AXA Exec Brief[/bold] - Monica: Demo Performance - *CRITICAL MASTERY*. [Sound: Data Positive - Upbeat Synth Beep] 🔥\n- [bold]Overall Critical Skill Spike:[/bold] +22% (Projected - *Legend Trajectory Confirmed*)\n- [bold]Critical Engagement Heatmap:[/bold] *Max Streak Engaged*, *Lightning Reflex* Crisis Responses\n- [bold]Core Critical Skill Domination:[/bold] *Inference Engine Apex*, *Evaluation Apex*, *Crisis Boss*, *EQ God Mode*\n[cyan]>> Full Critical Dashboard Load INITIATING… Prepare for Data Overload <<[/cyan]",
+                "delay_ms": 3000
+            },
+            {
+                "turn_number": 45,
+                "speaker": "R.C.",
+                "message_type": "dashboard_report_snippet",
+                "dashboard_tab": "personalized_roadmap",
+                "content": "[cyan][Dashboard - Skill Matrix Intel - CRITICAL THINKING EDGE]: [bold]Personalized Critical Edge Focus[/bold] - Monica: Deduction & Evaluation - *Critical Mastery UNLOCKED*. [Sound: Data Positive - Tech Affirmation Beep] ✅\n- [bold]Strategic Critical Imperative - League 10 Circuits:[/bold] [bold]*Critical Squad Dynamics Under Fire, Hyper-Crisis Comms Protocol, Strategic Futures in Chaos Markets*[/bold]\n[cyan]>> Full Personalized Critical Skill Matrix Deploying in Dashboard - Prepare for Next-Level Critical Intel Deep Dive <<[/cyan]",
+                "delay_ms": 3000
+            },
+            {
+                "turn_number": 46,
+                "speaker": "R.C.",
+                "message_type": "system_message",
+                "content": "[cyan]+---------------------------------------------------------+[/cyan]\n| [bold]CHRO DASHBOARD - LEGEND-LEVEL CRITICAL INSIGHTS - DATA REVEAL IN 3… 2… 1…[/bold] |\n| [red bold]Prepare for AXA’s Critical Data-Driven Future… UNLEASHED.[/red bold] [Sound: Data Stream - Intense + Grand Jingle - Epic] 🚀 |\n[cyan]+---------------------------------------------------------+[/cyan]\n[magenta] > [Smash Enter to Initiate CHRO Critical Dashboard Ascent] [/magenta]",
+                "expected_response_type": "press_enter",
+                "delay_ms": 4000
+            },
+            {
+                "turn_number": 47,
+                "speaker": "Monica",
+                "message_type": "response",
+                "input_type": "press_enter",
+                "content": "[Engage Critical Dashboard - Data Revelation - Data is key.]",
+                "delay_ms": 300
+            },
+            {
+                "turn_number": 48,
+                "speaker": "System",
+                "message_type": "dashboard_full_report",
+                "dashboard_data_ref": "dashboard_data_demo_1",
+                "content": "[Activate CHRO Critical Dashboard Interface - Data Revelation SEQUENCE INITIATED]",
+                "delay_ms": 4000
+            },
+            {
+                "turn_number": 49,
+                "speaker": "R.C.",
+                "message_type": "system_message",
+                "content": "[red bold]R.C.:  *Behold*, CHRO—RCM Labs  Intel Hub - v2.0. [Sound: Data Swirling - Techy]  Monica's Legend Critical Stats… *quantified and visualized*. League 10… *critical path forward*. AXA’s future… *critical thinking-optimized, [magenta] agility-enhanced, and growth-powered.[/magenta]*  Your Pilot Program… *CRITICAL GO time*.  Multiverse… *awaits your critical command IRL.*[/red bold]",
+                "delay_ms": 3000
+            },
+            {
+                "turn_number": 50,
+                "speaker": "R.C.",
+                "message_type": "system_message",
+                "content": "[cyan]+---------------------------+[/cyan]\n| Demo COMPLETE - RCM Labs   CLI - [bold]Critical Legend Mode UNLOCKED[/bold] |\n[cyan]+---------------------------+[/cyan]",
+                "delay_ms": 1500
+            }
+        ]
+    }
+}

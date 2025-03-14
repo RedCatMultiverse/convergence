@@ -1,0 +1,33 @@
+# Environment variables declared in this file are automatically made available to Prisma.
+
+# See the documentation for more detail: https://pris.ly/d/prisma-schema#accessing-environment-variables-from-the-schema
+
+# Prisma supports the native connection string format for PostgreSQL, MySQL, SQLite, SQL Server, MongoDB and CockroachDB.
+
+# See the documentation for all the connection string options: https://pris.ly/d/connection-strings
+
+DATABASE_URL="mysql://user:password@localhost:3306/rcm"
+
+# App Url
+
+APP_URL="http://localhost:1980"
+
+##### ALSO CHANGE PORT IN package.json
+
+# Next Auth params:
+
+NEXTAUTH_URL="http://localhost:1980"
+
+# To generate secret, run "openssl rand -base64 32"
+
+NEXTAUTH_SECRET="lzGnKrKLdlwCZoGxETlf1ZgOF5+ANiluf7uKgl+kUpA="
+
+# Google OAuth Stuff:
+
+GOOGLE_CLIENT_ID="175402907566-hid4bv9u4uveim8t2quvr43n03b9eos7.apps.googleusercontent.com"
+GOOGLE_CLIENT_SECRET="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"
+
+# Sendgrid Stuff (FJL)
+
+SENDGRID_API_KEY=""
+EMAIL_FROM=""
