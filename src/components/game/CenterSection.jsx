@@ -6,210 +6,47 @@ import PlayArrowIcon from '@mui/icons-material/PlayArrow';
 import PauseIcon from '@mui/icons-material/Pause';
 import RefreshIcon from '@mui/icons-material/Refresh';
 import SendIcon from '@mui/icons-material/Send';
+import SkipNextIcon from '@mui/icons-material/SkipNext';
 
-// Simulated gameplay data (in a real app, this would be imported from the JSON files)
-const gameplayData = {
-  turns: [
-    {
-      turn_number: 1,
-      speaker: "R.C.",
-      message_type: "system_message",
-      content: "+---------------------------+\n| RCM Labs CLI - v2.0 ⚡️ |",
-      delay_ms: 500
-    },
-    {
-      turn_number: 2,
-      speaker: "R.C.",
-      message_type: "prompt",
-      content: "RCM Labs – your solution for *critical thinking at scale*. R.C. here, your guide. AXA needs *resilience*—driven by *sharp minds*. Monica's about to show you how *our program* cultivates *next-gen critical thinkers* in just 12 weeks. Five skill pillars, laser-focused drills, 20-min sprints—*boost AXA's cognitive edge* and debug market chaos? Hit Enter to see *critical thinking in action.*",
-      expected_response_type: "press_enter",
-      delay_ms: 1800
-    },
-    {
-      turn_number: 3,
-      speaker: "Monica",
-      message_type: "response",
-      input_type: "press_enter",
-      content: "[Engage Critical Thinking Program - Ready to think!]",
-      delay_ms: 300
-    },
-    {
-      turn_number: 4,
-      speaker: "R.C.",
-      message_type: "prompt",
-      content: "*Monica's stepping into the arena—*critical thinking sandbox activated*. We're benchmarking against industry standards—Team A & B—but Monica's specs? *Top percentile*. This 12-week sprint—AXA's workforce *cognitively upgraded*. Sharpen minds, cut through market noise—*critical insights*, AXA's future. Ready to see *data-driven critical thinking insights*? Hit Enter…",
-      expected_response_type: "press_enter",
-      delay_ms: 1800
-    },
-    {
-      turn_number: 5,
-      speaker: "Monica",
-      message_type: "response",
-      input_type: "press_enter",
-      content: "[Initiate Critical Thinking Drill Sequence - Let's begin.]",
-      delay_ms: 800
-    },
-    {
-      turn_number: 6,
-      speaker: "R.C.",
-      message_type: "prompt",
-      content: "*Strategic move*! Caliban's *Market Meltdown*—perfect *critical thinking stress test*. 3 Base Cuts to calibrate, then League 10 drills for 12 weeks. Points, streaks—Team A's at 92% critical thinking accuracy… *Monica's about to redefine 'high performance'*. Ready to witness *AXA's critical thinking potential unleashed*? Smash Enter—*Let's code for a smarter workforce!*",
-      expected_response_type: "press_enter",
-      delay_ms: 2200
-    },
-    {
-      turn_number: 7,
-      speaker: "Monica",
-      message_type: "response",
-      input_type: "press_enter",
-      content: "[Launch Critical Thinking Calibration - Starting calibration.]",
-      delay_ms: 300
-    },
-    {
-      turn_number: 8,
-      speaker: "R.C.",
-      message_type: "system_message",
-      content: "+---------------------------+\n| League 10 - Critical Thinking Calibration |\n+---------------------------+\n| Base Calibration (3 Cuts) |\n| [O] Cut 1 - [ ] Cut 2 - [ ] Cut 3",
-      delay_ms: 1000
-    },
-    {
-      turn_number: 9,
-      speaker: "R.C.",
-      message_type: "prompt",
-      content: "+------------- Base Cut 1/3 - Critical Thinking Calibration -------------+\n| Score: 0 | Cut 1—Caliban whispers: 'Risky trades… clients *love the gamble*.' |\n| Streak: 0 | *Apply critical thinking*, Monica. Debunk or confirm—is this legit? |\n| Acc: N/A | > |\n| Team A: 92%| You: N/A |\n+-----------------------------------------------------------------+\n> ",
-      question_type: "base_level",
-      skill_assessed: "assumptions",
-      correct_answer_keywords: ["losses", "lose loyalty", "risk"],
-      delay_ms: 1500
-    },
-    {
-      turn_number: 10,
-      speaker: "Monica",
-      message_type: "response",
-      input_type: "open_text",
-      content: "No, that's simply incorrect. Banks rely on client trust, not speculative risks.",
-      delay_ms: 700
-    },
-    {
-      turn_number: 11,
-      speaker: "R.C.",
-      message_type: "feedback",
-      content: "*Assumption – DEBUNKED with Critical Precision!* 🔥 *Textbook* critical thinking, Monica. Risky trades *erode* client trust—+10 points, critical streak's *ignited* at 1! -- Calibration: [O-----] 1/3 Cuts [Assumptions Icon - Critical Thinking Skill]",
-      feedback_type: "positive",
-      points_awarded: 10,
-      streak_update: 1,
-      delay_ms: 1500
-    },
-    {
-      turn_number: 12,
-      speaker: "R.C.",
-      message_type: "system_message",
-      content: "+---------------------------+\n| League 10 - Critical Thinking Calibration |\n+---------------------------+\n| Base Calibration (2/3) [X] Cut 1 - [ ] Cut 2 - [ ] Cut 3",
-      delay_ms: 500
-    },
-    {
-      turn_number: 13,
-      speaker: "R.C.",
-      message_type: "prompt",
-      content: "+------------- Base Cut 2/3 - Critical Deduction Drill -------------+\n| Score: 10| Cut 2—Caliban's drop: '$2M trade, 20% risk—*solo greenlight*.' |\n| Streak: 1 | *Critical deduction* needed, Monica. Logic gap—spot it. |\n| Acc: 90% | > |\n| Team A: 92%| You: 90% |\n+-----------------------------------------------------------------+\n> ",
-      question_type: "base_level",
-      skill_assessed: "deduction",
-      correct_answer_keywords: ["VP check", "approval", "overreach"],
-      delay_ms: 1500
-    },
-    {
-      turn_number: 14,
-      speaker: "Monica",
-      message_type: "response",
-      input_type: "open_text",
-      content: "Is VP approval not required for trades of that magnitude? That deviates from standard procedure.",
-      delay_ms: 700
-    },
-    {
-      turn_number: 15,
-      speaker: "R.C.",
-      message_type: "feedback",
-      content: "*Critical Deduction – FLAWLESS!* 🧠 *Correct*—protocol *breach* is the critical flaw. +10, critical streak *surging* to 2! Your logic engine's *calibrated for critical insight*. -- Calibration: [OX----] 2/3 Cuts [Deduction Icon - Critical Thinking Skill]",
-      feedback_type: "positive",
-      points_awarded: 10,
-      streak_update: 2,
-      delay_ms: 1500
-    },
-    {
-      turn_number: 16,
-      speaker: "R.C.",
-      message_type: "system_message",
-      content: "+---------------------------+\n| League 10 - Critical Thinking Calibration |\n+---------------------------+\n| Base Calibration (3/3) [X] Cut 1 - [X] Cut 2 - [ ] Cut 3",
-      delay_ms: 500
-    },
-    {
-      turn_number: 17,
-      speaker: "R.C.",
-      message_type: "prompt",
-      content: "+------------- Base Cut 3/3 - EQ Check for Critical Leadership -------------+\n| Score: 20| Cut 3—*Urgent!* Fake spike *panics* your squad—'Market's *collapsing!*' |\n| Streak: 2 | Team's losing critical focus, Monica. Apply *EQ-driven critical leadership*. Guide them. |\n| Acc: 95% | > *Command critical calm, Leader!* |\n| Team A: 92%| You: 95% |\n+------------------------------------------------------------------------------+\n> ",
-      question_type: "base_level",
-      skill_assessed: "interpretation/eq",
-      correct_answer_keywords: ["data off", "stay sharp", "got this", "reassure team"],
-      delay_ms: 2000
-    },
-    {
-      turn_number: 18,
-      speaker: "Monica",
-      message_type: "response",
-      input_type: "open_text",
-      content: "Team, everyone take a breath. This looks like a data anomaly. We need to focus on verified metrics and our established strategy.",
-      delay_ms: 700
-    },
-    {
-      turn_number: 19,
-      speaker: "R.C.",
-      message_type: "feedback",
-      content: "*EQ-Powered Critical Leadership - BOSS LEVEL!* 🚀 '*Data glitch*'—*critically calm* command, Leader Monica. Team *re-engaging critical thinking*—morale *stabilized*! +15, critical streak *unstoppable* at 3, *Crew Stabilizer* badge—*lead with that critical EQ and a *growth-focused mindset*!*! -- Calibration: [XXX] 3/3 Cuts - BASE CRITICAL THINKING CALIBRATION COMPLETE! [EQ Icon - Critical Leadership Skill]",
-      feedback_type: "badge_earned",
-      points_awarded: 15,
-      streak_update: 3,
-      badges_earned: ["Crew Stabilizer"],
-      delay_ms: 1500
-    },
-    {
-      turn_number: 20,
-      speaker: "R.C.",
-      message_type: "system_message",
-      content: "+---------------------------+\n| CALIBRATION COMPLETE - CRITICAL THINKING PROFILE GENERATED |\n+---------------------------+\n| Monica - AXA Manager - Critical Thinker Profile |\n| Critical Thinking: 95% (Team A: 92%, Team B: 89%) |\n| EQ Leadership: 90% |\n| Growth Mindset: HIGH |\n| League Status: READY FOR LEAGUE 10",
-      delay_ms: 2000
-    },
-    {
-      turn_number: 21,
-      speaker: "R.C.",
-      message_type: "prompt",
-      content: "*Calibration complete*! Monica's critical thinking profile is *exceptional*. Ready to see how this translates to *real ROI* for AXA? Hit Enter to view the *projected impact* of scaling this program to 100 managers...",
-      expected_response_type: "press_enter",
-      delay_ms: 1800
-    }
-  ]
+// Import gameplay data from JSON file
+import gameplayDataJson from '@/data/gameplay_data.json';
+
+// Get the gameplay data from the imported JSON
+const gameplayData = gameplayDataJson.gameplay_demo.turns;
+
+// Function to clean text from markup tags
+const cleanTextFromTags = (text) => {
+  if (!text) return '';
+  // Remove color tags like [cyan], [/cyan], [red bold], [/red bold], etc.
+  return text.replace(/\[(\/?)([a-z\s]+)(\s[a-z]+)?\]/gi, '')
+            .replace(/\[Sound:.*?\]/g, '') // Remove sound effects
+            .replace(/\[Pause \d+\.\d+s\]/g, ''); // Remove pause instructions
 };
 
 const CenterSection = ({ title = "RCM LABS TERMINAL" }) => {
-  const [gameState, setGameState] = useState({
-    isRunning: false,
-    isComplete: false,
-    currentTurnIndex: 0,
-    consoleOutput: [],
-    userInput: "",
-    waitingForInput: false,
-    inputType: null,
-    points: 0,
-    streak: 0,
-    accuracy: "N/A",
-    isTyping: false
-  });
+  // Main game state
+  const [currentTurnIndex, setCurrentTurnIndex] = useState(0);
+  const [isRunning, setIsRunning] = useState(false);
+  const [isComplete, setIsComplete] = useState(false);
+  const [consoleOutput, setConsoleOutput] = useState([]);
+  const [userInput, setUserInput] = useState("");
+  const [waitingForInput, setWaitingForInput] = useState(false);
+  const [inputType, setInputType] = useState(null);
+  const [isTyping, setIsTyping] = useState(false);
+  const [autoAdvance, setAutoAdvance] = useState(false);
   
+  // Game stats
+  const [points, setPoints] = useState(0);
+  const [streak, setStreak] = useState(0);
+  const [accuracy, setAccuracy] = useState("N/A");
+  
+  // Refs
   const consoleEndRef = useRef(null);
   const inputRef = useRef(null);
   const typingIntervalRef = useRef(null);
   const currentCharIndexRef = useRef(0);
   const currentMessageRef = useRef("");
-
+  
   // Clean up interval on unmount
   useEffect(() => {
     return () => {
@@ -224,316 +61,321 @@ const CenterSection = ({ title = "RCM LABS TERMINAL" }) => {
     if (consoleEndRef.current) {
       consoleEndRef.current.scrollIntoView({ behavior: 'smooth' });
     }
-  }, [gameState.consoleOutput]);
+  }, [consoleOutput]);
 
   // Focus input when waiting for input
   useEffect(() => {
-    if (gameState.waitingForInput && inputRef.current) {
+    if (waitingForInput && inputRef.current) {
       inputRef.current.focus();
     }
-  }, [gameState.waitingForInput]);
-
-  // Process the next turn
-  const processNextTurn = () => {
-    // Clear any existing interval
-    if (typingIntervalRef.current) {
-      clearInterval(typingIntervalRef.current);
-      typingIntervalRef.current = null;
+  }, [waitingForInput]);
+  
+  // Process turn when currentTurnIndex changes
+  useEffect(() => {
+    if (isRunning && !isTyping && !waitingForInput && currentTurnIndex < gameplayData.length) {
+      processTurn(currentTurnIndex);
     }
-
-    if (gameState.currentTurnIndex >= gameplayData.turns.length) {
-      setGameState(prev => ({ ...prev, isRunning: false, isComplete: true }));
+  }, [currentTurnIndex, isRunning]);
+  
+  // Function to process a specific turn
+  const processTurn = (turnIndex) => {
+    // Check if we've reached the end of the game
+    if (turnIndex >= gameplayData.length) {
+      setIsRunning(false);
+      setIsComplete(true);
       return;
     }
-
-    const currentTurn = gameplayData.turns[gameState.currentTurnIndex];
     
-    // If it's a system message or R.C. speaking, add to console output with typing effect
-    if (currentTurn.speaker === "R.C." || currentTurn.message_type === "system_message") {
-      // Add empty message to console output to start typing effect
-      setGameState(prev => ({
-        ...prev,
-        isTyping: true,
-        consoleOutput: [
-          ...prev.consoleOutput,
-          {
-            speaker: currentTurn.speaker,
-            content: "",
-            type: currentTurn.message_type
-          }
-        ]
-      }));
-      
-      // Reset character index
-      currentCharIndexRef.current = 0;
-      currentMessageRef.current = currentTurn.content;
-      
-      // Start typing effect after a short delay to ensure state is updated
-      setTimeout(() => {
-        typingIntervalRef.current = setInterval(() => {
-          if (currentCharIndexRef.current <= currentMessageRef.current.length) {
-            setGameState(prev => {
-              const updatedOutput = [...prev.consoleOutput];
-              const lastIndex = updatedOutput.length - 1;
-              
-              if (lastIndex >= 0) {
-                updatedOutput[lastIndex] = {
-                  ...updatedOutput[lastIndex],
-                  content: currentMessageRef.current.substring(0, currentCharIndexRef.current)
-                };
-                
-                return {
-                  ...prev,
-                  consoleOutput: updatedOutput
-                };
-              }
-              return prev;
-            });
-            
-            currentCharIndexRef.current++;
-          } else {
-            // Clear the interval when typing is complete
-            clearInterval(typingIntervalRef.current);
-            typingIntervalRef.current = null;
-            
-            // Check if we need to wait for user input
-            if (currentTurn.expected_response_type) {
-              setGameState(prev => ({
-                ...prev,
-                waitingForInput: true,
-                inputType: currentTurn.expected_response_type,
-                isTyping: false
-              }));
-            } else {
-              // Move to next turn after delay
-              setTimeout(() => {
-                setGameState(prev => ({
-                  ...prev,
-                  currentTurnIndex: prev.currentTurnIndex + 1,
-                  isTyping: false
-                }));
-                processNextTurn();
-              }, currentTurn.delay_ms || 1000);
-            }
-          }
-        }, 15); // typing speed
-      }, 50);
-    }
-    // If it's Monica's response, simulate typing it
-    else if (currentTurn.speaker === "Monica") {
-      setGameState(prev => ({ 
-        ...prev, 
-        isTyping: true,
-        userInput: "" 
-      }));
-      
-      // Reset character index
-      currentCharIndexRef.current = 0;
-      currentMessageRef.current = currentTurn.content;
-      
-      // Start typing effect after a short delay
-      setTimeout(() => {
-        typingIntervalRef.current = setInterval(() => {
-          if (currentCharIndexRef.current <= currentMessageRef.current.length) {
-            setGameState(prev => ({
-              ...prev,
-              userInput: currentMessageRef.current.substring(0, currentCharIndexRef.current)
-            }));
-            
-            currentCharIndexRef.current++;
-          } else {
-            // Clear the interval when typing is complete
-            clearInterval(typingIntervalRef.current);
-            typingIntervalRef.current = null;
-            
-            // Add Monica's response to console output
-            setTimeout(() => {
-              setGameState(prev => ({
-                ...prev,
-                consoleOutput: [
-                  ...prev.consoleOutput,
-                  {
-                    speaker: "Monica",
-                    content: currentMessageRef.current,
-                    type: "response"
-                  }
-                ],
-                userInput: "",
-                isTyping: false,
-                currentTurnIndex: prev.currentTurnIndex + 1
-              }));
-              
-              // Process next turn after delay
-              setTimeout(() => {
-                processNextTurn();
-              }, currentTurn.delay_ms || 500);
-            }, 500);
-          }
-        }, 30); // typing speed for Monica
-      }, 50);
-    }
-    // If it's feedback, update stats and add to console
-    else if (currentTurn.message_type === "feedback") {
-      // Add empty message to console output to start typing effect
-      setGameState(prev => ({
-        ...prev,
-        isTyping: true,
-        consoleOutput: [
-          ...prev.consoleOutput,
-          {
-            speaker: "R.C.",
-            content: "",
-            type: "feedback"
-          }
-        ]
-      }));
-      
-      // Reset character index
-      currentCharIndexRef.current = 0;
-      currentMessageRef.current = currentTurn.content;
-      
-      // Start typing effect after a short delay
-      setTimeout(() => {
-        typingIntervalRef.current = setInterval(() => {
-          if (currentCharIndexRef.current <= currentMessageRef.current.length) {
-            setGameState(prev => {
-              const updatedOutput = [...prev.consoleOutput];
-              const lastIndex = updatedOutput.length - 1;
-              
-              if (lastIndex >= 0) {
-                updatedOutput[lastIndex] = {
-                  ...updatedOutput[lastIndex],
-                  content: currentMessageRef.current.substring(0, currentCharIndexRef.current)
-                };
-                
-                return {
-                  ...prev,
-                  consoleOutput: updatedOutput
-                };
-              }
-              return prev;
-            });
-            
-            currentCharIndexRef.current++;
-          } else {
-            // Clear the interval when typing is complete
-            clearInterval(typingIntervalRef.current);
-            typingIntervalRef.current = null;
-            
-            // Update stats
-            setTimeout(() => {
-              setGameState(prev => ({
-                ...prev,
-                points: prev.points + (currentTurn.points_awarded || 0),
-                streak: currentTurn.streak_update || prev.streak,
-                accuracy: currentTurn.skill_diagnosis?.accuracy + "%" || prev.accuracy,
-                isTyping: false,
-                currentTurnIndex: prev.currentTurnIndex + 1
-              }));
-              
-              // Process next turn after delay
-              setTimeout(() => {
-                processNextTurn();
-              }, currentTurn.delay_ms || 1000);
-            }, 500);
-          }
-        }, 15); // typing speed
-      }, 50);
+    // Get the current turn data
+    const currentTurn = gameplayData[turnIndex];
+    console.log(`Processing turn ${turnIndex}:`, currentTurn.turn_number, currentTurn.speaker, currentTurn.message_type);
+    
+    // Clean the content from tags
+    const cleanedContent = cleanTextFromTags(currentTurn.content);
+    
+    // Handle different types of turns
+    if (currentTurn.speaker === "Monica") {
+      handleMonicaResponse(cleanedContent, currentTurn);
+    } else {
+      handleRegularMessage(cleanedContent, currentTurn);
     }
   };
-
+  
+  // Handle Monica's responses
+  const handleMonicaResponse = (cleanedContent, currentTurn) => {
+    setIsTyping(true);
+    setUserInput("");
+    
+    // Reset character index
+    currentCharIndexRef.current = 0;
+    currentMessageRef.current = cleanedContent;
+    
+    // Start typing effect for Monica's response
+    typingIntervalRef.current = setInterval(() => {
+      if (currentCharIndexRef.current <= currentMessageRef.current.length) {
+        setUserInput(currentMessageRef.current.substring(0, currentCharIndexRef.current));
+        currentCharIndexRef.current++;
+      } else {
+        // Clear the interval when typing is complete
+        clearInterval(typingIntervalRef.current);
+        typingIntervalRef.current = null;
+        
+        // Add Monica's response to console output
+        setTimeout(() => {
+          setConsoleOutput(prev => [
+            ...prev,
+            {
+              speaker: "Monica",
+              content: currentMessageRef.current,
+              type: "response"
+            }
+          ]);
+          
+          setUserInput("");
+          setIsTyping(false);
+          
+          // Auto-advance if enabled
+          if (autoAdvance) {
+            setTimeout(() => {
+              setCurrentTurnIndex(prev => prev + 1);
+            }, currentTurn.delay_ms || 500);
+          }
+        }, 500);
+      }
+    }, 30);
+  };
+  
+  // Handle regular messages
+  const handleRegularMessage = (cleanedContent, currentTurn) => {
+    setIsTyping(true);
+    
+    // Add empty message to console output
+    setConsoleOutput(prev => [
+      ...prev,
+      {
+        speaker: currentTurn.speaker,
+        content: "",
+        type: currentTurn.message_type
+      }
+    ]);
+    
+    // Reset character index
+    currentCharIndexRef.current = 0;
+    currentMessageRef.current = cleanedContent;
+    
+    // Start typing effect
+    typingIntervalRef.current = setInterval(() => {
+      if (currentCharIndexRef.current <= currentMessageRef.current.length) {
+        setConsoleOutput(prev => {
+          const updatedOutput = [...prev];
+          const lastIndex = updatedOutput.length - 1;
+          
+          if (lastIndex >= 0) {
+            updatedOutput[lastIndex] = {
+              ...updatedOutput[lastIndex],
+              content: currentMessageRef.current.substring(0, currentCharIndexRef.current)
+            };
+          }
+          
+          return updatedOutput;
+        });
+        
+        currentCharIndexRef.current++;
+      } else {
+        // Clear the interval when typing is complete
+        clearInterval(typingIntervalRef.current);
+        typingIntervalRef.current = null;
+        setIsTyping(false);
+        
+        // Update stats for feedback messages
+        if (currentTurn.message_type === "feedback") {
+          setPoints(prev => prev + (currentTurn.points_awarded || 0));
+          setStreak(currentTurn.streak_update || streak);
+          if (currentTurn.skill_diagnosis?.accuracy) {
+            setAccuracy(currentTurn.skill_diagnosis.accuracy + "%");
+          }
+        }
+        
+        // Check if we need to wait for user input
+        if (currentTurn.expected_response_type) {
+          setWaitingForInput(true);
+          setInputType(currentTurn.expected_response_type);
+        } 
+        // Auto-advance if enabled
+        else if (autoAdvance) {
+          setTimeout(() => {
+            setCurrentTurnIndex(prev => prev + 1);
+          }, currentTurn.delay_ms || 1000);
+        }
+      }
+    }, 15);
+  };
+  
+  // Handle start button click
   const handleStart = () => {
-    if (!gameState.isRunning) {
+    if (!isRunning) {
       // Clear any existing interval
       if (typingIntervalRef.current) {
         clearInterval(typingIntervalRef.current);
         typingIntervalRef.current = null;
       }
       
-      setGameState({
-        isRunning: true,
-        isComplete: false,
-        currentTurnIndex: 0,
-        consoleOutput: [],
-        userInput: "",
-        waitingForInput: false,
-        inputType: null,
-        points: 0,
-        streak: 0,
-        accuracy: "N/A",
-        isTyping: false
-      });
-      
-      setTimeout(() => {
-        processNextTurn();
-      }, 500);
+      // Reset the game state
+      setIsRunning(true);
+      setIsComplete(false);
+      setCurrentTurnIndex(0);
+      setConsoleOutput([]);
+      setUserInput("");
+      setWaitingForInput(false);
+      setInputType(null);
+      setPoints(0);
+      setStreak(0);
+      setAccuracy("N/A");
+      setIsTyping(false);
+      setAutoAdvance(false);
     }
   };
-
+  
+  // Handle pause button click
   const handlePause = () => {
+    setIsRunning(false);
+    
     if (typingIntervalRef.current) {
       clearInterval(typingIntervalRef.current);
       typingIntervalRef.current = null;
     }
-    
-    setGameState(prev => ({ ...prev, isRunning: false }));
   };
-
+  
+  // Handle reset button click
   const handleReset = () => {
+    // Clear any existing interval
     if (typingIntervalRef.current) {
       clearInterval(typingIntervalRef.current);
       typingIntervalRef.current = null;
     }
     
-    setGameState({
-      isRunning: false,
-      isComplete: false,
-      currentTurnIndex: 0,
-      consoleOutput: [],
-      userInput: "",
-      waitingForInput: false,
-      inputType: null,
-      points: 0,
-      streak: 0,
-      accuracy: "N/A",
-      isTyping: false
-    });
+    // Reset the game state
+    setIsRunning(false);
+    setIsComplete(false);
+    setCurrentTurnIndex(0);
+    setConsoleOutput([]);
+    setUserInput("");
+    setWaitingForInput(false);
+    setInputType(null);
+    setPoints(0);
+    setStreak(0);
+    setAccuracy("N/A");
+    setIsTyping(false);
+    setAutoAdvance(false);
   };
-
+  
+  // Handle next turn button click
+  const handleNextTurn = () => {
+    if (isRunning && !isTyping && !waitingForInput) {
+      const nextTurnIndex = currentTurnIndex + 1;
+      
+      // Check if we've reached the end of the game
+      if (nextTurnIndex >= gameplayData.length) {
+        setIsRunning(false);
+        setIsComplete(true);
+        return;
+      }
+      
+      // Move to the next turn
+      setCurrentTurnIndex(nextTurnIndex);
+    }
+  };
+  
+  // Toggle auto-advance mode
+  const toggleAutoAdvance = () => {
+    setAutoAdvance(prev => !prev);
+  };
+  
+  // Handle input change
   const handleInputChange = (e) => {
-    setGameState(prev => ({ ...prev, userInput: e.target.value }));
+    setUserInput(e.target.value);
   };
-
+  
+  // Handle input submission
   const handleInputSubmit = () => {
-    if (!gameState.waitingForInput || gameState.isTyping) return;
-    
-    const currentTurn = gameplayData.turns[gameState.currentTurnIndex];
+    if (!waitingForInput || isTyping) return;
     
     // Add user input to console
-    setGameState(prev => ({
+    setConsoleOutput(prev => [
       ...prev,
-      consoleOutput: [
-        ...prev.consoleOutput,
-        {
-          speaker: "User",
-          content: prev.userInput || "[ENTER]",
-          type: "user_input"
-        }
-      ],
-      waitingForInput: false,
-      currentTurnIndex: prev.currentTurnIndex + 1
-    }));
+      {
+        speaker: "User",
+        content: userInput || "[ENTER]",
+        type: "user_input"
+      }
+    ]);
     
-    // Process next turn after delay
+    setWaitingForInput(false);
+    setUserInput("");
+    
+    // Move to the next turn after a delay
     setTimeout(() => {
-      processNextTurn();
+      setCurrentTurnIndex(prev => prev + 1);
     }, 500);
   };
-
+  
+  // Handle key down events
   const handleKeyDown = (e) => {
-    if (e.key === 'Enter' && gameState.waitingForInput) {
-      e.preventDefault();
+    if (e.key === 'Enter' && waitingForInput) {
       handleInputSubmit();
+    }
+  };
+  
+  // Render different console message styles
+  const renderConsoleMessage = (message, index) => {
+    if (message.type === "system_message") {
+      return (
+        <Typography key={index} variant="body2" sx={{ fontFamily: 'monospace', color: 'cyan', whiteSpace: 'pre-wrap' }}>
+          {message.content}
+        </Typography>
+      );
+    } else if (message.type === "prompt") {
+      return (
+        <Typography key={index} variant="body2" sx={{ fontFamily: 'monospace', color: 'red', whiteSpace: 'pre-wrap' }}>
+          <strong>[{message.speaker}]:</strong> {message.content}
+        </Typography>
+      );
+    } else if (message.type === "response") {
+      return (
+        <Typography key={index} variant="body2" sx={{ fontFamily: 'monospace', color: 'green', whiteSpace: 'pre-wrap' }}>
+          <strong>[{message.speaker}]:</strong> {message.content}
+        </Typography>
+      );
+    } else if (message.type === "feedback") {
+      return (
+        <Typography key={index} variant="body2" sx={{ fontFamily: 'monospace', color: 'yellow', whiteSpace: 'pre-wrap' }}>
+          <strong>[{message.speaker}]:</strong> {message.content}
+        </Typography>
+      );
+    } else if (message.type === "user_input") {
+      return (
+        <Typography key={index} variant="body2" sx={{ fontFamily: 'monospace', color: 'white', whiteSpace: 'pre-wrap' }}>
+          <strong>[User]:</strong> {message.content}
+        </Typography>
+      );
+    } else if (message.type === "dashboard_report_snippet") {
+      return (
+        <Typography key={index} variant="body2" sx={{ fontFamily: 'monospace', color: 'magenta', whiteSpace: 'pre-wrap' }}>
+          {message.content}
+        </Typography>
+      );
+    } else if (message.type === "surprise") {
+      return (
+        <Typography key={index} variant="body2" sx={{ fontFamily: 'monospace', color: 'orange', whiteSpace: 'pre-wrap' }}>
+          <strong>[{message.speaker}]:</strong> {message.content}
+        </Typography>
+      );
+    } else {
+      return (
+        <Typography key={index} variant="body2" sx={{ fontFamily: 'monospace', color: 'white', whiteSpace: 'pre-wrap' }}>
+          <strong>[{message.speaker}]:</strong> {message.content}
+        </Typography>
+      );
     }
   };
 
@@ -541,262 +383,181 @@ const CenterSection = ({ title = "RCM LABS TERMINAL" }) => {
     <Box
       sx={{
         height: '100%',
-        width: '100%',
-        border: '1px solid #00FF00',
-        backgroundColor: 'rgba(0, 0, 0, 0.7)',
-        boxShadow: '0 0 5px #00FF00',
+        backgroundColor: 'black',
+        border: '1px solid #333',
+        borderRadius: 1,
         display: 'flex',
         flexDirection: 'column',
-        padding: 2,
         overflow: 'hidden',
+        position: 'relative',
       }}
     >
-      <Box sx={{ display: 'flex', alignItems: 'center', mb: 2, justifyContent: 'space-between' }}>
-        <Typography
-          variant="h6"
-          sx={{
-            color: '#00FF00',
-            fontFamily: 'var(--font-geist-mono), monospace',
-            letterSpacing: '0.05em',
-            textShadow: '0 0 5px #00FF00',
-          }}
-        >
+      {/* Terminal header */}
+      <Box
+        sx={{
+          backgroundColor: '#111',
+          padding: 1,
+          borderBottom: '1px solid #333',
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+        }}
+      >
+        <Typography variant="subtitle2" sx={{ color: 'white', fontFamily: 'monospace' }}>
           {title}
         </Typography>
-        
-        <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
-          <Typography
-            variant="body2"
-            sx={{
-              color: '#00FF00',
-              fontFamily: 'var(--font-geist-mono), monospace',
-              letterSpacing: '0.02em',
+        <Box>
+          {!isRunning ? (
+            <Button 
+              variant="contained" 
+              size="small" 
+              startIcon={<PlayArrowIcon />}
+              onClick={handleStart}
+              sx={{ mr: 1, backgroundColor: '#007700', '&:hover': { backgroundColor: '#00AA00' } }}
+            >
+              Start
+            </Button>
+          ) : (
+            <Button 
+              variant="contained" 
+              size="small" 
+              startIcon={<PauseIcon />}
+              onClick={handlePause}
+              sx={{ mr: 1, backgroundColor: '#770000', '&:hover': { backgroundColor: '#AA0000' } }}
+            >
+              Pause
+            </Button>
+          )}
+          <Button 
+            variant="contained" 
+            size="small" 
+            startIcon={<RefreshIcon />}
+            onClick={handleReset}
+            sx={{ backgroundColor: '#000077', '&:hover': { backgroundColor: '#0000AA' } }}
+          >
+            Reset
+          </Button>
+          {isRunning && !autoAdvance && (
+            <Button 
+              variant="contained" 
+              size="small" 
+              startIcon={<SkipNextIcon />}
+              onClick={handleNextTurn}
+              disabled={isTyping || waitingForInput}
+              sx={{ ml: 1, backgroundColor: '#007777', '&:hover': { backgroundColor: '#00AAAA' } }}
+            >
+              Next Turn
+            </Button>
+          )}
+          <Button 
+            variant="contained" 
+            size="small" 
+            onClick={toggleAutoAdvance}
+            sx={{ 
+              ml: 1, 
+              backgroundColor: autoAdvance ? '#007700' : '#770000', 
+              '&:hover': { backgroundColor: autoAdvance ? '#00AA00' : '#AA0000' } 
             }}
           >
-            SCORE: {gameState.points}
-          </Typography>
-          <Typography
-            variant="body2"
-            sx={{
-              color: '#00FF00',
-              fontFamily: 'var(--font-geist-mono), monospace',
-              letterSpacing: '0.02em',
-            }}
-          >
-            STREAK: {gameState.streak}
-          </Typography>
-          <Typography
-            variant="body2"
-            sx={{
-              color: '#00FF00',
-              fontFamily: 'var(--font-geist-mono), monospace',
-              letterSpacing: '0.02em',
-            }}
-          >
-            ACC: {gameState.accuracy}
-          </Typography>
+            {autoAdvance ? 'Auto' : 'Manual'}
+          </Button>
         </Box>
       </Box>
       
-      <Divider sx={{ borderColor: 'rgba(0, 255, 0, 0.3)', mb: 2 }} />
-      
-      <Box 
-        sx={{ 
-          flex: 1, 
-          backgroundColor: 'rgba(0, 0, 0, 0.5)', 
-          p: 2, 
-          borderRadius: 1,
-          border: '1px solid rgba(0, 255, 0, 0.3)',
-          overflow: 'auto',
-          fontFamily: 'var(--font-geist-mono), monospace',
-          fontSize: '0.875rem',
-          color: '#00CC00',
-          mb: 2,
-          display: 'flex',
-          flexDirection: 'column',
-          maxHeight: 'calc(100vh - 200px)', // Set a max height to enable scrolling
-          height: '400px', // Fixed height to ensure scrolling works
-          overflowY: 'auto', // Enable vertical scrolling
-          scrollBehavior: 'smooth', // Smooth scrolling
-          '&::-webkit-scrollbar': {
-            width: '8px',
-          },
-          '&::-webkit-scrollbar-track': {
-            backgroundColor: 'rgba(0, 0, 0, 0.3)',
-          },
-          '&::-webkit-scrollbar-thumb': {
-            backgroundColor: 'rgba(0, 255, 0, 0.5)',
-            borderRadius: '4px',
-          },
+      {/* Terminal content */}
+      <Box
+        sx={{
+          flex: 1,
+          padding: 2,
+          overflowY: 'auto',
+          backgroundColor: 'black',
+          color: 'white',
+          fontFamily: 'monospace',
         }}
       >
-        {gameState.consoleOutput.length === 0 ? (
-          <Typography
-            variant="body2"
-            sx={{
-              color: '#00CC00',
-              fontFamily: 'var(--font-geist-mono), monospace',
-              opacity: 0.7,
-            }}
-          >
-            {'> WELCOME TO RCM LABS TERMINAL. PRESS START TO BEGIN THE SIMULATION.'}
+        {consoleOutput.map((message, index) => renderConsoleMessage(message, index))}
+        
+        {/* Show typing indicator when typing */}
+        {isTyping && (
+          <Typography variant="body2" sx={{ fontFamily: 'monospace', color: 'white' }}>
+            <span className="typing-indicator">_</span>
           </Typography>
-        ) : (
-          gameState.consoleOutput.map((line, index) => (
-            <Typography
-              key={index}
-              variant="body2"
-              sx={{
-                color: line.speaker === 'R.C.' ? '#00FF00' : 
-                       line.speaker === 'Monica' ? '#FFAA00' : 
-                       line.type === 'system_message' ? '#55AAFF' : 
-                       line.type === 'feedback' ? '#00FF00' : '#00CC00',
-                fontFamily: 'var(--font-geist-mono), monospace',
-                mb: 1,
-                whiteSpace: 'pre-wrap',
-                fontWeight: line.type === 'feedback' ? 'bold' : 'normal',
-              }}
-            >
-              {line.speaker !== 'System' && `[${line.speaker}]: `}{line.content}
-            </Typography>
-          ))
         )}
-        {gameState.isTyping && (
-          <Box sx={{ display: 'inline-block', ml: 1 }}>
-            <Typography
-              component="span"
-              sx={{
-                color: '#00FF00',
-                animation: 'blink 1s infinite',
-                '@keyframes blink': {
-                  '0%, 100%': { opacity: 1 },
-                  '50%': { opacity: 0 },
-                },
-              }}
-            >
-              _
-            </Typography>
-          </Box>
-        )}
+        
+        {/* Reference for auto-scrolling */}
         <div ref={consoleEndRef} />
       </Box>
       
-      <Box sx={{ display: 'flex', gap: 2, alignItems: 'center' }}>
-        {gameState.waitingForInput ? (
-          <>
-            <TextField
-              ref={inputRef}
-              variant="outlined"
-              value={gameState.userInput}
-              onChange={handleInputChange}
-              onKeyDown={handleKeyDown}
-              placeholder={gameState.inputType === 'press_enter' ? 'Press Enter to continue...' : 'Type your response...'}
-              disabled={gameState.isTyping}
-              fullWidth
-              size="small"
-              sx={{
-                '& .MuiOutlinedInput-root': {
-                  color: '#00FF00',
-                  fontFamily: 'var(--font-geist-mono), monospace',
-                  fontSize: '0.875rem',
-                  '& fieldset': {
-                    borderColor: 'rgba(0, 255, 0, 0.3)',
-                  },
-                  '&:hover fieldset': {
-                    borderColor: '#00FF00',
-                  },
-                  '&.Mui-focused fieldset': {
-                    borderColor: '#00FF00',
-                  },
-                  backgroundColor: 'rgba(0, 0, 0, 0.5)',
+      {/* Input area */}
+      {waitingForInput && (
+        <Box
+          sx={{
+            padding: 2,
+            borderTop: '1px solid #333',
+            backgroundColor: '#111',
+            display: 'flex',
+          }}
+        >
+          <TextField
+            fullWidth
+            variant="outlined"
+            size="small"
+            value={userInput}
+            onChange={handleInputChange}
+            onKeyDown={handleKeyDown}
+            inputRef={inputRef}
+            placeholder={inputType === 'press_enter' ? 'Press Enter to continue...' : 'Type your response...'}
+            sx={{
+              '& .MuiOutlinedInput-root': {
+                color: 'white',
+                fontFamily: 'monospace',
+                backgroundColor: '#222',
+                '& fieldset': {
+                  borderColor: '#444',
                 },
-              }}
-            />
-            <Button
-              variant="outlined"
-              onClick={handleInputSubmit}
-              disabled={gameState.isTyping}
-              startIcon={<SendIcon />}
-              sx={{
-                borderColor: '#00FF00',
-                color: '#00FF00',
-                '&:hover': {
-                  backgroundColor: 'rgba(0, 255, 0, 0.1)',
-                  boxShadow: '0 0 5px #00FF00',
+                '&:hover fieldset': {
+                  borderColor: '#666',
                 },
-                '&.Mui-disabled': {
-                  borderColor: 'rgba(0, 255, 0, 0.3)',
-                  color: 'rgba(0, 255, 0, 0.3)',
-                }
-              }}
-            >
-              SEND
-            </Button>
-          </>
-        ) : (
-          <>
-            <Button
-              variant="outlined"
-              startIcon={<PlayArrowIcon />}
-              onClick={handleStart}
-              disabled={gameState.isRunning || gameState.isTyping}
-              sx={{
-                borderColor: '#00FF00',
-                color: '#00FF00',
-                '&:hover': {
-                  backgroundColor: 'rgba(0, 255, 0, 0.1)',
-                  boxShadow: '0 0 5px #00FF00',
+                '&.Mui-focused fieldset': {
+                  borderColor: '#888',
                 },
-                '&.Mui-disabled': {
-                  borderColor: 'rgba(0, 255, 0, 0.3)',
-                  color: 'rgba(0, 255, 0, 0.3)',
-                }
-              }}
-            >
-              START
-            </Button>
-            <Button
-              variant="outlined"
-              startIcon={<PauseIcon />}
-              onClick={handlePause}
-              disabled={!gameState.isRunning || gameState.isTyping}
-              sx={{
-                borderColor: '#00FF00',
-                color: '#00FF00',
-                '&:hover': {
-                  backgroundColor: 'rgba(0, 255, 0, 0.1)',
-                  boxShadow: '0 0 5px #00FF00',
-                },
-                '&.Mui-disabled': {
-                  borderColor: 'rgba(0, 255, 0, 0.3)',
-                  color: 'rgba(0, 255, 0, 0.3)',
-                }
-              }}
-            >
-              PAUSE
-            </Button>
-            <Button
-              variant="outlined"
-              startIcon={<RefreshIcon />}
-              onClick={handleReset}
-              disabled={gameState.isTyping}
-              sx={{
-                borderColor: '#FFAA00',
-                color: '#FFAA00',
-                '&:hover': {
-                  backgroundColor: 'rgba(255, 170, 0, 0.1)',
-                  boxShadow: '0 0 5px #FFAA00',
-                },
-                '&.Mui-disabled': {
-                  borderColor: 'rgba(255, 170, 0, 0.3)',
-                  color: 'rgba(255, 170, 0, 0.3)',
-                }
-              }}
-            >
-              RESET
-            </Button>
-          </>
-        )}
+              },
+            }}
+          />
+          <Button
+            variant="contained"
+            color="primary"
+            endIcon={<SendIcon />}
+            onClick={handleInputSubmit}
+            sx={{ ml: 1 }}
+          >
+            Send
+          </Button>
+        </Box>
+      )}
+      
+      {/* Game stats */}
+      <Box
+        sx={{
+          padding: 1,
+          borderTop: '1px solid #333',
+          backgroundColor: '#111',
+          display: 'flex',
+          justifyContent: 'space-between',
+        }}
+      >
+        <Typography variant="body2" sx={{ color: 'white', fontFamily: 'monospace' }}>
+          Points: {points}
+        </Typography>
+        <Typography variant="body2" sx={{ color: 'white', fontFamily: 'monospace' }}>
+          Streak: {streak}
+        </Typography>
+        <Typography variant="body2" sx={{ color: 'white', fontFamily: 'monospace' }}>
+          Accuracy: {accuracy}
+        </Typography>
+        <Typography variant="body2" sx={{ color: 'white', fontFamily: 'monospace' }}>
+          Turn: {currentTurnIndex + 1}/{gameplayData.length}
+        </Typography>
       </Box>
     </Box>
   );
