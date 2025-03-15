@@ -127,6 +127,23 @@ const CenterSection = forwardRef(({
     }
   }, [currentTurnIndex, isRunning]);
   
+  // Auto-advance to next turn after processing is complete
+  useEffect(() => {
+    let autoAdvanceTimer;
+    
+    if (isRunning && autoAdvance && !isTyping && !waitingForInput && !isComplete) {
+      autoAdvanceTimer = setTimeout(() => {
+        handleNextTurn();
+      }, 2000); // 2 second delay
+    }
+    
+    return () => {
+      if (autoAdvanceTimer) {
+        clearTimeout(autoAdvanceTimer);
+      }
+    };
+  }, [isRunning, autoAdvance, isTyping, waitingForInput, isComplete, currentTurnIndex]);
+  
   // Function to process a specific turn
   const processTurn = (turnIndex) => {
     // Check if we've reached the end of the game
@@ -184,12 +201,7 @@ const CenterSection = forwardRef(({
           setUserInput("");
           setIsTyping(false);
           
-          // Auto-advance if enabled
-          if (autoAdvance) {
-            setTimeout(() => {
-              setCurrentTurnIndex(prev => prev + 1);
-            }, currentTurn.delay_ms || 500);
-          }
+          // Auto-advance logic is now handled in a separate useEffect
         }, 500);
       }
     }, 30);
@@ -248,59 +260,54 @@ const CenterSection = forwardRef(({
           setPoints(prev => prev + (currentTurn.points_awarded || 0));
           setStreak(currentTurn.streak_update || streak);
           if (currentTurn.skill_diagnosis?.accuracy) {
-            setAccuracy(currentTurn.skill_diagnosis.accuracy + "%");
+            setAccuracy(currentTurn.skill_diagnosis.accuracy);
           }
         }
         
-        // Check if we need to wait for user input
-        if (currentTurn.expected_response_type) {
+        // If this turn requires user input, set the waiting state
+        if (currentTurn.requires_input) {
           setWaitingForInput(true);
-          setInputType(currentTurn.expected_response_type);
-        } 
-        // Auto-advance if enabled
-        else if (autoAdvance) {
-          setTimeout(() => {
-            setCurrentTurnIndex(prev => prev + 1);
-          }, currentTurn.delay_ms || 1000);
+          setInputType(currentTurn.input_type || "text");
         }
+        // Auto-advance logic is now handled in a separate useEffect
       }
-    }, 15);
+    }, 30);
   };
   
   // Handle start button click
   const handleStart = () => {
-    if (!isRunning) {
-      // Clear any existing interval
-      if (typingIntervalRef.current) {
-        clearInterval(typingIntervalRef.current);
-        typingIntervalRef.current = null;
-      }
-      
-      // Reset the game state
-      setIsRunning(true);
-      setIsComplete(false);
+    setIsRunning(true);
+    setAutoAdvance(true); // Always set auto-advance to true when starting
+    
+    // If we're at the end, reset to the beginning
+    if (currentTurnIndex >= gameplayData.length) {
       setCurrentTurnIndex(0);
       setConsoleOutput([]);
-      setUserInput("");
-      setWaitingForInput(false);
-      setInputType(null);
-      setPoints(0);
-      setStreak(0);
-      setAccuracy("N/A");
-      setIsTyping(false);
-      setAutoAdvance(false);
+      setIsComplete(false);
     }
   };
   
   // Handle pause button click
   const handlePause = () => {
-    setIsRunning(false);
+    // Don't stop typing if in progress, just disable auto-advance
+    setAutoAdvance(false);
     
-    if (typingIntervalRef.current) {
-      clearInterval(typingIntervalRef.current);
-      typingIntervalRef.current = null;
+    // If we're not typing, fully pause the game
+    if (!isTyping) {
+      setIsRunning(false);
+    } else {
+      // If typing is in progress, we'll let it finish
+      // The game will be paused after typing completes via the useEffect below
     }
   };
+  
+  // Monitor typing state to complete pause after typing finishes
+  useEffect(() => {
+    // If we requested a pause (autoAdvance is false) but typing just finished
+    if (!autoAdvance && !isTyping && isRunning) {
+      setIsRunning(false);
+    }
+  }, [isTyping, autoAdvance, isRunning]);
   
   // Handle reset button click
   const handleReset = () => {
@@ -327,7 +334,8 @@ const CenterSection = forwardRef(({
   
   // Handle next turn button click
   const handleNextTurn = () => {
-    if (isRunning && !isTyping && !waitingForInput) {
+    // Allow next turn even if game is paused, as long as we're not typing or waiting for input
+    if (!isTyping && !waitingForInput) {
       const nextTurnIndex = currentTurnIndex + 1;
       
       // Check if we've reached the end of the game
@@ -337,8 +345,19 @@ const CenterSection = forwardRef(({
         return;
       }
       
+      // If game is paused, temporarily set it to running to process the turn
+      const wasRunning = isRunning;
+      if (!wasRunning) {
+        setIsRunning(true);
+      }
+      
       // Move to the next turn
       setCurrentTurnIndex(nextTurnIndex);
+      
+      // If game was paused, set it back to paused after the turn is processed
+      if (!wasRunning) {
+        // We'll let the turn process and then pause again via the useEffect that monitors typing
+      }
     }
   };
   

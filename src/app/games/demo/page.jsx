@@ -25,6 +25,12 @@ export default function GameDemo() {
   // Handle start button click
   const handleStart = () => {
     if (centerSectionRef.current && centerSectionRef.current.handleStart) {
+      // First, execute the next move
+      if (centerSectionRef.current.handleNextTurn) {
+        centerSectionRef.current.handleNextTurn();
+      }
+      
+      // Then set the game to running state
       centerSectionRef.current.handleStart();
       setIsRunning(true);
     }
@@ -34,7 +40,8 @@ export default function GameDemo() {
   const handlePause = () => {
     if (centerSectionRef.current && centerSectionRef.current.handlePause) {
       centerSectionRef.current.handlePause();
-      setIsRunning(false);
+      // We don't immediately set isRunning to false here
+      // The CenterSection will notify us when it's actually paused via onRunningChange
     }
   };
   

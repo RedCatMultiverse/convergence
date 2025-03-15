@@ -105,6 +105,28 @@ const TopSection = ({
             </Button>
           )}
           
+          {/* Next button - always visible */}
+          <Button 
+            variant="contained" 
+            size="small" 
+            startIcon={<SkipNextIcon />}
+            onClick={(e) => {
+              e.preventDefault();
+              onNextTurn();
+            }}
+            disabled={isTyping || waitingForInput}
+            sx={{ 
+              mr: 1, 
+              backgroundColor: '#007777', 
+              '&:hover': { backgroundColor: '#00AAAA' },
+              fontSize: '0.7rem',
+              py: 0.5,
+              minWidth: '60px',
+            }}
+          >
+            Next
+          </Button>
+          
           <Button 
             variant="contained" 
             size="small" 
@@ -123,48 +145,6 @@ const TopSection = ({
             }}
           >
             Reset
-          </Button>
-          
-          {isRunning && !autoAdvance && (
-            <Button 
-              variant="contained" 
-              size="small" 
-              startIcon={<SkipNextIcon />}
-              onClick={(e) => {
-                e.preventDefault();
-                onNextTurn();
-              }}
-              disabled={isTyping || waitingForInput}
-              sx={{ 
-                mr: 1, 
-                backgroundColor: '#007777', 
-                '&:hover': { backgroundColor: '#00AAAA' },
-                fontSize: '0.7rem',
-                py: 0.5,
-                minWidth: '60px',
-              }}
-            >
-              Next
-            </Button>
-          )}
-          
-          <Button 
-            variant="contained" 
-            size="small" 
-            onClick={(e) => {
-              e.preventDefault();
-              onToggleAutoAdvance();
-            }}
-            sx={{ 
-              mr: 1,
-              backgroundColor: autoAdvance ? '#007700' : '#770000', 
-              '&:hover': { backgroundColor: autoAdvance ? '#00AA00' : '#AA0000' },
-              fontSize: '0.7rem',
-              py: 0.5,
-              minWidth: '60px',
-            }}
-          >
-            {autoAdvance ? 'Auto' : 'Manual'}
           </Button>
           
           {/* Expand/Collapse button */}
