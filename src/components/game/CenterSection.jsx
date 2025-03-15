@@ -211,7 +211,7 @@ const CenterSection = forwardRef(({
           // Auto-advance logic is now handled in a separate useEffect
         }, 500);
       }
-    }, 30);
+    }, 15);
   };
   
   // Handle regular messages
@@ -278,7 +278,7 @@ const CenterSection = forwardRef(({
         }
         // Auto-advance logic is now handled in a separate useEffect
       }
-    }, 30);
+    }, 15);
   };
   
   // Handle start button click
