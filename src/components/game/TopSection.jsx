@@ -1,12 +1,28 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { Box, Typography, Divider, IconButton } from '@mui/material';
+import { Box, Typography, Divider, IconButton, Button } from '@mui/material';
 import TerminalIcon from '@mui/icons-material/Terminal';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import ExpandLessIcon from '@mui/icons-material/ExpandLess';
+import PlayArrowIcon from '@mui/icons-material/PlayArrow';
+import PauseIcon from '@mui/icons-material/Pause';
+import RefreshIcon from '@mui/icons-material/Refresh';
+import SkipNextIcon from '@mui/icons-material/SkipNext';
 
-const TopSection = ({ title = "MISSION BRIEFING", onToggleExpand = () => {} }) => {
+const TopSection = ({ 
+  title = "MISSION BRIEFING", 
+  onToggleExpand = () => {},
+  isRunning = false,
+  onStart = () => {},
+  onPause = () => {},
+  onReset = () => {},
+  autoAdvance = false,
+  onToggleAutoAdvance = () => {},
+  onNextTurn = () => {},
+  isTyping = false,
+  waitingForInput = false,
+}) => {
   const [expanded, setExpanded] = useState(true);
   
   // Notify parent component when expanded state changes
@@ -44,13 +60,122 @@ const TopSection = ({ title = "MISSION BRIEFING", onToggleExpand = () => {} }) =
             {title}
           </Typography>
         </Box>
-        <IconButton 
-          onClick={() => setExpanded(!expanded)} 
-          sx={{ color: '#00FF00' }}
-          size="small"
-        >
-          {expanded ? <ExpandLessIcon /> : <ExpandMoreIcon />}
-        </IconButton>
+        
+        <Box sx={{ display: 'flex', alignItems: 'center' }}>
+          {/* Control buttons */}
+          {!isRunning ? (
+            <Button 
+              variant="contained" 
+              size="small" 
+              startIcon={<PlayArrowIcon />}
+              onClick={(e) => {
+                e.preventDefault();
+                onStart();
+              }}
+              sx={{ 
+                mr: 1, 
+                backgroundColor: '#007700', 
+                '&:hover': { backgroundColor: '#00AA00' },
+                fontSize: '0.7rem',
+                py: 0.5,
+                minWidth: '60px',
+              }}
+            >
+              Start
+            </Button>
+          ) : (
+            <Button 
+              variant="contained" 
+              size="small" 
+              startIcon={<PauseIcon />}
+              onClick={(e) => {
+                e.preventDefault();
+                onPause();
+              }}
+              sx={{ 
+                mr: 1, 
+                backgroundColor: '#770000', 
+                '&:hover': { backgroundColor: '#AA0000' },
+                fontSize: '0.7rem',
+                py: 0.5,
+                minWidth: '60px',
+              }}
+            >
+              Pause
+            </Button>
+          )}
+          
+          <Button 
+            variant="contained" 
+            size="small" 
+            startIcon={<RefreshIcon />}
+            onClick={(e) => {
+              e.preventDefault();
+              onReset();
+            }}
+            sx={{ 
+              mr: 1,
+              backgroundColor: '#000077', 
+              '&:hover': { backgroundColor: '#0000AA' },
+              fontSize: '0.7rem',
+              py: 0.5,
+              minWidth: '60px',
+            }}
+          >
+            Reset
+          </Button>
+          
+          {isRunning && !autoAdvance && (
+            <Button 
+              variant="contained" 
+              size="small" 
+              startIcon={<SkipNextIcon />}
+              onClick={(e) => {
+                e.preventDefault();
+                onNextTurn();
+              }}
+              disabled={isTyping || waitingForInput}
+              sx={{ 
+                mr: 1, 
+                backgroundColor: '#007777', 
+                '&:hover': { backgroundColor: '#00AAAA' },
+                fontSize: '0.7rem',
+                py: 0.5,
+                minWidth: '60px',
+              }}
+            >
+              Next
+            </Button>
+          )}
+          
+          <Button 
+            variant="contained" 
+            size="small" 
+            onClick={(e) => {
+              e.preventDefault();
+              onToggleAutoAdvance();
+            }}
+            sx={{ 
+              mr: 1,
+              backgroundColor: autoAdvance ? '#007700' : '#770000', 
+              '&:hover': { backgroundColor: autoAdvance ? '#00AA00' : '#AA0000' },
+              fontSize: '0.7rem',
+              py: 0.5,
+              minWidth: '60px',
+            }}
+          >
+            {autoAdvance ? 'Auto' : 'Manual'}
+          </Button>
+          
+          {/* Expand/Collapse button */}
+          <IconButton 
+            onClick={() => setExpanded(!expanded)} 
+            sx={{ color: '#00FF00' }}
+            size="small"
+          >
+            {expanded ? <ExpandLessIcon /> : <ExpandMoreIcon />}
+          </IconButton>
+        </Box>
       </Box>
       
       {expanded && (

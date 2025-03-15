@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, forwardRef, useImperativeHandle } from 'react';
 import { Box, Typography, Button, Divider, TextField, CircularProgress } from '@mui/material';
 import PlayArrowIcon from '@mui/icons-material/PlayArrow';
 import PauseIcon from '@mui/icons-material/Pause';
@@ -24,7 +24,13 @@ const cleanTextFromTags = (text) => {
             .replace(/\[Pause \d+\.\d+s\]/g, ''); // Remove pause instructions
 };
 
-const CenterSection = ({ title = "RCM LABS TERMINAL" }) => {
+const CenterSection = forwardRef(({ 
+  title = "RCM LABS TERMINAL",
+  onRunningChange = () => {},
+  onAutoAdvanceChange = () => {},
+  onTypingChange = () => {},
+  onWaitingForInputChange = () => {},
+}, ref) => {
   // Main game state
   const [currentTurnIndex, setCurrentTurnIndex] = useState(0);
   const [isRunning, setIsRunning] = useState(false);
@@ -48,6 +54,35 @@ const CenterSection = ({ title = "RCM LABS TERMINAL" }) => {
   const currentCharIndexRef = useRef(0);
   const currentMessageRef = useRef("");
   
+  // Expose methods to parent component
+  useImperativeHandle(ref, () => ({
+    handleStart,
+    handlePause,
+    handleReset,
+    toggleAutoAdvance,
+    handleNextTurn,
+  }));
+  
+  // Notify parent component when running state changes
+  useEffect(() => {
+    onRunningChange(isRunning);
+  }, [isRunning, onRunningChange]);
+  
+  // Notify parent component when autoAdvance state changes
+  useEffect(() => {
+    onAutoAdvanceChange(autoAdvance);
+  }, [autoAdvance, onAutoAdvanceChange]);
+  
+  // Notify parent component when typing state changes
+  useEffect(() => {
+    onTypingChange(isTyping);
+  }, [isTyping, onTypingChange]);
+  
+  // Notify parent component when waiting for input state changes
+  useEffect(() => {
+    onWaitingForInputChange(waitingForInput);
+  }, [waitingForInput, onWaitingForInputChange]);
+  
   // Clean up interval on unmount
   useEffect(() => {
     return () => {
@@ -60,7 +95,10 @@ const CenterSection = ({ title = "RCM LABS TERMINAL" }) => {
   // Scroll to bottom of console when output changes
   useEffect(() => {
     if (consoleEndRef.current) {
-      consoleEndRef.current.scrollIntoView({ behavior: 'smooth' });
+      // Use setTimeout to ensure the DOM has updated before scrolling
+      setTimeout(() => {
+        autoScrollToBottom();
+      }, 10);
     }
   }, [consoleOutput]);
 
@@ -462,90 +500,50 @@ const CenterSection = ({ title = "RCM LABS TERMINAL" }) => {
             {title}
           </Typography>
         </Box>
-        <Box>
-          {!isRunning ? (
-            <Button 
-              variant="contained" 
-              size="small" 
-              startIcon={<PlayArrowIcon />}
-              onClick={handleStart}
-              sx={{ mr: 1, backgroundColor: '#007700', '&:hover': { backgroundColor: '#00AA00' } }}
-            >
-              Start
-            </Button>
-          ) : (
-            <Button 
-              variant="contained" 
-              size="small" 
-              startIcon={<PauseIcon />}
-              onClick={handlePause}
-              sx={{ mr: 1, backgroundColor: '#770000', '&:hover': { backgroundColor: '#AA0000' } }}
-            >
-              Pause
-            </Button>
-          )}
-          <Button 
-            variant="contained" 
-            size="small" 
-            startIcon={<RefreshIcon />}
-            onClick={handleReset}
-            sx={{ backgroundColor: '#000077', '&:hover': { backgroundColor: '#0000AA' } }}
-          >
-            Reset
-          </Button>
-          {isRunning && !autoAdvance && (
-            <Button 
-              variant="contained" 
-              size="small" 
-              startIcon={<SkipNextIcon />}
-              onClick={handleNextTurn}
-              disabled={isTyping || waitingForInput}
-              sx={{ ml: 1, backgroundColor: '#007777', '&:hover': { backgroundColor: '#00AAAA' } }}
-            >
-              Next Turn
-            </Button>
-          )}
-          <Button 
-            variant="contained" 
-            size="small" 
-            onClick={toggleAutoAdvance}
-            sx={{ 
-              ml: 1, 
-              backgroundColor: autoAdvance ? '#007700' : '#770000', 
-              '&:hover': { backgroundColor: autoAdvance ? '#00AA00' : '#AA0000' } 
-            }}
-          >
-            {autoAdvance ? 'Auto' : 'Manual'}
-          </Button>
-        </Box>
       </Box>
       
-      {/* Terminal content */}
+      {/* Terminal content - fixed height scrollable container */}
       <Box
         sx={{
           flex: 1,
-          padding: 2,
-          overflowY: 'auto',
-          backgroundColor: 'black',
-          color: '#00CC00',
-          fontFamily: 'var(--font-geist-mono), monospace',
-          scrollBehavior: 'smooth',
-          '&::-webkit-scrollbar': {
-            width: '8px',
-          },
-          '&::-webkit-scrollbar-track': {
-            backgroundColor: 'rgba(0, 0, 0, 0.4)',
-          },
-          '&::-webkit-scrollbar-thumb': {
-            backgroundColor: 'rgba(0, 255, 0, 0.3)',
-            borderRadius: '4px',
-            '&:hover': {
-              backgroundColor: 'rgba(0, 255, 0, 0.5)',
-            },
-          },
+          display: 'flex',
+          flexDirection: 'column',
+          position: 'relative',
+          overflow: 'hidden', // Prevent outer container from scrolling
+          minHeight: '200px', // Ensure minimum height
         }}
       >
-        <Box sx={{ position: 'relative' }}>
+        <Box
+          sx={{
+            position: 'absolute',
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0,
+            padding: 2,
+            overflowY: 'auto',
+            backgroundColor: 'black',
+            color: '#00CC00',
+            fontFamily: 'var(--font-geist-mono), monospace',
+            scrollBehavior: 'smooth',
+            '&::-webkit-scrollbar': {
+              width: '8px',
+            },
+            '&::-webkit-scrollbar-track': {
+              backgroundColor: 'rgba(0, 0, 0, 0.4)',
+            },
+            '&::-webkit-scrollbar-thumb': {
+              backgroundColor: 'rgba(0, 255, 0, 0.3)',
+              borderRadius: '4px',
+              '&:hover': {
+                backgroundColor: 'rgba(0, 255, 0, 0.5)',
+              },
+            },
+            // Add a subtle scan line effect
+            backgroundImage: 'linear-gradient(transparent 50%, rgba(0, 255, 0, 0.02) 50%)',
+            backgroundSize: '100% 4px',
+          }}
+        >
           {consoleOutput.map((message, index) => renderConsoleMessage(message, index))}
           
           {/* Show typing indicator when typing */}
@@ -632,6 +630,8 @@ const CenterSection = ({ title = "RCM LABS TERMINAL" }) => {
       </Box>
     </Box>
   );
-};
+});
+
+CenterSection.displayName = 'CenterSection';
 
 export default CenterSection; 
