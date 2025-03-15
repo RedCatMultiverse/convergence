@@ -7,6 +7,7 @@ import PauseIcon from '@mui/icons-material/Pause';
 import RefreshIcon from '@mui/icons-material/Refresh';
 import SendIcon from '@mui/icons-material/Send';
 import SkipNextIcon from '@mui/icons-material/SkipNext';
+import TerminalIcon from '@mui/icons-material/Terminal';
 
 // Import gameplay data from JSON file
 import gameplayDataJson from '@/data/gameplay_data.json';
@@ -384,8 +385,9 @@ const CenterSection = ({ title = "RCM LABS TERMINAL" }) => {
       sx={{
         height: '100%',
         backgroundColor: 'black',
-        border: '1px solid #333',
+        border: '1px solid #00FF00',
         borderRadius: 1,
+        boxShadow: '0 0 5px #00FF00',
         display: 'flex',
         flexDirection: 'column',
         overflow: 'hidden',
@@ -395,17 +397,28 @@ const CenterSection = ({ title = "RCM LABS TERMINAL" }) => {
       {/* Terminal header */}
       <Box
         sx={{
-          backgroundColor: '#111',
+          backgroundColor: 'rgba(0, 0, 0, 0.7)',
           padding: 1,
-          borderBottom: '1px solid #333',
+          borderBottom: '1px solid #00FF00',
           display: 'flex',
           justifyContent: 'space-between',
           alignItems: 'center',
         }}
       >
-        <Typography variant="subtitle2" sx={{ color: 'white', fontFamily: 'monospace' }}>
-          {title}
-        </Typography>
+        <Box sx={{ display: 'flex', alignItems: 'center' }}>
+          <TerminalIcon sx={{ color: '#00FF00', mr: 1 }} />
+          <Typography 
+            variant="h6" 
+            sx={{ 
+              color: '#00FF00', 
+              fontFamily: 'var(--font-geist-mono), monospace',
+              letterSpacing: '0.05em',
+              textShadow: '0 0 5px #00FF00',
+            }}
+          >
+            {title}
+          </Typography>
+        </Box>
         <Box>
           {!isRunning ? (
             <Button 
@@ -471,15 +484,15 @@ const CenterSection = ({ title = "RCM LABS TERMINAL" }) => {
           padding: 2,
           overflowY: 'auto',
           backgroundColor: 'black',
-          color: 'white',
-          fontFamily: 'monospace',
+          color: '#00CC00',
+          fontFamily: 'var(--font-geist-mono), monospace',
         }}
       >
         {consoleOutput.map((message, index) => renderConsoleMessage(message, index))}
         
         {/* Show typing indicator when typing */}
         {isTyping && (
-          <Typography variant="body2" sx={{ fontFamily: 'monospace', color: 'white' }}>
+          <Typography variant="body2" sx={{ fontFamily: 'var(--font-geist-mono), monospace', color: '#00CC00' }}>
             <span className="typing-indicator">_</span>
           </Typography>
         )}
@@ -493,8 +506,8 @@ const CenterSection = ({ title = "RCM LABS TERMINAL" }) => {
         <Box
           sx={{
             padding: 2,
-            borderTop: '1px solid #333',
-            backgroundColor: '#111',
+            borderTop: '1px solid #00FF00',
+            backgroundColor: 'rgba(0, 0, 0, 0.7)',
             display: 'flex',
           }}
         >
@@ -509,27 +522,26 @@ const CenterSection = ({ title = "RCM LABS TERMINAL" }) => {
             placeholder={inputType === 'press_enter' ? 'Press Enter to continue...' : 'Type your response...'}
             sx={{
               '& .MuiOutlinedInput-root': {
-                color: 'white',
-                fontFamily: 'monospace',
-                backgroundColor: '#222',
+                color: '#00CC00',
+                fontFamily: 'var(--font-geist-mono), monospace',
+                backgroundColor: 'rgba(0, 0, 0, 0.7)',
                 '& fieldset': {
-                  borderColor: '#444',
+                  borderColor: '#00FF00',
                 },
                 '&:hover fieldset': {
-                  borderColor: '#666',
+                  borderColor: '#00FF00',
                 },
                 '&.Mui-focused fieldset': {
-                  borderColor: '#888',
+                  borderColor: '#00FF00',
                 },
               },
             }}
           />
           <Button
             variant="contained"
-            color="primary"
             endIcon={<SendIcon />}
             onClick={handleInputSubmit}
-            sx={{ ml: 1 }}
+            sx={{ ml: 1, backgroundColor: '#007700', '&:hover': { backgroundColor: '#00AA00' } }}
           >
             Send
           </Button>
@@ -540,22 +552,22 @@ const CenterSection = ({ title = "RCM LABS TERMINAL" }) => {
       <Box
         sx={{
           padding: 1,
-          borderTop: '1px solid #333',
-          backgroundColor: '#111',
+          borderTop: '1px solid #00FF00',
+          backgroundColor: 'rgba(0, 0, 0, 0.7)',
           display: 'flex',
           justifyContent: 'space-between',
         }}
       >
-        <Typography variant="body2" sx={{ color: 'white', fontFamily: 'monospace' }}>
+        <Typography variant="body2" sx={{ color: '#00CC00', fontFamily: 'var(--font-geist-mono), monospace' }}>
           Points: {points}
         </Typography>
-        <Typography variant="body2" sx={{ color: 'white', fontFamily: 'monospace' }}>
+        <Typography variant="body2" sx={{ color: '#00CC00', fontFamily: 'var(--font-geist-mono), monospace' }}>
           Streak: {streak}
         </Typography>
-        <Typography variant="body2" sx={{ color: 'white', fontFamily: 'monospace' }}>
+        <Typography variant="body2" sx={{ color: '#00CC00', fontFamily: 'var(--font-geist-mono), monospace' }}>
           Accuracy: {accuracy}
         </Typography>
-        <Typography variant="body2" sx={{ color: 'white', fontFamily: 'monospace' }}>
+        <Typography variant="body2" sx={{ color: '#00CC00', fontFamily: 'var(--font-geist-mono), monospace' }}>
           Turn: {currentTurnIndex + 1}/{gameplayData.length}
         </Typography>
       </Box>
