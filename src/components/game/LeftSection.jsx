@@ -46,38 +46,40 @@ const LeftSection = ({ title = "CONTROL PANEL" }) => {
       
       <Divider sx={{ borderColor: 'rgba(0, 255, 0, 0.3)', mb: 2 }} />
       
-      <List sx={{ width: '100%', p: 0 }}>
-        {menuItems.map((item, index) => (
-          <ListItem 
-            key={index}
-            sx={{ 
-              py: 1.5,
-              borderBottom: index < menuItems.length - 1 ? '1px solid rgba(0, 255, 0, 0.1)' : 'none',
-              cursor: 'pointer',
-              '&:hover': {
-                backgroundColor: 'rgba(0, 255, 0, 0.1)',
-              }
-            }}
-          >
-            <ListItemIcon sx={{ minWidth: 40 }}>
-              {item.icon}
-            </ListItemIcon>
-            <ListItemText 
-              primary={item.label} 
-              primaryTypographyProps={{
-                sx: {
-                  color: '#00CC00',
-                  fontFamily: 'var(--font-geist-mono), monospace',
-                  fontSize: '0.875rem',
-                  letterSpacing: '0.02em',
+      <Box sx={{ flex: 1, display: 'flex', flexDirection: 'column', overflow: 'auto' }}>
+        <List sx={{ width: '100%', p: 0 }}>
+          {menuItems.map((item, index) => (
+            <ListItem 
+              key={index}
+              sx={{ 
+                py: 1.5,
+                borderBottom: index < menuItems.length - 1 ? '1px solid rgba(0, 255, 0, 0.1)' : 'none',
+                cursor: 'pointer',
+                '&:hover': {
+                  backgroundColor: 'rgba(0, 255, 0, 0.1)',
                 }
               }}
-            />
-          </ListItem>
-        ))}
-      </List>
+            >
+              <ListItemIcon sx={{ minWidth: 40 }}>
+                {item.icon}
+              </ListItemIcon>
+              <ListItemText 
+                primary={item.label} 
+                primaryTypographyProps={{
+                  sx: {
+                    color: '#00CC00',
+                    fontFamily: 'var(--font-geist-mono), monospace',
+                    fontSize: '0.875rem',
+                    letterSpacing: '0.02em',
+                  }
+                }}
+              />
+            </ListItem>
+          ))}
+        </List>
+      </Box>
       
-      <Box sx={{ mt: 'auto', pt: 2 }}>
+      <Box sx={{ mt: 2, pt: 2, borderTop: '1px solid rgba(0, 255, 0, 0.3)' }}>
         <Typography
           variant="caption"
           sx={{

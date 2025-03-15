@@ -64,6 +64,36 @@ const CenterSection = ({ title = "RCM LABS TERMINAL" }) => {
     }
   }, [consoleOutput]);
 
+  // Auto-scroll function for smooth scrolling animation
+  const autoScrollToBottom = () => {
+    if (consoleEndRef.current) {
+      const scrollContainer = consoleEndRef.current.parentElement;
+      const scrollHeight = scrollContainer.scrollHeight;
+      const height = scrollContainer.clientHeight;
+      const maxScrollTop = scrollHeight - height;
+      
+      // Animate scroll
+      const startTime = Date.now();
+      const duration = 300; // ms
+      const startScrollTop = scrollContainer.scrollTop;
+      const scrollDistance = maxScrollTop - startScrollTop;
+      
+      const scrollStep = () => {
+        const elapsed = Date.now() - startTime;
+        const progress = Math.min(elapsed / duration, 1);
+        const easeProgress = 0.5 - Math.cos(progress * Math.PI) / 2; // Ease in-out
+        
+        scrollContainer.scrollTop = startScrollTop + scrollDistance * easeProgress;
+        
+        if (progress < 1) {
+          requestAnimationFrame(scrollStep);
+        }
+      };
+      
+      requestAnimationFrame(scrollStep);
+    }
+  };
+
   // Focus input when waiting for input
   useEffect(() => {
     if (waitingForInput && inputRef.current) {
@@ -182,11 +212,19 @@ const CenterSection = ({ title = "RCM LABS TERMINAL" }) => {
         });
         
         currentCharIndexRef.current++;
+        
+        // Auto-scroll while typing
+        if (currentCharIndexRef.current % 5 === 0) { // Scroll every 5 characters
+          autoScrollToBottom();
+        }
       } else {
         // Clear the interval when typing is complete
         clearInterval(typingIntervalRef.current);
         typingIntervalRef.current = null;
         setIsTyping(false);
+        
+        // Final scroll to bottom
+        autoScrollToBottom();
         
         // Update stats for feedback messages
         if (currentTurn.message_type === "feedback") {
@@ -313,6 +351,11 @@ const CenterSection = ({ title = "RCM LABS TERMINAL" }) => {
     
     setWaitingForInput(false);
     setUserInput("");
+    
+    // Auto-scroll after input
+    setTimeout(() => {
+      autoScrollToBottom();
+    }, 100);
     
     // Move to the next turn after a delay
     setTimeout(() => {
@@ -486,19 +529,35 @@ const CenterSection = ({ title = "RCM LABS TERMINAL" }) => {
           backgroundColor: 'black',
           color: '#00CC00',
           fontFamily: 'var(--font-geist-mono), monospace',
+          scrollBehavior: 'smooth',
+          '&::-webkit-scrollbar': {
+            width: '8px',
+          },
+          '&::-webkit-scrollbar-track': {
+            backgroundColor: 'rgba(0, 0, 0, 0.4)',
+          },
+          '&::-webkit-scrollbar-thumb': {
+            backgroundColor: 'rgba(0, 255, 0, 0.3)',
+            borderRadius: '4px',
+            '&:hover': {
+              backgroundColor: 'rgba(0, 255, 0, 0.5)',
+            },
+          },
         }}
       >
-        {consoleOutput.map((message, index) => renderConsoleMessage(message, index))}
-        
-        {/* Show typing indicator when typing */}
-        {isTyping && (
-          <Typography variant="body2" sx={{ fontFamily: 'var(--font-geist-mono), monospace', color: '#00CC00' }}>
-            <span className="typing-indicator">_</span>
-          </Typography>
-        )}
-        
-        {/* Reference for auto-scrolling */}
-        <div ref={consoleEndRef} />
+        <Box sx={{ position: 'relative' }}>
+          {consoleOutput.map((message, index) => renderConsoleMessage(message, index))}
+          
+          {/* Show typing indicator when typing */}
+          {isTyping && (
+            <Typography variant="body2" sx={{ fontFamily: 'var(--font-geist-mono), monospace', color: '#00CC00' }}>
+              <span className="typing-indicator">_</span>
+            </Typography>
+          )}
+          
+          {/* Reference for auto-scrolling */}
+          <div ref={consoleEndRef} style={{ height: '1px', width: '100%' }} />
+        </Box>
       </Box>
       
       {/* Input area */}

@@ -43,7 +43,7 @@ const RightSection = ({ title = "STATS MONITOR" }) => {
       
       <Divider sx={{ borderColor: 'rgba(0, 255, 0, 0.3)', mb: 2 }} />
       
-      <Box sx={{ flex: 1 }}>
+      <Box sx={{ flex: 1, overflow: 'auto' }}>
         {stats.map((stat, index) => (
           <Box key={index} sx={{ mb: 3 }}>
             <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 0.5 }}>
