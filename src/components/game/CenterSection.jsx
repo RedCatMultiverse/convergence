@@ -30,6 +30,7 @@ const CenterSection = forwardRef(({
   onAutoAdvanceChange = () => {},
   onTypingChange = () => {},
   onWaitingForInputChange = () => {},
+  onTurnIndexChange = () => {},
 }, ref) => {
   // Main game state
   const [currentTurnIndex, setCurrentTurnIndex] = useState(0);
@@ -61,6 +62,7 @@ const CenterSection = forwardRef(({
     handleReset,
     toggleAutoAdvance,
     handleNextTurn,
+    jumpToTurn,
   }));
   
   // Notify parent component when running state changes
@@ -82,6 +84,11 @@ const CenterSection = forwardRef(({
   useEffect(() => {
     onWaitingForInputChange(waitingForInput);
   }, [waitingForInput, onWaitingForInputChange]);
+  
+  // Notify parent component when turn index changes
+  useEffect(() => {
+    onTurnIndexChange(currentTurnIndex);
+  }, [currentTurnIndex, onTurnIndexChange]);
   
   // Clean up interval on unmount
   useEffect(() => {
@@ -455,6 +462,74 @@ const CenterSection = forwardRef(({
         </Typography>
       );
     }
+  };
+
+  // Function to jump to a specific turn
+  const jumpToTurn = (turnIndex) => {
+    // Clear any existing interval
+    if (typingIntervalRef.current) {
+      clearInterval(typingIntervalRef.current);
+      typingIntervalRef.current = null;
+    }
+    
+    // Reset state
+    setIsTyping(false);
+    setWaitingForInput(false);
+    setUserInput("");
+    
+    // If we're jumping to the beginning, reset everything
+    if (turnIndex === 0) {
+      setConsoleOutput([]);
+      setCurrentTurnIndex(0);
+      return;
+    }
+    
+    // Process all turns up to the selected turn without animations
+    const newConsoleOutput = [];
+    
+    for (let i = 0; i < turnIndex; i++) {
+      const turn = gameplayData[i];
+      const cleanedContent = cleanTextFromTags(turn.content);
+      
+      if (turn.speaker === "Monica") {
+        newConsoleOutput.push({
+          speaker: "Monica",
+          content: cleanedContent,
+          type: "response"
+        });
+      } else {
+        newConsoleOutput.push({
+          speaker: turn.speaker,
+          content: cleanedContent,
+          type: turn.message_type
+        });
+      }
+      
+      // Update stats for feedback messages
+      if (turn.message_type === "feedback") {
+        setPoints(turn.points_awarded || 0);
+        setStreak(turn.streak_update || 0);
+        if (turn.skill_diagnosis?.accuracy) {
+          setAccuracy(turn.skill_diagnosis.accuracy);
+        }
+      }
+    }
+    
+    // Set the new console output
+    setConsoleOutput(newConsoleOutput);
+    
+    // Set the current turn index
+    setCurrentTurnIndex(turnIndex);
+    
+    // If the current turn requires input, set waiting for input
+    const currentTurn = gameplayData[turnIndex];
+    if (currentTurn && currentTurn.requires_input) {
+      setWaitingForInput(true);
+      setInputType(currentTurn.input_type || "text");
+    }
+    
+    // Scroll to bottom after a short delay to ensure rendering is complete
+    setTimeout(autoScrollToBottom, 100);
   };
 
   return (

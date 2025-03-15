@@ -1,11 +1,17 @@
 'use client';
 
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { Box } from '@mui/material';
 import TopSection from '@/components/game/TopSection';
 import LeftSection from '@/components/game/LeftSection';
 import RightSection from '@/components/game/RightSection';
 import CenterSection from '@/components/game/CenterSection';
+
+// Import gameplay data to get total turns
+import gameplayDataJson from '@/data/gameplay_data.json';
+
+// Get the gameplay data from the imported JSON
+const gameplayData = gameplayDataJson.gameplay_demo.turns;
 
 export default function GameDemo() {
   const [topSectionExpanded, setTopSectionExpanded] = useState(true);
@@ -13,6 +19,7 @@ export default function GameDemo() {
   const [autoAdvance, setAutoAdvance] = useState(false);
   const [isTyping, setIsTyping] = useState(false);
   const [waitingForInput, setWaitingForInput] = useState(false);
+  const [currentTurnIndex, setCurrentTurnIndex] = useState(0);
   
   // Reference to the CenterSection component
   const centerSectionRef = useRef(null);
@@ -50,6 +57,7 @@ export default function GameDemo() {
     if (centerSectionRef.current && centerSectionRef.current.handleReset) {
       centerSectionRef.current.handleReset();
       setIsRunning(false);
+      setCurrentTurnIndex(0);
     }
   };
   
@@ -66,6 +74,19 @@ export default function GameDemo() {
       centerSectionRef.current.toggleAutoAdvance();
       setAutoAdvance(!autoAdvance);
     }
+  };
+  
+  // Handle turn slider change
+  const handleTurnSliderChange = (turnIndex) => {
+    if (centerSectionRef.current && centerSectionRef.current.jumpToTurn) {
+      centerSectionRef.current.jumpToTurn(turnIndex);
+      setCurrentTurnIndex(turnIndex);
+    }
+  };
+  
+  // Update currentTurnIndex when it changes in CenterSection
+  const handleTurnIndexChange = (turnIndex) => {
+    setCurrentTurnIndex(turnIndex);
   };
   
   return (
@@ -128,6 +149,9 @@ export default function GameDemo() {
             onNextTurn={handleNextTurn}
             isTyping={isTyping}
             waitingForInput={waitingForInput}
+            currentTurnIndex={currentTurnIndex}
+            totalTurns={gameplayData.length}
+            onTurnSliderChange={handleTurnSliderChange}
           />
         </Box>
         
@@ -154,6 +178,7 @@ export default function GameDemo() {
               onAutoAdvanceChange={(auto) => setAutoAdvance(auto)}
               onTypingChange={(typing) => setIsTyping(typing)}
               onWaitingForInputChange={(waiting) => setWaitingForInput(waiting)}
+              onTurnIndexChange={handleTurnIndexChange}
             />
           </Box>
           

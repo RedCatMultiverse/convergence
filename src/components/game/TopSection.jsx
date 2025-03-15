@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { Box, Typography, Divider, IconButton, Button } from '@mui/material';
+import { Box, Typography, Divider, IconButton, Button, Slider } from '@mui/material';
 import TerminalIcon from '@mui/icons-material/Terminal';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import ExpandLessIcon from '@mui/icons-material/ExpandLess';
@@ -22,13 +22,32 @@ const TopSection = ({
   onNextTurn = () => {},
   isTyping = false,
   waitingForInput = false,
+  currentTurnIndex = 0,
+  totalTurns = 0,
+  onTurnSliderChange = () => {},
 }) => {
   const [expanded, setExpanded] = useState(true);
+  const [sliderValue, setSliderValue] = useState(0);
   
   // Notify parent component when expanded state changes
   useEffect(() => {
     onToggleExpand(expanded);
   }, [expanded, onToggleExpand]);
+  
+  // Update slider value when currentTurnIndex changes
+  useEffect(() => {
+    setSliderValue(currentTurnIndex);
+  }, [currentTurnIndex]);
+  
+  // Handle slider change
+  const handleSliderChange = (event, newValue) => {
+    setSliderValue(newValue);
+  };
+  
+  // Handle slider change commit
+  const handleSliderChangeCommitted = (event, newValue) => {
+    onTurnSliderChange(newValue);
+  };
   
   return (
     <Box
@@ -58,6 +77,54 @@ const TopSection = ({
             }}
           >
             {title}
+          </Typography>
+        </Box>
+        
+        {/* Turn slider */}
+        <Box sx={{ flex: 1, mx: 3, display: 'flex', alignItems: 'center' }}>
+          <Slider
+            value={sliderValue}
+            min={0}
+            max={totalTurns > 0 ? totalTurns - 1 : 0}
+            step={1}
+            onChange={handleSliderChange}
+            onChangeCommitted={handleSliderChangeCommitted}
+            disabled={isTyping || waitingForInput}
+            sx={{
+              color: '#00FF00',
+              '& .MuiSlider-thumb': {
+                width: 16,
+                height: 16,
+                backgroundColor: '#00FF00',
+                '&:hover, &.Mui-focusVisible': {
+                  boxShadow: '0 0 0 8px rgba(0, 255, 0, 0.16)',
+                },
+              },
+              '& .MuiSlider-rail': {
+                backgroundColor: 'rgba(0, 255, 0, 0.3)',
+              },
+              '& .MuiSlider-track': {
+                backgroundColor: '#00FF00',
+              },
+              '& .MuiSlider-mark': {
+                backgroundColor: '#00FF00',
+                height: 8,
+                width: 1,
+                marginTop: -3,
+              },
+            }}
+          />
+          <Typography 
+            variant="caption" 
+            sx={{ 
+              ml: 1, 
+              color: '#00FF00', 
+              fontFamily: 'var(--font-geist-mono), monospace',
+              minWidth: '60px',
+              textAlign: 'center',
+            }}
+          >
+            {`${sliderValue + 1}/${totalTurns}`}
           </Typography>
         </Box>
         
