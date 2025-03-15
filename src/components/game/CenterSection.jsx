@@ -95,40 +95,21 @@ const CenterSection = forwardRef(({
   // Scroll to bottom of console when output changes
   useEffect(() => {
     if (consoleEndRef.current) {
-      // Use setTimeout to ensure the DOM has updated before scrolling
-      setTimeout(() => {
-        autoScrollToBottom();
-      }, 10);
+      // Immediate scroll to bottom without animation
+      const scrollContainer = consoleEndRef.current.parentElement;
+      if (scrollContainer) {
+        scrollContainer.scrollTop = scrollContainer.scrollHeight;
+      }
     }
   }, [consoleOutput]);
 
-  // Auto-scroll function for smooth scrolling animation
+  // Simplified auto-scroll function for immediate scrolling
   const autoScrollToBottom = () => {
     if (consoleEndRef.current) {
       const scrollContainer = consoleEndRef.current.parentElement;
-      const scrollHeight = scrollContainer.scrollHeight;
-      const height = scrollContainer.clientHeight;
-      const maxScrollTop = scrollHeight - height;
-      
-      // Animate scroll
-      const startTime = Date.now();
-      const duration = 300; // ms
-      const startScrollTop = scrollContainer.scrollTop;
-      const scrollDistance = maxScrollTop - startScrollTop;
-      
-      const scrollStep = () => {
-        const elapsed = Date.now() - startTime;
-        const progress = Math.min(elapsed / duration, 1);
-        const easeProgress = 0.5 - Math.cos(progress * Math.PI) / 2; // Ease in-out
-        
-        scrollContainer.scrollTop = startScrollTop + scrollDistance * easeProgress;
-        
-        if (progress < 1) {
-          requestAnimationFrame(scrollStep);
-        }
-      };
-      
-      requestAnimationFrame(scrollStep);
+      if (scrollContainer) {
+        scrollContainer.scrollTop = scrollContainer.scrollHeight;
+      }
     }
   };
 
@@ -251,10 +232,8 @@ const CenterSection = forwardRef(({
         
         currentCharIndexRef.current++;
         
-        // Auto-scroll while typing
-        if (currentCharIndexRef.current % 5 === 0) { // Scroll every 5 characters
-          autoScrollToBottom();
-        }
+        // Auto-scroll while typing - do it every character for more immediate feedback
+        autoScrollToBottom();
       } else {
         // Clear the interval when typing is complete
         clearInterval(typingIntervalRef.current);
@@ -390,10 +369,8 @@ const CenterSection = forwardRef(({
     setWaitingForInput(false);
     setUserInput("");
     
-    // Auto-scroll after input
-    setTimeout(() => {
-      autoScrollToBottom();
-    }, 100);
+    // Immediate scroll to bottom
+    autoScrollToBottom();
     
     // Move to the next turn after a delay
     setTimeout(() => {
@@ -525,7 +502,7 @@ const CenterSection = forwardRef(({
             backgroundColor: 'black',
             color: '#00CC00',
             fontFamily: 'var(--font-geist-mono), monospace',
-            scrollBehavior: 'smooth',
+            // Remove smooth scrolling behavior
             '&::-webkit-scrollbar': {
               width: '8px',
             },
