@@ -209,6 +209,24 @@ const SanuraWelcome = ({ isAuthenticated = false, username = "", onComplete }) =
   const [showPrompt, setShowPrompt] = useState(false);
   const containerRef = useRef(null);
   
+  // Handle keyboard input - now works at any time
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      if (e.key.toLowerCase() === 'y') {
+        // Call onComplete before navigation
+        if (onComplete) {
+          onComplete();
+        }
+        // Navigate to games page when user presses Y
+        router.push('/games');
+      }
+    };
+    
+    // Always listen for Y key, not just when prompt is shown
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [router, onComplete]);
+
   // Smart auto-scroll whenever a new section appears
   useEffect(() => {
     // Scroll to position content at the bottom of viewport
@@ -239,25 +257,6 @@ const SanuraWelcome = ({ isAuthenticated = false, username = "", onComplete }) =
     
     return () => clearInterval(scrollInterval);
   }, [showAsciiArtComplete, showFirstMessage, showAlert1, showSecondMessage, showAlert2, showPrompt]);
-  
-  // Handle keyboard input
-  useEffect(() => {
-    const handleKeyDown = (e) => {
-      if (e.key.toLowerCase() === 'y') {
-        // Call onComplete before navigation
-        if (onComplete) {
-          onComplete();
-        }
-        // Navigate to games page when user presses Y
-        router.push('/games');
-      }
-    };
-    
-    if (showPrompt) {
-      window.addEventListener('keydown', handleKeyDown);
-      return () => window.removeEventListener('keydown', handleKeyDown);
-    }
-  }, [showPrompt, router, onComplete]);
 
   return (
     <ContentContainer ref={containerRef}>
