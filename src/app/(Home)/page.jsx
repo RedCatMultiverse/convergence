@@ -19,6 +19,7 @@ import SportsEsportsIcon from '@mui/icons-material/SportsEsports';
 import SchoolIcon from '@mui/icons-material/School';
 import LockIcon from '@mui/icons-material/Lock';
 import { useEffect, useState } from 'react';
+import SanuraWelcome from '@/components/ui/SanuraWelcome';
 
 const features = [
   {
@@ -66,6 +67,7 @@ export default function Home() {
   const [typingComplete, setTypingComplete] = useState(false);
   const [showFeatures, setShowFeatures] = useState(false);
   const [showLoginPrompt, setShowLoginPrompt] = useState(false);
+  const [sanuraComplete, setSanuraComplete] = useState(false);
 
   useEffect(() => {
     // Add blinking cursor effect
@@ -97,6 +99,12 @@ export default function Home() {
       document.head.removeChild(style);
     };
   }, [session]);
+
+  // Handle Sanura sequence completion
+  const handleSanuraComplete = () => {
+    setSanuraComplete(true);
+    setShowFeatures(true);
+  };
 
   if (status === 'loading') {
     return null;
@@ -171,64 +179,50 @@ export default function Home() {
               }
             }} />
             
-            <Typography 
-              variant="h5" 
-              color="#00CC00" 
-              sx={{ 
-                mb: 4, 
-                maxWidth: 800,
-                fontFamily: 'var(--font-geist-mono), monospace',
-                letterSpacing: '0.02em',
-              }}
-            >
-              LEVEL UP YOUR SOFT SKILLS IN THE DIGITAL REALM
-            </Typography>
-            
             {session ? (
-              <Button 
-                variant="outlined" 
-                size="large"
-                component={Link}
-                href="/games"
-                startIcon={<SportsEsportsIcon />}
-                sx={{ 
-                  borderColor: '#00FF00',
-                  color: '#00FF00',
-                  '&:hover': {
-                    backgroundColor: 'rgba(0, 255, 0, 0.1)',
-                    boxShadow: '0 0 10px #00FF00, 0 0 20px #00FF00',
-                  }
-                }}
-              >
-                ENTER GAMES
-              </Button>
+              <SanuraWelcome isAuthenticated={true} username={session.user.name} onComplete={handleSanuraComplete} />
             ) : (
-              showLoginPrompt && (
-                <Button 
-                  variant="outlined" 
-                  size="large"
-                  component={Link}
-                  href="/auth/signin"
-                  startIcon={<LockIcon />}
+              <>
+                <Typography 
+                  variant="h5" 
+                  color="#00CC00" 
                   sx={{ 
-                    borderColor: '#00FF00',
-                    color: '#00FF00',
-                    '&:hover': {
-                      backgroundColor: 'rgba(0, 255, 0, 0.1)',
-                      boxShadow: '0 0 10px #00FF00, 0 0 20px #00FF00',
-                    }
+                    mb: 4, 
+                    maxWidth: 800,
+                    fontFamily: 'var(--font-geist-mono), monospace',
+                    letterSpacing: '0.02em',
                   }}
                 >
-                  LOGIN TO ACCESS FULL SYSTEM
-                </Button>
-              )
+                  LEVEL UP YOUR SOFT SKILLS IN THE DIGITAL REALM
+                </Typography>
+                
+                {showLoginPrompt && (
+                  <Button 
+                    variant="outlined" 
+                    size="large"
+                    component={Link}
+                    href="/auth/signin"
+                    startIcon={<LockIcon />}
+                    sx={{ 
+                      borderColor: '#00FF00',
+                      color: '#00FF00',
+                      '&:hover': {
+                        backgroundColor: 'rgba(0, 255, 0, 0.1)',
+                        boxShadow: '0 0 10px #00FF00, 0 0 20px #00FF00',
+                      }
+                    }}
+                  >
+                    LOGIN TO ACCESS FULL SYSTEM
+                  </Button>
+                )}
+              </>
             )}
           </Box>
         </Container>
       </Paper>
 
-      {/* Features Section */}
-      {showFeatures && (
+      {/* Features Section - Only show when appropriate */}
+      {(!session || (session && sanuraComplete)) && showFeatures && (
         <Container maxWidth="lg" sx={{ py: 8 }}>
           <Typography 
             variant="h3" 
