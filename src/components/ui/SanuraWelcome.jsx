@@ -217,8 +217,8 @@ const SanuraWelcome = ({ isAuthenticated = false, username = "", onComplete }) =
         if (onComplete) {
           onComplete();
         }
-        // Navigate to games page when user presses Y
-        router.push('/games');
+        // Navigate to session selection when user presses Y
+        router.push('/session-selection');
       }
     };
     
