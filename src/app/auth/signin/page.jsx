@@ -55,10 +55,10 @@ const SignIn = () => {
             boxShadow: 1
           }}
         >
-          <Box sx={{ width: '100%', height: 60, position: 'relative', mb: 4 }}>
+          <Box sx={{ width: '100%', height: 250, position: 'relative', mb: 4 }}>
             <Image
-              src="/images/logo.png"
-              alt="Red Cat Multiverse Logo"
+              src="/images/logo.jpg"
+              alt="RCM Labs Logo"
               fill
               style={{ objectFit: 'contain' }}
               priority
