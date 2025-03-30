@@ -4,7 +4,7 @@ import AuthProvider from '@/components/auth/Provider';
 import { Copyright } from '@/components/ui/Copyright';
 import "./globals.css";
 import { Open_Sans, Montserrat } from 'next/font/google';
-import Navbar from '@/components/layout/Navbar';
+import NavbarContainer from '@/components/layout/NavbarContainer';
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -42,7 +42,7 @@ export default function RootLayout({ children }) {
               display: 'flex',
               flexDirection: 'column'
             }}>
-              <Navbar />
+              <NavbarContainer />
               <main style={{ flex: 1 }}>
                 {children}
               </main>

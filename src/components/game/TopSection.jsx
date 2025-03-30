@@ -1,14 +1,18 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { Box, Typography, Divider, IconButton, Button, Slider } from '@mui/material';
+import { Box, Typography, Divider, Button, Slider, Avatar, Menu, MenuItem, ListItemIcon } from '@mui/material';
 import TerminalIcon from '@mui/icons-material/Terminal';
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import ExpandLessIcon from '@mui/icons-material/ExpandLess';
 import PlayArrowIcon from '@mui/icons-material/PlayArrow';
 import PauseIcon from '@mui/icons-material/Pause';
 import RefreshIcon from '@mui/icons-material/Refresh';
 import SkipNextIcon from '@mui/icons-material/SkipNext';
+import PersonIcon from '@mui/icons-material/Person';
+import ExitToAppIcon from '@mui/icons-material/ExitToApp';
+import CodeIcon from '@mui/icons-material/Code';
+import Link from 'next/link';
+import { useSession } from "next-auth/react";
+import { SignOutDialog } from '../auth/SignOutDialog';
 
 const TopSection = ({ 
   title = "MISSION BRIEFING", 
@@ -26,13 +30,21 @@ const TopSection = ({
   totalTurns = 0,
   onTurnSliderChange = () => {},
 }) => {
-  const [expanded, setExpanded] = useState(false);
   const [sliderValue, setSliderValue] = useState(0);
+  const { data: session, status } = useSession();
+  const [anchorEl, setAnchorEl] = useState(null);
+  const [signOutDialogOpen, setSignOutDialogOpen] = useState(false);
   
-  // Notify parent component when expanded state changes
+  // Debug session
   useEffect(() => {
-    onToggleExpand(expanded);
-  }, [expanded, onToggleExpand]);
+    console.log('Session in TopSection:', session);
+    console.log('Auth status:', status);
+  }, [session, status]);
+  
+  // Always ensure the parent knows we're collapsed
+  useEffect(() => {
+    onToggleExpand(false);
+  }, [onToggleExpand]);
   
   // Update slider value when currentTurnIndex changes
   useEffect(() => {
@@ -49,6 +61,20 @@ const TopSection = ({
     onTurnSliderChange(newValue);
   };
   
+  // User profile menu handlers
+  const handleMenuOpen = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleMenuClose = () => {
+    setAnchorEl(null);
+  };
+
+  const handleSignOutClick = () => {
+    setSignOutDialogOpen(true);
+    handleMenuClose();
+  };
+  
   return (
     <Box
       sx={{
@@ -59,14 +85,15 @@ const TopSection = ({
         boxShadow: '0 0 5px #00FF00',
         display: 'flex',
         flexDirection: 'column',
-        padding: expanded ? 3 : 1,
+        padding: 1,
         overflow: 'hidden',
-        transition: 'padding 0.3s ease',
       }}
     >
-      <Box sx={{ display: 'flex', alignItems: 'center', mb: expanded ? 2 : 0, justifyContent: 'space-between' }}>
+      <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
         <Box sx={{ display: 'flex', alignItems: 'center' }}>
-          <TerminalIcon sx={{ color: '#00FF00', mr: 1 }} />
+          <Link href="/">
+            <TerminalIcon sx={{ color: '#00FF00', mr: 1, cursor: 'pointer' }} />
+          </Link>
           <Typography
             variant="h6"
             sx={{
@@ -81,7 +108,7 @@ const TopSection = ({
         </Box>
         
         {/* Turn slider */}
-        <Box sx={{ flex: 1, mx: 3, display: 'flex', alignItems: 'center' }}>
+        <Box sx={{ flex: 1, mx: 2, display: 'flex', alignItems: 'center' }}>
           <Slider
             value={sliderValue}
             min={0}
@@ -214,43 +241,102 @@ const TopSection = ({
             Reset
           </Button>
           
-          {/* Expand/Collapse button */}
-          <IconButton 
-            onClick={() => setExpanded(!expanded)} 
-            sx={{ color: '#00FF00' }}
-            size="small"
+          {/* User Avatar - always show avatar, with or without session */}
+          <Avatar
+            alt={session?.user?.name || "User"}
+            src={session?.user?.image}
+            onClick={session ? handleMenuOpen : undefined}
+            sx={{ 
+              cursor: session ? 'pointer' : 'default',
+              width: 36,
+              height: 36,
+              border: '1px solid #00FF00',
+              backgroundColor: 'black',
+              transition: 'all 0.2s ease-in-out',
+              boxShadow: '0 0 5px #00FF00',
+              '&:hover': session ? {
+                boxShadow: '0 0 10px #00FF00, 0 0 15px #00FF00',
+              } : {}
+            }}
           >
-            {expanded ? <ExpandLessIcon /> : <ExpandMoreIcon />}
-          </IconButton>
+            <CodeIcon sx={{ color: '#00FF00' }} />
+          </Avatar>
         </Box>
       </Box>
       
-      {expanded && (
-        <>
-          <Divider sx={{ borderColor: 'rgba(0, 255, 0, 0.3)', mb: 2 }} />
-          
-          <Box sx={{ flex: 1, overflow: 'auto' }}>
-            <Typography
-              variant="body1"
-              sx={{
-                color: '#00CC00',
-                fontFamily: 'var(--font-geist-mono), monospace',
-                letterSpacing: '0.02em',
-                lineHeight: 1.6,
+      {/* Menu - only render if we have a session */}
+      {session && (
+        <Menu
+          anchorEl={anchorEl}
+          open={Boolean(anchorEl)}
+          onClose={handleMenuClose}
+          onClick={handleMenuClose}
+          disableScrollLock
+          slotProps={{
+            paper: {
+              elevation: 0,
+              sx: {
+                mt: 1.5,
+                minWidth: 200,
+                backgroundColor: 'black',
+                border: '1px solid #00FF00',
+                boxShadow: '0 0 10px #00FF00',
+              }
+            }
+          }}
+        >
+          <Box sx={{ px: 3, py: 2, borderBottom: '1px solid rgba(0, 255, 0, 0.3)' }}>
+            <Typography variant="subtitle2" color="#00CC00" sx={{ fontFamily: 'var(--font-geist-mono), monospace' }}>
+              USER:
+            </Typography>
+            <Typography variant="body1" sx={{ fontWeight: 500, color: '#00FF00', fontFamily: 'var(--font-geist-mono), monospace' }}>
+              {session.user.name}
+            </Typography>
+            <Typography 
+              variant="caption" 
+              color="#00CC00"
+              sx={{ 
+                display: 'block',
+                fontSize: '0.7rem',
+                lineHeight: 1.2,
+                textOverflow: 'ellipsis',
+                overflow: 'hidden',
+                whiteSpace: 'nowrap',
+                fontFamily: 'var(--font-geist-mono), monospace'
               }}
             >
-              {'> WELCOME TO THE SIMULATION ENVIRONMENT'}<br />
-              {'> OBJECTIVE: COMPLETE THE ASSIGNED TASKS TO IMPROVE YOUR SOFT SKILLS'}<br />
-              {'> CURRENT STATUS: INITIALIZING...'}<br /><br />
-              
-              This interactive simulation is designed to enhance your communication, 
-              problem-solving, and teamwork abilities through practical scenarios.
-              Navigate through the interface using the control panels on the left and right.
-              Monitor your progress in the central display area.
+              {session.user.email}
             </Typography>
           </Box>
-        </>
+          
+          <MenuItem 
+            component={Link} 
+            href="/profile"
+            sx={{ py: 1.5, px: 3 }}
+          >
+            <ListItemIcon>
+              <PersonIcon fontSize="small" sx={{ color: '#00FF00' }} />
+            </ListItemIcon>
+            <Typography variant="body2" sx={{ color: '#00FF00', fontFamily: 'var(--font-geist-mono), monospace' }}>PROFILE</Typography>
+          </MenuItem>
+          
+          <MenuItem 
+            onClick={handleSignOutClick}
+            sx={{ py: 1.5, px: 3 }}
+          >
+            <ListItemIcon>
+              <ExitToAppIcon fontSize="small" sx={{ color: '#00FF00' }} />
+            </ListItemIcon>
+            <Typography variant="body2" sx={{ color: '#00FF00', fontFamily: 'var(--font-geist-mono), monospace' }}>LOGOUT</Typography>
+          </MenuItem>
+        </Menu>
       )}
+      
+      {/* SignOutDialog */}
+      <SignOutDialog 
+        open={signOutDialogOpen} 
+        onClose={() => setSignOutDialogOpen(false)} 
+      />
     </Box>
   );
 };

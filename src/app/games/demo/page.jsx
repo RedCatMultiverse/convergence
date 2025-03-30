@@ -93,8 +93,8 @@ export default function GameDemo() {
     <Box
       sx={{
         backgroundColor: 'black',
-        minHeight: 'calc(100vh - 80px - 64px)', // Subtract navbar height and copyright height
-        height: 'calc(100vh - 80px - 64px)', // Fixed height accounting for copyright
+        minHeight: 'calc(100vh - 64px)', // Subtract only copyright height
+        height: 'calc(100vh - 64px)', // Subtract only copyright height
         display: 'flex',
         flexDirection: 'column',
         position: 'relative',
