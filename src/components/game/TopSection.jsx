@@ -26,7 +26,7 @@ const TopSection = ({
   totalTurns = 0,
   onTurnSliderChange = () => {},
 }) => {
-  const [expanded, setExpanded] = useState(true);
+  const [expanded, setExpanded] = useState(false);
   const [sliderValue, setSliderValue] = useState(0);
   
   // Notify parent component when expanded state changes

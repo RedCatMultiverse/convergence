@@ -1,21 +1,30 @@
 'use client';
 
-import { Box, Typography, List, ListItem, ListItemIcon, ListItemText, Divider } from '@mui/material';
-import CodeIcon from '@mui/icons-material/Code';
-import SettingsIcon from '@mui/icons-material/Settings';
-import MemoryIcon from '@mui/icons-material/Memory';
-import StorageIcon from '@mui/icons-material/Storage';
-import BugReportIcon from '@mui/icons-material/BugReport';
+import { useState } from 'react';
+import { Box, Typography, Divider } from '@mui/material';
 
-const LeftSection = ({ title = "CONTROL PANEL" }) => {
-  const menuItems = [
-    { icon: <MemoryIcon sx={{ color: '#00FF00' }} />, label: 'SYSTEM STATUS' },
-    { icon: <StorageIcon sx={{ color: '#00FF00' }} />, label: 'DATA STORAGE' },
-    { icon: <CodeIcon sx={{ color: '#00FF00' }} />, label: 'COMMAND LINE' },
-    { icon: <BugReportIcon sx={{ color: '#00FF00' }} />, label: 'DEBUG TOOLS' },
-    { icon: <SettingsIcon sx={{ color: '#00FF00' }} />, label: 'SETTINGS' },
-  ];
+// Mock data - in a real app, this would come from props or a data store
+const gameData = {
+  universe: {
+    progress: [
+      { id: 'base', name: 'BASE LEVEL', status: 'completed' },
+      { id: 'alpha', name: 'ALPHA CONTINUUM', status: 'current' },
+      { id: 'beta', name: 'BETA NEXUS', status: 'locked' },
+      { id: 'gamma', name: 'GAMMA SECTOR', status: 'locked' }
+    ]
+  },
+  milestones: [
+    { id: 'base', name: 'BASE', status: 'completed' },
+    { id: 'inference', name: 'INFERENCE', status: 'completed' },
+    { id: 'assumption', name: 'ASSUMPTION', status: 'active' },
+    { id: 'deduction', name: 'DEDUCTION', status: 'unlocked' },
+    { id: 'interpretation', name: 'INTERPRETATION', status: 'unlocked' },
+    { id: 'evaluation', name: 'EVALUATION', status: 'unlocked' }
+  ],
+  objective: 'Identify hidden assumptions in Caliban\'s market data claims to fortify cognitive defenses.'
+};
 
+const LeftSection = ({ title = "STATUS MONITOR" }) => {
   return (
     <Box
       sx={{
@@ -27,82 +36,139 @@ const LeftSection = ({ title = "CONTROL PANEL" }) => {
         display: 'flex',
         flexDirection: 'column',
         padding: 2,
-        overflow: 'hidden',
+        overflow: 'auto',
       }}
     >
       <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
         <Typography
           variant="h6"
           sx={{
-            color: '#00FF00',
+            color: '#33FF33',
             fontFamily: 'var(--font-geist-mono), monospace',
             letterSpacing: '0.05em',
             textShadow: '0 0 5px #00FF00',
           }}
         >
-          {title}
+          // UNIVERSE LEVELS
         </Typography>
       </Box>
       
       <Divider sx={{ borderColor: 'rgba(0, 255, 0, 0.3)', mb: 2 }} />
       
-      <Box sx={{ flex: 1, display: 'flex', flexDirection: 'column', overflow: 'auto' }}>
-        <List sx={{ width: '100%', p: 0 }}>
-          {menuItems.map((item, index) => (
-            <ListItem 
-              key={index}
-              sx={{ 
-                py: 1.5,
-                borderBottom: index < menuItems.length - 1 ? '1px solid rgba(0, 255, 0, 0.1)' : 'none',
-                cursor: 'pointer',
-                '&:hover': {
-                  backgroundColor: 'rgba(0, 255, 0, 0.1)',
-                }
-              }}
-            >
-              <ListItemIcon sx={{ minWidth: 40 }}>
-                {item.icon}
-              </ListItemIcon>
-              <ListItemText 
-                primary={item.label} 
-                primaryTypographyProps={{
-                  sx: {
-                    color: '#00CC00',
-                    fontFamily: 'var(--font-geist-mono), monospace',
-                    fontSize: '0.875rem',
-                    letterSpacing: '0.02em',
-                  }
+      {/* Universe Progress Path */}
+      <Box sx={{ mb: 3 }}>
+        {gameData.universe.progress.map((level, index) => (
+          <Box key={level.id}>
+            <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
+              <Box 
+                sx={{ 
+                  width: level.status === 'current' ? '14px' : '10px',
+                  height: level.status === 'current' ? '14px' : '10px',
+                  borderRadius: '50%',
+                  backgroundColor: level.status === 'completed' ? '#555555' : (level.status === 'current' ? '#00FF00' : '#222222'),
+                  border: level.status === 'current' ? '3px solid #CCFF00' : (level.status === 'completed' ? '1px solid #00FF00' : '1px solid #33FF33'),
+                  mr: 2
                 }}
               />
-            </ListItem>
-          ))}
-        </List>
+              <Typography
+                sx={{
+                  color: level.status === 'completed' ? '#555555' : (level.status === 'current' ? '#CCFF00' : '#33FF33'),
+                  fontFamily: 'var(--font-geist-mono), monospace',
+                  fontSize: '0.875rem',
+                  fontWeight: level.status === 'current' ? 'bold' : 'normal',
+                }}
+              >
+                {level.name} [{level.status.toUpperCase()}]
+              </Typography>
+            </Box>
+            
+            {index < gameData.universe.progress.length - 1 && (
+              <Box 
+                sx={{ 
+                  width: '2px',
+                  height: '20px',
+                  backgroundColor: level.status !== 'locked' ? '#00FF00' : '#33FF33',
+                  ml: '5px',
+                  mb: 0,
+                  borderLeft: gameData.universe.progress[index + 1].status === 'locked' ? '2px dashed #33FF33' : 'none',
+                }}
+              />
+            )}
+          </Box>
+        ))}
       </Box>
       
-      <Box sx={{ mt: 2, pt: 2, borderTop: '1px solid rgba(0, 255, 0, 0.3)' }}>
+      <Typography
+        variant="h6"
+        sx={{
+          color: '#33FF33',
+          fontFamily: 'var(--font-geist-mono), monospace',
+          letterSpacing: '0.05em',
+          textShadow: '0 0 5px #00FF00',
+          mt: 2,
+          mb: 2,
+        }}
+      >
+        // CRITICAL THINKING MILESTONES
+      </Typography>
+      
+      <Divider sx={{ borderColor: 'rgba(0, 255, 0, 0.3)', mb: 2 }} />
+      
+      {/* Milestones */}
+      <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1.5, mb: 3 }}>
+        {gameData.milestones.map((milestone) => (
+          <Box 
+            key={milestone.id}
+            sx={{
+              backgroundColor: milestone.status === 'completed' ? '#222222' : '#111111',
+              border: milestone.status === 'completed' ? '1px solid #555555' : 
+                     milestone.status === 'active' ? '2px solid #00FF00' : 
+                     milestone.status === 'next' ? '2px solid #CCFF00' : '1px solid #33FF33',
+              padding: 1.5,
+            }}
+          >
+            <Typography
+              sx={{
+                color: milestone.status === 'completed' ? '#555555' : 
+                       milestone.status === 'active' ? '#00FF00' : 
+                       milestone.status === 'next' ? '#CCFF00' : '#33FF33',
+                fontFamily: 'var(--font-geist-mono), monospace',
+                fontSize: '0.875rem',
+              }}
+            >
+              {milestone.name} [{milestone.status.toUpperCase()}]
+            </Typography>
+          </Box>
+        ))}
+      </Box>
+      
+      {/* Mission Objective */}
+      <Box 
+        sx={{ 
+          border: '1px solid #33FF33',
+          padding: 2,
+          mt: 2
+        }}
+      >
         <Typography
-          variant="caption"
           sx={{
-            color: '#00CC00',
+            color: '#33FF33',
             fontFamily: 'var(--font-geist-mono), monospace',
-            letterSpacing: '0.02em',
-            display: 'block',
-            opacity: 0.7,
+            fontSize: '0.875rem',
+            mb: 1,
           }}
         >
-          {'> SYSTEM READY'}
+          MISSION OBJECTIVE:
         </Typography>
         <Typography
-          variant="caption"
           sx={{
-            color: '#00CC00',
+            color: '#00FF00',
             fontFamily: 'var(--font-geist-mono), monospace',
-            letterSpacing: '0.02em',
-            display: 'block',
-            opacity: 0.7,
+            fontSize: '0.75rem',
+            lineHeight: 1.5,
           }}
         >
-          {'> AWAITING INPUT...'}
+          {gameData.objective}
         </Typography>
       </Box>
     </Box>

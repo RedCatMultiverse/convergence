@@ -14,7 +14,7 @@ import gameplayDataJson from '@/data/gameplay_data.json';
 const gameplayData = gameplayDataJson.gameplay_demo.turns;
 
 export default function GameDemo() {
-  const [topSectionExpanded, setTopSectionExpanded] = useState(true);
+  const [topSectionExpanded, setTopSectionExpanded] = useState(false);
   const [isRunning, setIsRunning] = useState(false);
   const [autoAdvance, setAutoAdvance] = useState(false);
   const [isTyping, setIsTyping] = useState(false);
