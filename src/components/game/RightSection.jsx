@@ -182,8 +182,6 @@ const RightSection = ({ dataTracking = null }) => {
         </Typography>
       </Box>
       
-      <Divider sx={{ borderColor: 'rgba(0, 255, 0, 0.3)', mb: 2 }} />
-      
       {/* Alert Box */}
       <Box 
         sx={{
@@ -459,7 +457,7 @@ const RightSection = ({ dataTracking = null }) => {
 
           {/* Skill pillars */}
           {Object.entries(animatedValues).map(([skill, value], index) => {
-            const position = index * 50 + 65; // Move bars right by adjusting starting position
+            const position = index * 40 + 55; // Reduced spacing between bars from 50 to 40
             const displaySkill = skill.substring(0, 3).toUpperCase();
             const effectiveValue = Math.min(Math.max(Math.round(value.value), 0), 100); // Clamp between 0-100
             const barHeight = (effectiveValue / 100) * 110; // Scale to the 110px range
@@ -471,7 +469,7 @@ const RightSection = ({ dataTracking = null }) => {
                   position: 'absolute',
                   bottom: -4,
                   left: `${position}px`,
-                  width: '40px',
+                  width: '34px', // Increased from 32px to 34px (5% larger)
                   display: 'flex',
                   flexDirection: 'column',
                   alignItems: 'center',
@@ -480,11 +478,11 @@ const RightSection = ({ dataTracking = null }) => {
                 {/* Bar */}
                 <Box sx={{ 
                   width: '100%',
-                  height: '110px', // Match the height of the guide line range
+                  height: '110px',
                   position: 'relative',
                   backgroundColor: 'rgba(0, 255, 0, 0.1)',
                   border: '1px solid rgba(0, 255, 0, 0.3)',
-                  marginBottom: '-1px', // Remove gap between bar and label
+                  marginBottom: '-1px',
                 }}>
                   <Box sx={{ 
                     position: 'absolute',
