@@ -48,6 +48,47 @@ const RightSection = ({ dataTracking = null }) => {
     patternRecognitionScore: { value: 77, isUpdating: false }
   });
   
+  // Handle XP updates
+  useEffect(() => {
+    if (!dataTracking) return;
+
+    // If xpGained is present, it's a forward move
+    if (dataTracking.xpGained) {
+      const newXp = gameData.stats.xp + dataTracking.xpGained;
+      updateGameDataWithXp(newXp);
+    } 
+    // If xp is present directly, it's from slider movement
+    else if (dataTracking.xp !== undefined) {
+      updateGameDataWithXp(dataTracking.xp);
+    }
+  }, [dataTracking]);
+
+  // Helper function to update XP and leaderboard
+  const updateGameDataWithXp = (newXp) => {
+    setGameData(prev => ({
+      ...prev,
+      stats: {
+        ...prev.stats,
+        xp: newXp,
+        isXpUpdating: true
+      },
+      leaderboard: prev.leaderboard.map(item => 
+        item.isUser ? { ...item, score: newXp } : item
+      ).sort((a, b) => b.score - a.score) // Sort leaderboard by score
+    }));
+
+    // Reset animation after delay
+    setTimeout(() => {
+      setGameData(prev => ({
+        ...prev,
+        stats: {
+          ...prev.stats,
+          isXpUpdating: false
+        }
+      }));
+    }, 1000);
+  };
+  
   // Animation effect for radar chart values
   useEffect(() => {
     if (!dataTracking) return;
@@ -77,7 +118,7 @@ const RightSection = ({ dataTracking = null }) => {
     
     // Check for properties in dataTracking and set target values
     properties.forEach(prop => {
-      if (dataTracking[prop]) {
+      if (dataTracking[prop] !== undefined) { // Changed from if (dataTracking[prop]) to handle zero values
         targetValues[prop] = {
           value: dataTracking[prop],
           isUpdating: true
@@ -87,7 +128,7 @@ const RightSection = ({ dataTracking = null }) => {
     
     // Check for mapped properties
     Object.entries(propertyMap).forEach(([dataProp, localProp]) => {
-      if (dataTracking[dataProp]) {
+      if (dataTracking[dataProp] !== undefined) { // Changed from if (dataTracking[dataProp])
         targetValues[localProp] = {
           value: dataTracking[dataProp],
           isUpdating: true
@@ -95,65 +136,57 @@ const RightSection = ({ dataTracking = null }) => {
       }
     });
     
-    // If no target values, don't animate
-    if (Object.keys(targetValues).length === 0) return;
-    
-    // Update values that have changed
-    Object.entries(targetValues).forEach(([prop, target]) => {
-      if (currentValues[prop]?.value !== target.value) {
+    // If no target values, reset any values not present in dataTracking to 0
+    if (Object.keys(targetValues).length === 0) {
+      const resetValues = {};
+      Object.keys(currentValues).forEach(key => {
+        if (!dataTracking[key]) {
+          resetValues[key] = {
+            value: 0,
+            isUpdating: true
+          };
+        }
+      });
+      if (Object.keys(resetValues).length > 0) {
         setAnimatedValues(prev => ({
           ...prev,
-          [prop]: {
+          ...resetValues
+        }));
+      }
+      return;
+    }
+    
+    // Update values that have changed
+    setAnimatedValues(prev => {
+      const newValues = { ...prev };
+      Object.entries(targetValues).forEach(([prop, target]) => {
+        if (newValues[prop]?.value !== target.value) {
+          newValues[prop] = {
             value: target.value,
             isUpdating: true
-          }
-        }));
-        
-        // Reset isUpdating after animation
-        setTimeout(() => {
-          setAnimatedValues(prev => ({
-            ...prev,
-            [prop]: {
-              value: target.value,
-              isUpdating: false
-            }
-          }));
-        }, 1000); // Match animation duration
-      }
-    });
-  }, [dataTracking]);
-
-  // Handle XP updates
-  useEffect(() => {
-    if (!dataTracking?.xpGained) return;
-
-    const newXp = gameData.stats.xp + dataTracking.xpGained;
-    
-    // Update XP with animation
-    setGameData(prev => ({
-      ...prev,
-      stats: {
-        ...prev.stats,
-        xp: newXp,
-        isXpUpdating: true
-      },
-      leaderboard: prev.leaderboard.map(item => 
-        item.isUser ? { ...item, score: newXp } : item
-      )
-    }));
-
-    // Reset animation after delay
-    setTimeout(() => {
-      setGameData(prev => ({
-        ...prev,
-        stats: {
-          ...prev.stats,
-          isXpUpdating: false
+          };
         }
-      }));
+      });
+      return newValues;
+    });
+    
+    // Reset isUpdating after animation
+    setTimeout(() => {
+      setAnimatedValues(prev => {
+        const newValues = { ...prev };
+        Object.keys(targetValues).forEach(prop => {
+          if (newValues[prop]) {
+            newValues[prop] = {
+              ...newValues[prop],
+              isUpdating: false
+            };
+          }
+        });
+        return newValues;
+      });
     }, 1000);
   }, [dataTracking]);
-  
+
   return (
     <Box
       sx={{
