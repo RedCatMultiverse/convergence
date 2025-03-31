@@ -40,6 +40,7 @@ const CenterSection = forwardRef(({
   const [waitingForInput, setWaitingForInput] = useState(false);
   const [inputType, setInputType] = useState(null);
   const [isTyping, setIsTyping] = useState(false);
+  const [isMonicaTyping, setIsMonicaTyping] = useState(false);
   const [autoAdvance, setAutoAdvance] = useState(false);
   
   // Game stats
@@ -248,6 +249,7 @@ const CenterSection = forwardRef(({
   // Handle Monica's responses with more realistic typing animation
   const handleMonicaResponse = (cleanedContent, currentTurn) => {
     setIsTyping(true);
+    setIsMonicaTyping(true);
     setUserInput("");
     
     // First, show the speaker name with a blinking cursor
@@ -324,6 +326,7 @@ const CenterSection = forwardRef(({
           
           // Typing is complete
           setIsTyping(false);
+          setIsMonicaTyping(false);
         }
       };
       
@@ -455,6 +458,7 @@ const CenterSection = forwardRef(({
     setStreak(0);
     setAccuracy("N/A");
     setIsTyping(false);
+    setIsMonicaTyping(false);
     setAutoAdvance(false);
   };
   
@@ -543,7 +547,10 @@ const CenterSection = forwardRef(({
       fontFamily: 'monospace', 
       whiteSpace: 'pre-wrap',
       fontSize: '1.3rem',  // 30% larger font size
-      mb: 1.5
+      mb: 1.5,
+      // Dim other messages when Monica is typing
+      opacity: isMonicaTyping && message.speaker !== "monica" ? 0.6 : 1,
+      transition: 'opacity 0.3s ease'
     };
     
     if (message.type === "milestone_announcement") {
@@ -647,6 +654,7 @@ const CenterSection = forwardRef(({
     
     // Reset state
     setIsTyping(false);
+    setIsMonicaTyping(false);
     setWaitingForInput(false);
     setUserInput("");
     
