@@ -311,17 +311,16 @@ const RightSection = ({ dataTracking = null }) => {
             const position = index * 50 + 65; // Move bars right by adjusting starting position
             const displaySkill = skill.substring(0, 3).toUpperCase();
             const effectiveValue = Math.min(Math.max(Math.round(value.value), 0), 100); // Clamp between 0-100
-            const barHeight = (effectiveValue / 100) * 130; // Scale height to match value exactly
+            const barHeight = (effectiveValue / 100) * 110; // Scale to the 110px range
             
             return (
               <Box 
                 key={skill}
                 sx={{ 
                   position: 'absolute',
-                  bottom: '30px',
+                  bottom: 16,
                   left: `${position}px`,
                   width: '40px',
-                  height: '160px', // Increased total height
                   display: 'flex',
                   flexDirection: 'column',
                   alignItems: 'center',
@@ -330,10 +329,11 @@ const RightSection = ({ dataTracking = null }) => {
                 {/* Bar */}
                 <Box sx={{ 
                   width: '100%',
-                  height: '130px',
+                  height: '110px', // Match the height of the guide line range
                   position: 'relative',
                   backgroundColor: 'rgba(0, 255, 0, 0.1)',
                   border: '1px solid rgba(0, 255, 0, 0.3)',
+                  marginBottom: '-1px', // Remove gap between bar and label
                 }}>
                   <Box sx={{ 
                     position: 'absolute',
