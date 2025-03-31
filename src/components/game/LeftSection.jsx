@@ -1,30 +1,67 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Box, Typography, Divider } from '@mui/material';
 
-// Mock data - in a real app, this would come from props or a data store
-const gameData = {
-  universe: {
-    progress: [
-      { id: 'base', name: 'BASE LEVEL', status: 'completed' },
-      { id: 'alpha', name: 'ALPHA CONTINUUM', status: 'current' },
-      { id: 'beta', name: 'BETA NEXUS', status: 'locked' },
-      { id: 'gamma', name: 'GAMMA SECTOR', status: 'locked' }
-    ]
-  },
-  milestones: [
-    { id: 'base', name: 'BASE', status: 'completed' },
-    { id: 'inference', name: 'INFERENCE', status: 'completed' },
-    { id: 'assumption', name: 'ASSUMPTION', status: 'active' },
+// Dynamic game data based on current milestone
+const getGameData = (currentMilestone) => {
+  // Default status for all milestones
+  const allMilestones = [
+    { id: 'base', name: 'BASE', status: 'unlocked' },
+    { id: 'inference', name: 'INFERENCE', status: 'unlocked' },
+    { id: 'assumption', name: 'ASSUMPTION', status: 'unlocked' },
     { id: 'deduction', name: 'DEDUCTION', status: 'unlocked' },
     { id: 'interpretation', name: 'INTERPRETATION', status: 'unlocked' },
     { id: 'evaluation', name: 'EVALUATION', status: 'unlocked' }
-  ],
-  objective: 'Identify hidden assumptions in Caliban\'s market data claims to fortify cognitive defenses.'
+  ];
+  
+  // Map of milestone IDs to their index in the array
+  const milestoneIndexMap = {
+    'base': 0,
+    'inference': 1,
+    'assumption': 2,
+    'deduction': 3,
+    'interpretation': 4,
+    'evaluation': 5
+  };
+  
+  // Update statuses based on current milestone
+  if (currentMilestone) {
+    const currentIndex = milestoneIndexMap[currentMilestone];
+    
+    allMilestones.forEach((milestone, index) => {
+      if (index < currentIndex) {
+        milestone.status = 'completed';
+      } else if (index === currentIndex) {
+        milestone.status = 'active';
+      } else {
+        milestone.status = 'unlocked';
+      }
+    });
+  }
+  
+  return {
+    universe: {
+      progress: [
+        { id: 'base', name: 'BASE LEVEL', status: 'completed' },
+        { id: 'alpha', name: 'ALPHA CONTINUUM', status: 'current' },
+        { id: 'beta', name: 'BETA NEXUS', status: 'locked' },
+        { id: 'gamma', name: 'GAMMA SECTOR', status: 'locked' }
+      ]
+    },
+    milestones: allMilestones,
+    objective: 'Identify patterns and make inferences to navigate the Alpha Continuum challenges.'
+  };
 };
 
-const LeftSection = ({ title = "STATUS MONITOR" }) => {
+const LeftSection = ({ title = "STATUS MONITOR", currentMilestone = null }) => {
+  const [gameData, setGameData] = useState(getGameData(currentMilestone));
+  
+  // Update game data when currentMilestone changes
+  useEffect(() => {
+    setGameData(getGameData(currentMilestone));
+  }, [currentMilestone]);
+  
   return (
     <Box
       sx={{
@@ -122,7 +159,7 @@ const LeftSection = ({ title = "STATUS MONITOR" }) => {
             sx={{
               backgroundColor: milestone.status === 'completed' ? '#222222' : '#111111',
               border: milestone.status === 'completed' ? '1px solid #555555' : 
-                     milestone.status === 'active' ? '2px solid #00FF00' : 
+                     milestone.status === 'active' ? '2px solid #FFFF00' : 
                      milestone.status === 'next' ? '2px solid #CCFF00' : '1px solid #33FF33',
               padding: 1.5,
             }}
@@ -130,7 +167,7 @@ const LeftSection = ({ title = "STATUS MONITOR" }) => {
             <Typography
               sx={{
                 color: milestone.status === 'completed' ? '#555555' : 
-                       milestone.status === 'active' ? '#00FF00' : 
+                       milestone.status === 'active' ? '#FFFF00' : 
                        milestone.status === 'next' ? '#CCFF00' : '#33FF33',
                 fontFamily: 'var(--font-geist-mono), monospace',
                 fontSize: '0.875rem',

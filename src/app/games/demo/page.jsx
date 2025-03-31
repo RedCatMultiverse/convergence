@@ -7,11 +7,121 @@ import LeftSection from '@/components/game/LeftSection';
 import RightSection from '@/components/game/RightSection';
 import CenterSection from '@/components/game/CenterSection';
 
-// Import gameplay data to get total turns
-import gameplayDataJson from '@/data/gameplay_data.json';
+// Import alphaContinuum data instead of gameplay data
+import alphaContinuumJson from '@/data/alphaContinuum.json';
 
-// Get the gameplay data from the imported JSON
-const gameplayData = gameplayDataJson.gameplay_demo.turns;
+// Process alphaContinuum data to create game moves
+const processAlphaContinuumData = () => {
+  const { alphaContinuum } = alphaContinuumJson;
+  const moves = [];
+  let moveIndex = 0;
+  
+  // Process intro
+  if (alphaContinuum.intro) {
+    alphaContinuum.intro.forEach(item => {
+      moves.push({
+        turn_number: ++moveIndex,
+        speaker: item.speaker,
+        message_type: "system_message",
+        content: item.text,
+        delay_ms: 1500
+      });
+    });
+  }
+  
+  // Process each milestone
+  const processMilestone = (milestone, milestoneName) => {
+    // Process milestone intro
+    if (milestone.intro) {
+      milestone.intro.forEach(item => {
+        moves.push({
+          turn_number: ++moveIndex,
+          speaker: item.speaker,
+          message_type: "system_message",
+          content: item.text,
+          delay_ms: 1500,
+          milestone: milestoneName
+        });
+      });
+    }
+    
+    // Process challenges
+    if (milestone.challenges) {
+      milestone.challenges.forEach(item => {
+        if (item.speaker) {
+          // It's a move
+          moves.push({
+            turn_number: ++moveIndex,
+            speaker: item.speaker,
+            message_type: item.speaker === "rc" ? "prompt" : "response",
+            content: item.text,
+            delay_ms: 1000
+          });
+        } else if (item.dataTracking) {
+          // It's a data tracking update
+          moves.push({
+            turn_number: ++moveIndex,
+            speaker: "system",
+            message_type: "data_tracking",
+            content: "Updating critical thinking metrics...",
+            delay_ms: 1000,
+            dataTracking: item.dataTracking
+          });
+        } else if (item.id) {
+          // It's a challenge setup
+          const challengeType = item.type || "traditional";
+          moves.push({
+            turn_number: ++moveIndex,
+            speaker: "system",
+            message_type: "challenge_setup",
+            content: `Setting up challenge: ${item.id}`,
+            challenge_id: item.id,
+            challenge_type: challengeType,
+            scenario: item.scenario,
+            delay_ms: 1000
+          });
+        }
+      });
+    }
+  };
+  
+  // Process each milestone
+  if (alphaContinuum.baseMilestone) processMilestone(alphaContinuum.baseMilestone, "base");
+  if (alphaContinuum.inferenceMilestone) processMilestone(alphaContinuum.inferenceMilestone, "inference");
+  if (alphaContinuum.assumptionMilestone) processMilestone(alphaContinuum.assumptionMilestone, "assumption");
+  if (alphaContinuum.deductionMilestone) processMilestone(alphaContinuum.deductionMilestone, "deduction");
+  if (alphaContinuum.interpretationMilestone) processMilestone(alphaContinuum.interpretationMilestone, "interpretation");
+  if (alphaContinuum.evaluationMilestone) processMilestone(alphaContinuum.evaluationMilestone, "evaluation");
+  
+  // Process weekly review if exists
+  if (alphaContinuum.weeklyReview) {
+    alphaContinuum.weeklyReview.forEach(item => {
+      if (item.speaker) {
+        moves.push({
+          turn_number: ++moveIndex,
+          speaker: item.speaker,
+          message_type: item.speaker === "system" ? "system_message" : (item.speaker === "rc" ? "prompt" : "response"),
+          content: item.text,
+          delay_ms: 1500
+        });
+      } else if (item.dataTracking) {
+        moves.push({
+          turn_number: ++moveIndex,
+          speaker: "system",
+          message_type: "data_tracking",
+          content: "Weekly review metrics...",
+          delay_ms: 1000,
+          dataTracking: item.dataTracking
+        });
+      }
+    });
+  }
+  
+  return moves;
+};
+
+// Get the game moves from processed alphaContinuum data
+const gameplayData = processAlphaContinuumData();
 
 export default function GameDemo() {
   const [topSectionExpanded, setTopSectionExpanded] = useState(false);
@@ -20,6 +130,25 @@ export default function GameDemo() {
   const [isTyping, setIsTyping] = useState(false);
   const [waitingForInput, setWaitingForInput] = useState(false);
   const [currentTurnIndex, setCurrentTurnIndex] = useState(0);
+  const [currentMilestone, setCurrentMilestone] = useState(null);
+  const [dataTracking, setDataTracking] = useState(null);
+  const [dataReady, setDataReady] = useState(false);
+  
+  // Make gameplayData available globally
+  useEffect(() => {
+    // Only set window.gameplayData if it's valid and not empty
+    if (gameplayData && gameplayData.length > 0) {
+      window.gameplayData = gameplayData;
+      setDataReady(true);
+      console.log("Game data initialized with", gameplayData.length, "moves");
+    } else {
+      console.error("Error: gameplayData is invalid", gameplayData);
+    }
+    
+    return () => {
+      delete window.gameplayData;
+    };
+  }, []);
   
   // Reference to the CenterSection component
   const centerSectionRef = useRef(null);
@@ -58,6 +187,8 @@ export default function GameDemo() {
       centerSectionRef.current.handleReset();
       setIsRunning(false);
       setCurrentTurnIndex(0);
+      setCurrentMilestone(null);
+      setDataTracking(null);
     }
   };
   
@@ -89,6 +220,36 @@ export default function GameDemo() {
     setCurrentTurnIndex(turnIndex);
   };
   
+  // Update currentMilestone when it changes in CenterSection
+  const handleMilestoneChange = (milestone) => {
+    setCurrentMilestone(milestone);
+  };
+  
+  // Update dataTracking when it changes in CenterSection
+  const handleDataTrackingUpdate = (data) => {
+    setDataTracking(data);
+  };
+  
+  // Render game UI only when data is ready
+  if (!dataReady) {
+    return (
+      <Box
+        sx={{
+          backgroundColor: 'black',
+          minHeight: 'calc(100vh - 64px)',
+          height: 'calc(100vh - 64px)',
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          color: '#00FF00',
+          fontFamily: 'var(--font-geist-mono), monospace',
+        }}
+      >
+        Loading game data...
+      </Box>
+    );
+  }
+
   return (
     <Box
       sx={{
@@ -167,7 +328,9 @@ export default function GameDemo() {
         >
           {/* Left Section - 25% width */}
           <Box sx={{ width: '25%', height: '100%' }}>
-            <LeftSection />
+            <LeftSection 
+              currentMilestone={currentMilestone}
+            />
           </Box>
           
           {/* Center Section - 50% width */}
@@ -179,12 +342,16 @@ export default function GameDemo() {
               onTypingChange={(typing) => setIsTyping(typing)}
               onWaitingForInputChange={(waiting) => setWaitingForInput(waiting)}
               onTurnIndexChange={handleTurnIndexChange}
+              onMilestoneChange={handleMilestoneChange}
+              onDataTrackingUpdate={handleDataTrackingUpdate}
             />
           </Box>
           
           {/* Right Section - 25% width */}
           <Box sx={{ width: '25%', height: '100%' }}>
-            <RightSection />
+            <RightSection 
+              dataTracking={dataTracking}
+            />
           </Box>
         </Box>
       </Box>

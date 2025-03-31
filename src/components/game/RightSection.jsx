@@ -1,9 +1,10 @@
 'use client';
 
+import { useState, useEffect } from 'react';
 import { Box, Typography, Divider, LinearProgress } from '@mui/material';
 
-// Mock data - in a real app, this would come from props or a data store
-const gameData = {
+// Initial default game data
+const initialGameData = {
   leaderboard: [
     { name: 'SHADOWCODE', score: 14560, isUser: false },
     { name: 'NEONBYTE', score: 13270, isUser: false },
@@ -12,12 +13,12 @@ const gameData = {
     { name: 'CYBERWOLF', score: 10890, isUser: false }
   ],
   cognitiveMeasures: {
-    inference: 88,
-    assumption: 81,
-    deduction: 75,
-    interpretation: 77,
-    evaluation: 78,
-    currentFocus: 'assumption'
+    criticalThinkingScore: 80,
+    problemSolvingSpeed: 75,
+    practicalApplicationScore: 78,
+    adaptabilityScore: 76,
+    patternRecognitionScore: 77,
+    currentFocus: 'criticalThinking'
   },
   performanceMetrics: {
     traditional: '90% ACCURACY',
@@ -30,7 +31,108 @@ const gameData = {
   }
 };
 
-const RightSection = () => {
+const RightSection = ({ dataTracking = null }) => {
+  const [gameData, setGameData] = useState(initialGameData);
+  const [animatedValues, setAnimatedValues] = useState({
+    criticalThinkingScore: 80,
+    problemSolvingSpeed: 75,
+    practicalApplicationScore: 78,
+    adaptabilityScore: 76,
+    patternRecognitionScore: 77
+  });
+  
+  // Animation effect for radar chart values
+  useEffect(() => {
+    if (!dataTracking) return;
+    
+    // Get the current values
+    const currentValues = { ...animatedValues };
+    
+    // Define target values - only take those that are actually in the dataTracking
+    const targetValues = {};
+    const properties = [
+      'criticalThinkingScore', 
+      'problemSolvingSpeed', 
+      'practicalApplicationScore',
+      'adaptabilityScore',
+      'patternRecognitionScore',
+      'deductiveReasoningScore',
+      'analyticalDepthScore'
+    ];
+    
+    // Map any differently named properties from dataTracking
+    const propertyMap = {
+      'evaluationScore': 'criticalThinkingScore',
+      'inferenceScore': 'criticalThinkingScore',
+      'interpretationScore': 'criticalThinkingScore',
+      'assumptionIdentificationScore': 'criticalThinkingScore'
+    };
+    
+    // Check for properties in dataTracking and set target values
+    properties.forEach(prop => {
+      if (dataTracking[prop]) {
+        targetValues[prop] = dataTracking[prop];
+      }
+    });
+    
+    // Check for mapped properties
+    Object.entries(propertyMap).forEach(([dataProp, localProp]) => {
+      if (dataTracking[dataProp]) {
+        targetValues[localProp] = dataTracking[dataProp];
+      }
+    });
+    
+    // If no target values, don't animate
+    if (Object.keys(targetValues).length === 0) return;
+    
+    // Start animation
+    let animationFrame;
+    let startTime;
+    const duration = 1000; // 1 second animation
+    
+    const animate = (timestamp) => {
+      if (!startTime) startTime = timestamp;
+      const elapsed = timestamp - startTime;
+      const progress = Math.min(elapsed / duration, 1);
+      
+      // Calculate intermediate values
+      const newValues = { ...currentValues };
+      Object.entries(targetValues).forEach(([key, targetValue]) => {
+        if (currentValues[key] !== undefined) {
+          newValues[key] = currentValues[key] + (targetValue - currentValues[key]) * progress;
+        }
+      });
+      
+      // Update state with interpolated values
+      setAnimatedValues(newValues);
+      
+      // Continue animation if not complete
+      if (progress < 1) {
+        animationFrame = requestAnimationFrame(animate);
+      } else {
+        // Update game data with final values
+        setGameData(prevData => ({
+          ...prevData,
+          cognitiveMeasures: {
+            ...prevData.cognitiveMeasures,
+            ...Object.fromEntries(
+              Object.entries(newValues).map(([key, value]) => [key, Math.round(value)])
+            )
+          }
+        }));
+      }
+    };
+    
+    animationFrame = requestAnimationFrame(animate);
+    
+    // Clean up
+    return () => {
+      if (animationFrame) {
+        cancelAnimationFrame(animationFrame);
+      }
+    };
+  }, [dataTracking]);
+  
   return (
     <Box
       sx={{
@@ -79,7 +181,7 @@ const RightSection = () => {
             textAlign: 'center',
           }}
         >
-          [CHALLENGE 2 OF 3: ASSUMPTION]
+          [ALPHA CONTINUUM CHALLENGE]
         </Typography>
       </Box>
       
@@ -156,10 +258,10 @@ const RightSection = () => {
         {/* Radar visualization */}
         <Box sx={{ height: '200px', position: 'relative', mb: 1 }}>
           {/* Skill pillars */}
-          {Object.entries(gameData.cognitiveMeasures).filter(([key]) => key !== 'currentFocus').map(([skill, value], index) => {
-            const position = index * 50 + 30; // Distribute evenly
+          {Object.entries(animatedValues).map(([skill, value], index) => {
+            const position = index * 50 + 20; // Distribute evenly
             const displaySkill = skill.substring(0, 3).toUpperCase();
-            const isFocused = gameData.cognitiveMeasures.currentFocus === skill;
+            const effectiveValue = Math.min(Math.max(Math.round(value), 0), 100); // Clamp between 0-100
             
             return (
               <Box 
@@ -174,13 +276,16 @@ const RightSection = () => {
                   flexDirection: 'column',
                 }}
               >
-                {/* Pillar fill */}
-                <Box sx={{ 
-                  position: 'relative',
-                  width: '40px',
-                  height: `${(100 - value) * 0.7}%`,
-                  backgroundColor: value > 85 ? '#00AA00' : value > 75 ? '#009900' : '#008800',
-                }} />
+                {/* Pillar fill - taller means better score */}
+                <Box 
+                  sx={{ 
+                    position: 'relative',
+                    width: '40px',
+                    height: `${effectiveValue * 1.3}px`,
+                    backgroundColor: effectiveValue > 85 ? '#00FF00' : effectiveValue > 75 ? '#00DD00' : '#00BB00',
+                    transition: 'height 0.3s ease-out',
+                  }} 
+                />
                 
                 {/* Pillar base */}
                 <Box sx={{ 
@@ -201,24 +306,20 @@ const RightSection = () => {
                   </Typography>
                 </Box>
                 
-                {/* Highlight for focused skill */}
-                {isFocused && (
-                  <Box
-                    sx={{
-                      position: 'absolute',
-                      top: 0,
-                      left: 0,
-                      width: '100%',
-                      height: '100%',
-                      border: '2px solid #FFFF00',
-                      animation: 'pulse 2s infinite',
-                      '@keyframes pulse': {
-                        '0%, 100%': { opacity: 0.3 },
-                        '50%': { opacity: 1 }
-                      }
-                    }}
-                  />
-                )}
+                {/* Score label */}
+                <Typography sx={{ 
+                  position: 'absolute',
+                  bottom: '0',
+                  width: '100%',
+                  textAlign: 'center',
+                  color: '#CCFF00',
+                  fontFamily: 'var(--font-geist-mono), monospace',
+                  fontSize: '0.625rem',
+                  mt: 1,
+                  transform: 'translateY(24px)'
+                }}>
+                  {effectiveValue}
+                </Typography>
               </Box>
             );
           })}
@@ -228,75 +329,45 @@ const RightSection = () => {
             position: 'absolute', 
             left: '10px', 
             right: '10px', 
-            top: '40px', 
+            bottom: '100px', 
             height: '1px', 
             borderTop: '2px dashed #CCFF00'
           }} />
           <Typography sx={{ 
             position: 'absolute', 
+            left: '2px', 
+            bottom: '105px', 
+            color: '#CCFF00', 
+            fontSize: '0.625rem'
+          }}>
+            70%
+          </Typography>
+          
+          <Box sx={{ 
+            position: 'absolute', 
             left: '10px', 
-            top: '35px', 
+            right: '10px', 
+            bottom: '130px', 
+            height: '1px', 
+            borderTop: '2px dashed #CCFF00'
+          }} />
+          <Typography sx={{ 
+            position: 'absolute', 
+            left: '2px', 
+            bottom: '135px', 
             color: '#CCFF00', 
             fontSize: '0.625rem'
           }}>
             100%
           </Typography>
-          
-          <Box sx={{ 
-            position: 'absolute', 
-            left: '10px', 
-            right: '10px', 
-            top: '100px', 
-            height: '1px', 
-            borderTop: '1px solid #00FF00'
-          }} />
-          <Typography sx={{ 
-            position: 'absolute', 
-            left: '10px', 
-            top: '95px', 
-            color: '#00FF00', 
-            fontSize: '0.625rem'
-          }}>
-            50%
-          </Typography>
-          
-          <Box sx={{ 
-            position: 'absolute', 
-            left: '10px', 
-            right: '10px', 
-            top: '160px', 
-            height: '1px', 
-            borderTop: '1px solid #00FF00'
-          }} />
-          <Typography sx={{ 
-            position: 'absolute', 
-            left: '10px', 
-            top: '155px', 
-            color: '#00FF00', 
-            fontSize: '0.625rem'
-          }}>
-            0%
-          </Typography>
-          
-          <Typography sx={{ 
-            position: 'absolute', 
-            top: '60px', 
-            right: '10px', 
-            color: '#CCFF00', 
-            fontSize: '0.625rem',
-            textAlign: 'right',
-          }}>
-            CURRENT FOCUS:<br/>ASSUMPTION
-          </Typography>
         </Box>
       </Box>
       
-      {/* Performance Box */}
+      {/* Performance Metrics */}
       <Box 
         sx={{
           border: '1px solid #33FF33',
           padding: 2,
-          mb: 2.5,
         }}
       >
         <Typography
@@ -307,72 +378,67 @@ const RightSection = () => {
             mb: 1,
           }}
         >
-          CHALLENGE TYPE PERFORMANCE:
+          CHALLENGE METRICS:
         </Typography>
         
-        {Object.entries(gameData.performanceMetrics).map(([type, value]) => (
-          <Typography
-            key={type}
+        {Object.entries(gameData.performanceMetrics).map(([key, value]) => (
+          <Box 
+            key={key}
             sx={{
-              color: '#00FF00',
-              fontFamily: 'var(--font-geist-mono), monospace',
-              fontSize: '0.6875rem',
+              display: 'flex',
+              justifyContent: 'space-between',
               mb: 0.5,
             }}
           >
-            {type.toUpperCase().replace('_', ' ')}: {value}
-          </Typography>
+            <Typography
+              sx={{
+                color: '#00FF00',
+                fontFamily: 'var(--font-geist-mono), monospace',
+                fontSize: '0.75rem',
+              }}
+            >
+              {key.toUpperCase()}:
+            </Typography>
+            <Typography
+              sx={{
+                color: '#00FF00',
+                fontFamily: 'var(--font-geist-mono), monospace',
+                fontSize: '0.75rem',
+              }}
+            >
+              {value}
+            </Typography>
+          </Box>
         ))}
-      </Box>
-      
-      {/* Badge Box */}
-      <Box 
-        sx={{
-          border: '1px solid #33FF33',
-          padding: 2,
-        }}
-      >
-        <Typography
-          sx={{
-            color: '#CCFF00',
-            fontFamily: 'var(--font-geist-mono), monospace',
-            fontSize: '0.875rem',
-            mb: 1,
-          }}
-        >
-          NEXT BADGE: {gameData.nextBadge.name}
-        </Typography>
         
-        <Box 
+        {/* Next Badge Progress */}
+        <Box
           sx={{
-            width: '100%',
-            height: '10px',
-            backgroundColor: 'transparent',
-            border: '1px solid #00FF00',
-            mt: 0.5,
-            mb: 0.5,
-            position: 'relative',
+            mt: 2,
           }}
         >
-          <Box 
+          <Typography
             sx={{
-              height: '100%',
-              width: `${gameData.nextBadge.progress}%`,
-              backgroundColor: '#00FF00',
+              color: '#00FF00',
+              fontFamily: 'var(--font-geist-mono), monospace',
+              fontSize: '0.75rem',
+              mb: 0.5,
+            }}
+          >
+            NEXT BADGE: {gameData.nextBadge.name}
+          </Typography>
+          <LinearProgress 
+            variant="determinate" 
+            value={gameData.nextBadge.progress}
+            sx={{
+              height: 10,
+              backgroundColor: '#222222',
+              '& .MuiLinearProgress-bar': {
+                backgroundColor: '#CCFF00',
+              },
             }}
           />
         </Box>
-        
-        <Typography
-          sx={{
-            color: '#00FF00',
-            fontFamily: 'var(--font-geist-mono), monospace',
-            fontSize: '0.625rem',
-            textAlign: 'right',
-          }}
-        >
-          {gameData.nextBadge.progress}% COMPLETE
-        </Typography>
       </Box>
     </Box>
   );

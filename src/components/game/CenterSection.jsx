@@ -9,11 +9,8 @@ import SendIcon from '@mui/icons-material/Send';
 import SkipNextIcon from '@mui/icons-material/SkipNext';
 import TerminalIcon from '@mui/icons-material/Terminal';
 
-// Import gameplay data from JSON file
-import gameplayDataJson from '@/data/gameplay_data.json';
-
-// Get the gameplay data from the imported JSON
-const gameplayData = gameplayDataJson.gameplay_demo.turns;
+// We don't need to import gameplay data directly anymore
+// The processed data is passed from the parent component
 
 // Function to clean text from markup tags
 const cleanTextFromTags = (text) => {
@@ -31,6 +28,8 @@ const CenterSection = forwardRef(({
   onTypingChange = () => {},
   onWaitingForInputChange = () => {},
   onTurnIndexChange = () => {},
+  onMilestoneChange = () => {}, // New callback for milestone changes
+  onDataTrackingUpdate = () => {}, // New callback for data tracking updates
 }, ref) => {
   // Main game state
   const [currentTurnIndex, setCurrentTurnIndex] = useState(0);
@@ -47,6 +46,7 @@ const CenterSection = forwardRef(({
   const [points, setPoints] = useState(0);
   const [streak, setStreak] = useState(0);
   const [accuracy, setAccuracy] = useState("N/A");
+  const [currentMilestone, setCurrentMilestone] = useState(null);
   
   // Refs
   const consoleEndRef = useRef(null);
@@ -90,6 +90,11 @@ const CenterSection = forwardRef(({
     onTurnIndexChange(currentTurnIndex);
   }, [currentTurnIndex, onTurnIndexChange]);
   
+  // Notify parent component when milestone changes
+  useEffect(() => {
+    onMilestoneChange(currentMilestone);
+  }, [currentMilestone, onMilestoneChange]);
+  
   // Clean up interval on unmount
   useEffect(() => {
     return () => {
@@ -129,7 +134,7 @@ const CenterSection = forwardRef(({
   
   // Process turn when currentTurnIndex changes
   useEffect(() => {
-    if (isRunning && !isTyping && !waitingForInput && currentTurnIndex < gameplayData.length) {
+    if (isRunning && !isTyping && !waitingForInput && window.gameplayData && currentTurnIndex < window.gameplayData.length) {
       processTurn(currentTurnIndex);
     }
   }, [currentTurnIndex, isRunning]);
@@ -154,25 +159,80 @@ const CenterSection = forwardRef(({
   // Function to process a specific turn
   const processTurn = (turnIndex) => {
     // Check if we've reached the end of the game
-    if (turnIndex >= gameplayData.length) {
+    if (!window.gameplayData || turnIndex >= window.gameplayData.length) {
       setIsRunning(false);
       setIsComplete(true);
       return;
     }
     
     // Get the current turn data
-    const currentTurn = gameplayData[turnIndex];
+    const currentTurn = window.gameplayData[turnIndex];
     console.log(`Processing turn ${turnIndex}:`, currentTurn.turn_number, currentTurn.speaker, currentTurn.message_type);
+    
+    // Check for milestone change
+    if (currentTurn.milestone && currentTurn.milestone !== currentMilestone) {
+      setCurrentMilestone(currentTurn.milestone);
+    }
+    
+    // Handle data tracking updates
+    if (currentTurn.message_type === "data_tracking" && currentTurn.dataTracking) {
+      handleDataTrackingUpdate(currentTurn.dataTracking);
+    }
     
     // Clean the content from tags
     const cleanedContent = cleanTextFromTags(currentTurn.content);
     
     // Handle different types of turns
-    if (currentTurn.speaker === "Monica") {
+    if (currentTurn.speaker === "monica") {
       handleMonicaResponse(cleanedContent, currentTurn);
+    } else if (currentTurn.message_type === "challenge_setup") {
+      handleChallengeSetup(cleanedContent, currentTurn);
     } else {
       handleRegularMessage(cleanedContent, currentTurn);
     }
+  };
+  
+  // Handle data tracking updates
+  const handleDataTrackingUpdate = (dataTracking) => {
+    // Update local game stats if needed
+    if (dataTracking.criticalThinkingScore) {
+      setAccuracy(dataTracking.criticalThinkingScore);
+    }
+    
+    // Pass data tracking to parent component for radar chart update
+    onDataTrackingUpdate(dataTracking);
+    
+    // Add a system message about the update
+    setConsoleOutput(prev => [
+      ...prev,
+      {
+        speaker: "system",
+        content: "Critical Thinking Metrics Updated",
+        type: "system_message"
+      }
+    ]);
+  };
+  
+  // Handle challenge setup
+  const handleChallengeSetup = (cleanedContent, currentTurn) => {
+    setIsTyping(true);
+    
+    // Add challenge setup message to console output
+    setConsoleOutput(prev => [
+      ...prev,
+      {
+        speaker: "system",
+        content: `Challenge: ${currentTurn.challenge_id}`,
+        type: "challenge_setup"
+      },
+      {
+        speaker: "system",
+        content: `Scenario: ${currentTurn.scenario}`,
+        type: "scenario"
+      }
+    ]);
+    
+    setIsTyping(false);
   };
   
   // Handle Monica's responses
@@ -199,7 +259,7 @@ const CenterSection = forwardRef(({
           setConsoleOutput(prev => [
             ...prev,
             {
-              speaker: "Monica",
+              speaker: "monica",
               content: currentMessageRef.current,
               type: "response"
             }
@@ -287,7 +347,7 @@ const CenterSection = forwardRef(({
     setAutoAdvance(true); // Always set auto-advance to true when starting
     
     // If we're at the end, reset to the beginning
-    if (currentTurnIndex >= gameplayData.length) {
+    if (!window.gameplayData || currentTurnIndex >= window.gameplayData.length) {
       setCurrentTurnIndex(0);
       setConsoleOutput([]);
       setIsComplete(false);
@@ -346,7 +406,7 @@ const CenterSection = forwardRef(({
       const nextTurnIndex = currentTurnIndex + 1;
       
       // Check if we've reached the end of the game
-      if (nextTurnIndex >= gameplayData.length) {
+      if (!window.gameplayData || nextTurnIndex >= window.gameplayData.length) {
         setIsRunning(false);
         setIsComplete(true);
         return;
@@ -413,6 +473,11 @@ const CenterSection = forwardRef(({
   
   // Render different console message styles
   const renderConsoleMessage = (message, index) => {
+    // Properly capitalize speaker names for display
+    const displaySpeaker = message.speaker === "monica" ? "Monica" : 
+                         message.speaker === "rc" ? "R.C." : 
+                         message.speaker;
+    
     if (message.type === "system_message") {
       return (
         <Typography key={index} variant="body2" sx={{ fontFamily: 'monospace', color: 'cyan', whiteSpace: 'pre-wrap' }}>
@@ -422,19 +487,19 @@ const CenterSection = forwardRef(({
     } else if (message.type === "prompt") {
       return (
         <Typography key={index} variant="body2" sx={{ fontFamily: 'monospace', color: 'red', whiteSpace: 'pre-wrap' }}>
-          <strong>[{message.speaker}]:</strong> {message.content}
+          <strong>[{displaySpeaker}]:</strong> {message.content}
         </Typography>
       );
     } else if (message.type === "response") {
       return (
         <Typography key={index} variant="body2" sx={{ fontFamily: 'monospace', color: 'green', whiteSpace: 'pre-wrap' }}>
-          <strong>[{message.speaker}]:</strong> {message.content}
+          <strong>[{displaySpeaker}]:</strong> {message.content}
         </Typography>
       );
     } else if (message.type === "feedback") {
       return (
         <Typography key={index} variant="body2" sx={{ fontFamily: 'monospace', color: 'yellow', whiteSpace: 'pre-wrap' }}>
-          <strong>[{message.speaker}]:</strong> {message.content}
+          <strong>[{displaySpeaker}]:</strong> {message.content}
         </Typography>
       );
     } else if (message.type === "user_input") {
@@ -452,13 +517,13 @@ const CenterSection = forwardRef(({
     } else if (message.type === "surprise") {
       return (
         <Typography key={index} variant="body2" sx={{ fontFamily: 'monospace', color: 'orange', whiteSpace: 'pre-wrap' }}>
-          <strong>[{message.speaker}]:</strong> {message.content}
+          <strong>[{displaySpeaker}]:</strong> {message.content}
         </Typography>
       );
     } else {
       return (
         <Typography key={index} variant="body2" sx={{ fontFamily: 'monospace', color: 'white', whiteSpace: 'pre-wrap' }}>
-          <strong>[{message.speaker}]:</strong> {message.content}
+          <strong>[{displaySpeaker}]:</strong> {message.content}
         </Typography>
       );
     }
@@ -484,11 +549,25 @@ const CenterSection = forwardRef(({
       return;
     }
     
+    // Check if gameplayData exists
+    if (!window.gameplayData) {
+      console.warn("Cannot jump to turn: gameplayData is not initialized");
+      setConsoleOutput([]);
+      setCurrentTurnIndex(0);
+      return;
+    }
+    
+    // Ensure turnIndex doesn't exceed gameplayData length
+    if (turnIndex >= window.gameplayData.length) {
+      console.warn(`Turn index ${turnIndex} exceeds gameplayData length ${window.gameplayData.length}`);
+      turnIndex = window.gameplayData.length - 1;
+    }
+    
     // Process all turns up to the selected turn without animations
     const newConsoleOutput = [];
     
     for (let i = 0; i < turnIndex; i++) {
-      const turn = gameplayData[i];
+      const turn = window.gameplayData[i];
       const cleanedContent = cleanTextFromTags(turn.content);
       
       if (turn.speaker === "Monica") {
@@ -522,7 +601,7 @@ const CenterSection = forwardRef(({
     setCurrentTurnIndex(turnIndex);
     
     // If the current turn requires input, set waiting for input
-    const currentTurn = gameplayData[turnIndex];
+    const currentTurn = window.gameplayData[turnIndex];
     if (currentTurn && currentTurn.requires_input) {
       setWaitingForInput(true);
       setInputType(currentTurn.input_type || "text");
@@ -696,7 +775,7 @@ const CenterSection = forwardRef(({
           Accuracy: {accuracy}
         </Typography>
         <Typography variant="body2" sx={{ color: '#00CC00', fontFamily: 'var(--font-geist-mono), monospace' }}>
-          Turn: {currentTurnIndex + 1}/{gameplayData.length}
+          Turn: {currentTurnIndex + 1}/{window.gameplayData?.length || 1}
         </Typography>
       </Box>
     </Box>

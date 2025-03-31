@@ -1,0 +1,643 @@
+{
+    "alphaContinuum": {
+      "intro": [
+        {
+          "speaker": "rc",
+          "text": "Welcome to the Alpha Continuum, Gifted One! This may be your first parallel universe—fundamental challenges to sharpen your edge. In Alpha, you'll face new types of challenges that test your critical thinking in different ways. Caliban's lurking, but weaker here. Let's start with the Base!"
+        },
+        {
+          "speaker": "system",
+          "text": "NEW CHALLENGE TYPES UNLOCKED: Keyword Matching, Statement Arrangement, Fill in the Blanks"
+        }
+      ],
+      "baseMilestone": {
+        "intro": [
+          {
+            "speaker": "rc",
+            "text": "Alpha's Base sets your foundation—up to five challenges to lock in your skills for this universe."
+          }
+        ],
+        "challenges": [
+          {
+            "id": "alpha_base_1",
+            "type": "traditional",
+            "scenario": "MULTIVERSE FINANCES CO's retail platform: engagement up 30%, investments up 5%, missing €2M in revenue.",
+            "speaker": "rc",
+            "text": "Assess and fix this gap, Gifted One! Platform optimization can recover millions in potential revenue."
+          },
+          {
+            "speaker": "monica",
+            "text": "Users lack trust—add guided options and risk visuals to lift retention by 8%."
+          },
+          {
+            "speaker": "rc",
+            "text": "Practical edge! You've turned a gap into MULTIVERSE FINANCES CO gold. +150 XP!"
+          },
+          {
+            "dataTracking": {
+              "criticalThinkingScore": 82,
+              "problemSolvingSpeed": 76,
+              "practicalApplicationScore": 85,
+              "difficultyAdjustment": "Increased by 5% from Base Level",
+              "xpGained": 150,
+              "streakImpact": "Day 1 of streak"
+            }
+          },
+          {
+            "id": "alpha_base_2",
+            "type": "traditional",
+            "scenario": "Rival fund crashed, MULTIVERSE FINANCES CO inquiries dropped 10%, risking €1M in outflows.",
+            "speaker": "rc",
+            "text": "What's your move? Effective crisis communication could prevent massive panic outflows."
+          },
+          {
+            "speaker": "monica",
+            "text": "Rebuild trust with a stability report—save €1M in client funds."
+          },
+          {
+            "speaker": "rc",
+            "text": "Quick pivot! That's how you hold the line. +160 XP!"
+          },
+          {
+            "dataTracking": {
+              "criticalThinkingScore": 84,
+              "adaptabilityScore": 80,
+              "practicalApplicationScore": 86,
+              "difficultyAdjustment": "Increased by 10%",
+              "xpGained": 160,
+              "streakImpact": "Day 2 of streak, 1.1x multiplier"
+            }
+          },
+          {
+            "id": "alpha_base_3",
+            "type": "traditional",
+            "scenario": "New clients up 20%, support calls up 25%, costing €500K extra.",
+            "speaker": "rc",
+            "text": "Interpret this trend! Finding the right scaling strategy is crucial when your client base expands rapidly."
+          },
+          {
+            "speaker": "monica",
+            "text": "Newbies need help—scale support to cut €500K in losses."
+          },
+          {
+            "speaker": "rc",
+            "text": "Smart read! You've spotted the bottleneck. +170 XP!"
+          },
+          {
+            "dataTracking": {
+              "criticalThinkingScore": 85,
+              "patternRecognitionScore": 82,
+              "practicalApplicationScore": 87,
+              "difficultyAdjustment": "Increased by 15%",
+              "xpGained": 170,
+              "streakImpact": "Day 3 of streak, 1.2x multiplier"
+            }
+          },
+          {
+            "id": "alpha_base_4",
+            "type": "traditional",
+            "scenario": "If rates drop, stocks rise. Rates fell 1%.",
+            "speaker": "rc",
+            "text": "Deduce and act! Remember when I taught you about rapid tactical adjustments in shifting markets?"
+          },
+          {
+            "speaker": "monica",
+            "text": "Stocks will rise—boost equity exposure for €1M gains."
+          },
+          {
+            "speaker": "rc",
+            "text": "Logical strike! You're ahead of the curve. +180 XP!"
+          },
+          {
+            "dataTracking": {
+              "criticalThinkingScore": 86,
+              "deductiveReasoningScore": 88,
+              "practicalApplicationScore": 88,
+              "difficultyAdjustment": "Increased by 20%",
+              "xpGained": 180,
+              "streakImpact": "Day 4 of streak, 1.3x multiplier"
+            }
+          },
+          {
+            "id": "alpha_base_5",
+            "type": "traditional",
+            "scenario": "'Cut small funds—focus saves €800K.'",
+            "speaker": "rc",
+            "text": "Evaluate this plan! Always think about the balance between short-term savings and long-term growth potential."
+          },
+          {
+            "speaker": "monica",
+            "text": "Short-term win, but risks long-term growth—needs more data."
+          },
+          {
+            "speaker": "rc",
+            "text": "Balanced call! You're thinking big for MULTIVERSE FINANCES CO. +190 XP!"
+          },
+          {
+            "dataTracking": {
+              "criticalThinkingScore": 87,
+              "evaluationScore": 89,
+              "strategicJudgmentScore": 86,
+              "difficultyAdjustment": "Increased by 25%",
+              "xpGained": 190,
+              "streakImpact": "Day 5 of streak, 1.5x multiplier"
+            }
+          }
+        ]
+      },
+      "inferenceMilestone": {
+        "intro": [
+          {
+            "speaker": "rc",
+            "text": "Inference time, Gifted One! Draw conclusions from the noise—your first Alpha milestone. Some challenges will ask you to identify specific key insights by typing exact words or phrases."
+          },
+          {
+            "speaker": "caliban",
+            "text": "Your guesses will fail you here—too weak!"
+          }
+        ],
+        "challenges": [
+          {
+            "id": "alpha_inference_keyword_1",
+            "type": "keywordMatching",
+            "scenario": "MULTIVERSE FINANCES CO's sustainable energy fund has outperformed the market by 12% for two consecutive quarters. Three major institutional investors have inquired about increasing their positions in the last week. The fund manager has identified five new potential investments in emerging green tech companies.",
+            "speaker": "rc",
+            "text": "Based on this data, what's the key inference you can make? Type the exact phrase that represents the most actionable insight. Look for patterns that connect fund performance with client behavior.",
+            "correctAnswers": ["growing demand for green investments", "expand sustainable energy fund", "increase green tech investments", "rising institutional interest in sustainability"],
+            "hints": ["Look at what institutional investors are asking about", "Consider what the fund manager is already preparing for", "Focus on the trend rather than specific numbers"]
+          },
+          {
+            "speaker": "monica",
+            "text": "growing demand for green investments"
+          },
+          {
+            "speaker": "rc",
+            "text": "Brilliant inference! You've identified the growing trend that MULTIVERSE FINANCES CO can leverage for growth. This is exactly the kind of insight that puts us ahead of competitors. +200 XP!"
+          },
+          {
+            "dataTracking": {
+              "inferenceScore": 86,
+              "keywordRecognitionScore": 90,
+              "patternRecognitionScore": 84,
+              "difficultyAdjustment": "Increased by 15%",
+              "xpGained": 200,
+              "streakImpact": "Day 1 of milestone streak"
+            }
+          },
+          {
+            "id": "alpha_inference_2",
+            "type": "traditional",
+            "scenario": "Three tech giants boosted quantum R&D, MULTIVERSE FINANCES CO inquiries up 10%, hinting at €3M in potential assets.",
+            "speaker": "rc",
+            "text": "Infer and act, Gifted One! When I was designing trading algorithms, I learned that industry signals often appear before market moves."
+          },
+          {
+            "speaker": "monica",
+            "text": "Quantum's hot—clients see growth. Pitch quantum funds for €3M in assets."
+          },
+          {
+            "speaker": "rc",
+            "text": "Market-savvy inference! You've got the edge. +175 XP!"
+          },
+          {
+            "dataTracking": {
+              "inferenceScore": 88,
+              "patternRecognitionScore": 85,
+              "strategicInsightScore": 82,
+              "difficultyAdjustment": "Increased by 10%",
+              "xpGained": 175,
+              "streakImpact": "Day 2 of milestone streak, 1.1x multiplier"
+            }
+          },
+          {
+            "id": "alpha_inference_3",
+            "type": "traditional",
+            "scenario": "Two rivals followed, their stocks up 15%.",
+            "speaker": "rc",
+            "text": "New inference—go! Remember that market timing can make all the difference in capturing opportunities."
+          },
+          {
+            "speaker": "monica",
+            "text": "Momentum's building—MULTIVERSE FINANCES CO should invest now for €1.5M upside."
+          },
+          {
+            "speaker": "rc",
+            "text": "Quick pivot! You're riding the wave. +185 XP!"
+          },
+          {
+            "dataTracking": {
+              "inferenceScore": 89,
+              "patternRecognitionScore": 86,
+              "strategicInsightScore": 84,
+              "difficultyAdjustment": "Increased by 15%",
+              "xpGained": 185,
+              "streakImpact": "Day 3 of milestone streak, 1.2x multiplier"
+            }
+          }
+        ]
+      },
+      "assumptionMilestone": {
+        "intro": [
+          {
+            "speaker": "rc",
+            "text": "Assumption Territory, Gifted One! Uncover what's hidden beneath the arguments. I'll sometimes ask you to identify the exact assumption by typing specific words or phrases."
+          }
+        ],
+        "challenges": [
+          {
+            "id": "alpha_assumption_keyword_1",
+            "type": "keywordMatching",
+            "scenario": "CFO: 'We must implement the new risk assessment protocol by Q3, or we won't be compliant with upcoming regulations. It'll cost €800K but save us €2M in potential penalties.'",
+            "speaker": "rc",
+            "text": "Gifted One, identify the key assumption in this statement. Type the exact word or phrase that represents the hidden assumption. What's being taken for granted about the regulatory environment?",
+            "correctAnswers": ["upcoming regulations", "potential penalties", "compliance requirement", "regulatory certainty"],
+            "hints": ["The CFO is making a prediction about something that hasn't happened yet", "What's being assumed about the regulatory future?", "Is there certainty about what will happen?"]
+          },
+          {
+            "speaker": "monica",
+            "text": "upcoming regulations"
+          },
+          {
+            "speaker": "rc",
+            "text": "Sharp eye! You've identified the assumption that the regulations will definitely come into effect as predicted. Always question whether regulatory changes are certain before investing heavily. +180 XP!"
+          },
+          {
+            "dataTracking": {
+              "assumptionIdentificationScore": 85,
+              "keywordRecognitionScore": 82,
+              "riskAwarenessScore": 80,
+              "difficultyAdjustment": "Increased by 10%",
+              "xpGained": 180,
+              "streakImpact": "Day 1 of milestone streak"
+            }
+          },
+          {
+            "id": "alpha_assumption_2",
+            "type": "traditional",
+            "scenario": "Strategist: 'Double ESG investments—demand's up 20%, promising €2M in new funds.'",
+            "speaker": "rc",
+            "text": "Spot the assumptions! I've seen many promising trends fizzle out when everyone rushed in without questioning the fundamentals."
+          },
+          {
+            "speaker": "monica",
+            "text": "Assumes demand lasts and ESG outperforms—could overcommit €2M if wrong."
+          },
+          {
+            "speaker": "rc",
+            "text": "Uncovered like a pro! You're looking beneath the surface to find those hidden risks. +200 XP!"
+          },
+          {
+            "dataTracking": {
+              "assumptionIdentificationScore": 92,
+              "riskAwarenessScore": 88,
+              "difficultyAdjustment": "Increased by 10%",
+              "xpGained": 200,
+              "streakImpact": "Day 2 of milestone streak, 1.1x multiplier"
+            }
+          },
+          {
+            "id": "alpha_assumption_3",
+            "type": "traditional",
+            "scenario": "Tech lead: 'New CRM saves €1M in churn.'",
+            "speaker": "rc",
+            "text": "What's assumed here? Even I fell for tech promises in my early days—always question if the tool actually solves the core problem."
+          },
+          {
+            "speaker": "monica",
+            "text": "That churn's tech-driven, not service-based—€1M's at risk otherwise."
+          },
+          {
+            "speaker": "rc",
+            "text": "Deep cut! You're slicing through the noise. +210 XP!"
+          },
+          {
+            "dataTracking": {
+              "assumptionIdentificationScore": 93,
+              "riskAwarenessScore": 89,
+              "difficultyAdjustment": "Increased by 15%",
+              "xpGained": 210,
+              "streakImpact": "Day 3 of milestone streak, 1.2x multiplier"
+            }
+          }
+        ]
+      },
+      "deductionMilestone": {
+        "intro": [
+          {
+            "speaker": "rc",
+            "text": "Deduction Domain, Gifted One! Logic rules here—chain it tight. Some challenges will test your ability to arrange statements in logical order or complete logical chains."
+          }
+        ],
+        "challenges": [
+          {
+            "id": "alpha_deduction_arrange_1",
+            "type": "statementArrangement",
+            "scenario": "MULTIVERSE FINANCES CO is analyzing the impact of rising interest rates on various sectors of their portfolio.",
+            "speaker": "rc",
+            "text": "Gifted One, arrange these statements in logical order to demonstrate the correct chain of deduction. Respond with the sequence of numbers (e.g., '3,1,4,2'). Begin with the triggering event, then follow the cause and effect relationships.",
+            "statements": [
+              "1. Bond valuations decline as rates rise.",
+              "2. The central bank has announced a 0.75% interest rate increase.",
+              "3. MULTIVERSE FINANCES CO should reduce duration in their fixed income portfolio.",
+              "4. Longer-duration bonds are more sensitive to interest rate changes."
+            ],
+            "correctOrder": "2,1,4,3",
+            "hints": ["What happens first in this scenario?", "Which statement describes the basic market principle about rates and bonds?", "What fact about bond characteristics comes next?", "What action should the company take based on all this information?"]
+          },
+          {
+            "speaker": "monica",
+            "text": "2,1,4,3"
+          },
+          {
+            "speaker": "rc",
+            "text": "Flawless logical chain! You've demonstrated perfect deductive reasoning, protecting client assets from interest rate risk. This kind of clear thinking keeps portfolios safe during market transitions. +210 XP!"
+          },
+          {
+            "dataTracking": {
+              "deductiveReasoningScore": 88,
+              "logicalPrecisionScore": 85,
+              "sequenceRecognitionScore": 90,
+              "difficultyAdjustment": "Increased by 15%",
+              "xpGained": 210,
+              "streakImpact": "Day 1 of milestone streak"
+            }
+          },
+          {
+            "id": "alpha_deduction_fill_1",
+            "type": "fillInBlanks",
+            "scenario": "If inflation exceeds 4%, central banks raise interest rates. If interest rates rise, growth stocks underperform value stocks.",
+            "speaker": "rc",
+            "text": "Complete this deductive chain, Gifted One: 'If inflation reaches 4.5%, then central banks will _____ interest rates, which means growth stocks will _____ value stocks, therefore MULTIVERSE FINANCES CO should _____ its allocation to growth stocks.' Apply the principles to deduce the necessary actions.",
+            "blanks": 3,
+            "correctAnswers": [
+              ["raise", "increase", "hike", "elevate"],
+              ["underperform", "perform worse than", "lag", "trail"],
+              ["reduce", "decrease", "lower", "cut"]
+            ],
+            "hints": ["What do central banks do when inflation exceeds their target?", "How do growth stocks perform relative to value stocks when rates rise?", "What portfolio adjustment makes sense given these relationships?"]
+          },
+          {
+            "speaker": "monica",
+            "text": "raise, underperform, reduce"
+          },
+          {
+            "speaker": "rc",
+            "text": "Perfect deductive reasoning! Your logical precision would save MULTIVERSE FINANCES CO millions in potential losses by properly positioning ahead of market shifts. I wish I'd had your clarity during the crash. +240 XP!"
+          },
+          {
+            "dataTracking": {
+              "deductiveReasoningScore": 89,
+              "logicalPrecisionScore": 87,
+              "linguisticPrecisionScore": 86,
+              "difficultyAdjustment": "Increased by 18%",
+              "xpGained": 240,
+              "streakImpact": "Day 2 of milestone streak, 1.1x multiplier"
+            }
+          },
+          {
+            "id": "alpha_deduction_3",
+            "type": "traditional",
+            "scenario": "If inflation exceeds 3%, rates rise. If rates rise, growth stocks drop. Inflation's at 3.5%.",
+            "speaker": "rc",
+            "text": "Deduce and recommend! Follow the logical chain all the way to an actionable conclusion. This is how we stay ahead of market transitions."
+          },
+          {
+            "speaker": "monica",
+            "text": "Inflation's over 3%, so rates rise, and growth stocks drop. Shift to value stocks—save €1M in losses."
+          },
+          {
+            "speaker": "rc",
+            "text": "Flawless chain! You're a logic maestro. +225 XP!"
+          },
+          {
+            "dataTracking": {
+              "deductiveReasoningScore": 95,
+              "logicalPrecisionScore": 92,
+              "practicalApplicationScore": 88,
+              "difficultyAdjustment": "Increased by 10%",
+              "xpGained": 225,
+              "streakImpact": "Day 3 of milestone streak, 1.2x multiplier"
+            }
+          }
+        ]
+      },
+      "interpretationMilestone": {
+        "intro": [
+          {
+            "speaker": "rc",
+            "text": "Interpretation Realm, Gifted One! Turn data into insight—let's go! Some challenges will ask you to complete interpretations by filling in missing words or phrases."
+          }
+        ],
+        "challenges": [
+          {
+            "id": "alpha_interpretation_fill_1",
+            "type": "fillInBlanks",
+            "scenario": "MULTIVERSE FINANCES CO's client acquisition data shows new accounts up 22%, average account size down 15%, support calls up 30%, and long-term retention down 8%.",
+            "speaker": "rc",
+            "text": "Gifted One, complete this interpretation by filling in the blanks with the most accurate conclusions: 'The data shows we're attracting more _____ clients who require _____ support and have _____ loyalty.' Connect multiple data points to identify trends.",
+            "blanks": 3,
+            "correctAnswers": [
+              ["smaller", "smaller-value", "lower-value", "retail"],
+              ["more", "additional", "greater", "intensive"],
+              ["lower", "less", "reduced", "weaker"]
+            ],
+            "hints": ["What does the decrease in average account size tell you about client type?", "What can you conclude from the increase in support calls?", "What does the retention data suggest about loyalty?"]
+          },
+          {
+            "speaker": "monica",
+            "text": "smaller, more, lower"
+          },
+          {
+            "speaker": "rc",
+            "text": "Precise interpretation! You've accurately read between the data points to understand the client acquisition dynamics. This insight can help MULTIVERSE FINANCES CO adjust its strategy to improve profitability. +220 XP!"
+          },
+          {
+            "dataTracking": {
+              "interpretationScore": 87,
+              "patternRecognitionScore": 85,
+              "linguisticPrecisionScore": 84,
+              "difficultyAdjustment": "Increased by 15%",
+              "xpGained": 220,
+              "streakImpact": "Day 1 of milestone streak"
+            }
+          },
+          {
+            "id": "alpha_interpretation_2",
+            "type": "traditional",
+            "scenario": "MULTIVERSE FINANCES CO insurance: policies up 20%, values down 15%, satisfaction up 10%, claims down 5%.",
+            "speaker": "rc",
+            "text": "What's the story here? Look beyond the individual numbers to find the underlying pattern. The most valuable interpretations balance multiple factors."
+          },
+          {
+            "speaker": "monica",
+            "text": "Smaller policies are winning clients—satisfaction's up, claims down. Could save €1M in payouts."
+          },
+          {
+            "speaker": "rc",
+            "text": "Masterful read! You've cracked the code. +250 XP!"
+          },
+          {
+            "dataTracking": {
+              "interpretationScore": 94,
+              "patternRecognitionScore": 90,
+              "analyticalDepthScore": 92,
+              "difficultyAdjustment": "Increased by 10%",
+              "xpGained": 250,
+              "streakImpact": "Day 2 of milestone streak, 1.1x multiplier"
+            }
+          },
+          {
+            "id": "alpha_interpretation_3",
+            "type": "traditional",
+            "scenario": "Fund returns up 8%, redemptions up 12%, losing €700K.",
+            "speaker": "rc",
+            "text": "Interpret this mess! Sometimes client behavior defies logic—I learned that markets aren't just about numbers but about emotions too."
+          },
+          {
+            "speaker": "monica",
+            "text": "Clients cash out despite gains—fear's driving it. Calm them to save €700K."
+          },
+          {
+            "speaker": "rc",
+            "text": "Sharp insight! You've got the pulse. +260 XP!"
+          },
+          {
+            "dataTracking": {
+              "interpretationScore": 95,
+              "patternRecognitionScore": 91,
+              "analyticalDepthScore": 93,
+              "difficultyAdjustment": "Increased by 15%",
+              "xpGained": 260,
+              "streakImpact": "Day 3 of milestone streak, 1.2x multiplier"
+            }
+          }
+        ]
+      },
+      "evaluationMilestone": {
+        "intro": [
+          {
+            "speaker": "rc",
+            "text": "Evaluation Sector, Gifted One! Judge arguments like a pro—your final Alpha milestone."
+          }
+        ],
+        "challenges": [
+          {
+            "id": "alpha_evaluation_1",
+            "type": "traditional",
+            "scenario": "M&A: 'Acquire Quantum Pay—blockchain tech, 200% growth, rivals did it.' Could save €2M in R&D.",
+            "speaker": "rc",
+            "text": "Evaluate this pitch! Remember to look past the buzzwords and examine the substance. I once approved a merge based on hype—lesson learned."
+          },
+          {
+            "speaker": "monica",
+            "text": "Weak—tech's vague, growth might not scale, rivals aren't proof. Needs cost and fit data."
+          },
+          {
+            "speaker": "rc",
+            "text": "Surgical takedown! You're guarding MULTIVERSE FINANCES CO's wallet with exactly the kind of critical thinking I wish I'd had. +275 XP!"
+          },
+          {
+            "dataTracking": {
+              "evaluationScore": 96,
+              "argumentAnalysisScore": 95,
+              "strategicJudgmentScore": 92,
+              "difficultyAdjustment": "Increased by 10%",
+              "xpGained": 275,
+              "streakImpact": "Day 1 of milestone streak"
+            }
+          },
+          {
+            "id": "alpha_evaluation_2",
+            "type": "traditional",
+            "scenario": "'Cut training—profits up €1M without it.'",
+            "speaker": "rc",
+            "text": "Judge this cut! Always consider both immediate savings and long-term capability impacts when evaluating cost-cutting proposals."
+          },
+          {
+            "speaker": "monica",
+            "text": "Short-sighted—skills drive long-term gains. Risky without retention proof."
+          },
+          {
+            "speaker": "rc",
+            "text": "Wise call! You're thinking beyond the quarterly numbers—that kind of foresight builds sustainable success. +285 XP!"
+          },
+          {
+            "dataTracking": {
+              "evaluationScore": 97,
+              "argumentAnalysisScore": 96,
+              "strategicJudgmentScore": 93,
+              "difficultyAdjustment": "Increased by 15%",
+              "xpGained": 285,
+              "streakImpact": "Day 2 of milestone streak, 1.1x multiplier"
+            }
+          },
+          {
+            "id": "alpha_evaluation_3",
+            "type": "traditional",
+            "scenario": "'Go all-in on bonds—rates are dropping, €1.5M in gains.'",
+            "speaker": "rc",
+            "text": "Final evaluation! The strongest evaluations balance opportunity against risk—something I learned too late."
+          },
+          {
+            "speaker": "monica",
+            "text": "Tempting, but overweights risk—needs diversification data."
+          },
+          {
+            "speaker": "rc",
+            "text": "Balanced mastery! You've found that sweet spot between caution and opportunity that defines true strategic thinking. +295 XP!"
+          },
+          {
+            "dataTracking": {
+              "evaluationScore": 98,
+              "argumentAnalysisScore": 97,
+              "strategicJudgmentScore": 94,
+              "difficultyAdjustment": "Increased by 20%",
+              "xpGained": 295,
+              "streakImpact": "Day 3 of milestone streak, 1.2x multiplier"
+            }
+          }
+        ]
+      },
+      "weeklyReview": [
+        {
+          "speaker": "system",
+          "text": "WEEK 1 COMPLETE - PERFORMANCE REVIEW"
+        },
+        {
+          "speaker": "rc",
+          "text": "Epic first week, Gifted One! Average score: 91%. Perfect Streak (5 days) = 20% faster decisions. Badges: 'Inference Slicer', 'Weekly Champion', 'Word Precision Master'. Top 35%—Beta's in sight!"
+        },
+        {
+          "speaker": "monica",
+          "text": "Thanks, R.C.! I'm feeling the edge—where to next?"
+        },
+        {
+          "speaker": "rc",
+          "text": "Keep slashing through Alpha—deepen your insights. You're especially strong with the keyword matching challenges! Consistency's your weapon!"
+        },
+        {
+          "dataTracking": {
+            "weeklyPerformanceMetrics": {
+              "overallScore": 91,
+              "completionRate": 100,
+              "consistencyScore": 95,
+              "rankingPercentile": 35,
+              "improvementRate": "+12% from baseline",
+              "totalXPGained": 1800,
+              "badgesEarned": ["Inference Slicer", "Weekly Champion", "Word Precision Master"],
+              "streakBenefit": "Decision speed +20%",
+              "challengeTypePerformance": {
+                "traditional": "90% accuracy",
+                "keywordMatching": "95% accuracy", 
+                "statementArrangement": "90% accuracy",
+                "fillInBlanks": "92% accuracy"
+              }
+            },
+            "progressTowardsBetaNexus": "40% complete"
+          }
+        }
+      ]
+    }
+  }
+  
+  
