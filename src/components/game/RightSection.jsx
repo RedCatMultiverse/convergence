@@ -12,6 +12,13 @@ const initialGameData = {
     { name: 'MATRIXRUNNER', score: 11720, isUser: false },
     { name: 'CYBERWOLF', score: 10890, isUser: false }
   ],
+  stats: {
+    xp: 12450,
+    streak: '5 DAYS',
+    decisionSpeed: '+20%',
+    badges: '3/12',
+    isXpUpdating: false
+  },
   cognitiveMeasures: {
     criticalThinkingScore: 80,
     problemSolvingSpeed: 75,
@@ -115,6 +122,37 @@ const RightSection = ({ dataTracking = null }) => {
       }
     });
   }, [dataTracking]);
+
+  // Handle XP updates
+  useEffect(() => {
+    if (!dataTracking?.xpGained) return;
+
+    const newXp = gameData.stats.xp + dataTracking.xpGained;
+    
+    // Update XP with animation
+    setGameData(prev => ({
+      ...prev,
+      stats: {
+        ...prev.stats,
+        xp: newXp,
+        isXpUpdating: true
+      },
+      leaderboard: prev.leaderboard.map(item => 
+        item.isUser ? { ...item, score: newXp } : item
+      )
+    }));
+
+    // Reset animation after delay
+    setTimeout(() => {
+      setGameData(prev => ({
+        ...prev,
+        stats: {
+          ...prev.stats,
+          isXpUpdating: false
+        }
+      }));
+    }, 1000);
+  }, [dataTracking]);
   
   return (
     <Box
@@ -216,6 +254,119 @@ const RightSection = ({ dataTracking = null }) => {
             </Typography>
           </Box>
         ))}
+      </Box>
+      
+      {/* Stats Section */}
+      <Box 
+        sx={{
+          border: '1px solid #33FF33',
+          padding: 2,
+          mb: 2.5,
+          backgroundColor: 'rgba(0, 255, 0, 0.05)',
+        }}
+      >
+        <Typography
+          sx={{
+            color: '#CCFF00',
+            fontFamily: 'var(--font-geist-mono), monospace',
+            fontSize: '0.875rem',
+            mb: 1,
+          }}
+        >
+          AGENT STATUS:
+        </Typography>
+        
+        <Box sx={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 1 }}>
+          {/* XP */}
+          <Box sx={{ display: 'flex', justifyContent: 'space-between', pr: 2 }}>
+            <Typography
+              sx={{
+                color: '#00FF00',
+                fontFamily: 'var(--font-geist-mono), monospace',
+                fontSize: '0.875rem',
+              }}
+            >
+              XP:
+            </Typography>
+            <Typography
+              sx={{
+                color: gameData.stats.isXpUpdating ? '#FFFF00' : '#00FF00',
+                fontFamily: 'var(--font-geist-mono), monospace',
+                fontSize: '0.875rem',
+                fontWeight: gameData.stats.isXpUpdating ? 'bold' : 'normal',
+                transition: 'all 0.3s ease-in-out',
+              }}
+            >
+              {gameData.stats.xp}
+            </Typography>
+          </Box>
+          
+          {/* Streak */}
+          <Box sx={{ display: 'flex', justifyContent: 'space-between', pr: 2 }}>
+            <Typography
+              sx={{
+                color: '#00FF00',
+                fontFamily: 'var(--font-geist-mono), monospace',
+                fontSize: '0.875rem',
+              }}
+            >
+              STREAK:
+            </Typography>
+            <Typography
+              sx={{
+                color: '#00FF00',
+                fontFamily: 'var(--font-geist-mono), monospace',
+                fontSize: '0.875rem',
+              }}
+            >
+              {gameData.stats.streak}
+            </Typography>
+          </Box>
+          
+          {/* Decision Speed */}
+          <Box sx={{ display: 'flex', justifyContent: 'space-between', pr: 2 }}>
+            <Typography
+              sx={{
+                color: '#00FF00',
+                fontFamily: 'var(--font-geist-mono), monospace',
+                fontSize: '0.875rem',
+              }}
+            >
+              SPEED:
+            </Typography>
+            <Typography
+              sx={{
+                color: '#00FF00',
+                fontFamily: 'var(--font-geist-mono), monospace',
+                fontSize: '0.875rem',
+              }}
+            >
+              {gameData.stats.decisionSpeed}
+            </Typography>
+          </Box>
+          
+          {/* Badges */}
+          <Box sx={{ display: 'flex', justifyContent: 'space-between', pr: 2 }}>
+            <Typography
+              sx={{
+                color: '#00FF00',
+                fontFamily: 'var(--font-geist-mono), monospace',
+                fontSize: '0.875rem',
+              }}
+            >
+              BADGES:
+            </Typography>
+            <Typography
+              sx={{
+                color: '#00FF00',
+                fontFamily: 'var(--font-geist-mono), monospace',
+                fontSize: '0.875rem',
+              }}
+            >
+              {gameData.stats.badges}
+            </Typography>
+          </Box>
+        </Box>
       </Box>
       
       {/* Cognitive Map */}
