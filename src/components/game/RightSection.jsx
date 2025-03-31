@@ -34,11 +34,11 @@ const initialGameData = {
 const RightSection = ({ dataTracking = null }) => {
   const [gameData, setGameData] = useState(initialGameData);
   const [animatedValues, setAnimatedValues] = useState({
-    criticalThinkingScore: 80,
-    problemSolvingSpeed: 75,
-    practicalApplicationScore: 78,
-    adaptabilityScore: 76,
-    patternRecognitionScore: 77
+    criticalThinkingScore: { value: 80, isUpdating: false },
+    problemSolvingSpeed: { value: 75, isUpdating: false },
+    practicalApplicationScore: { value: 78, isUpdating: false },
+    adaptabilityScore: { value: 76, isUpdating: false },
+    patternRecognitionScore: { value: 77, isUpdating: false }
   });
   
   // Animation effect for radar chart values
@@ -71,66 +71,49 @@ const RightSection = ({ dataTracking = null }) => {
     // Check for properties in dataTracking and set target values
     properties.forEach(prop => {
       if (dataTracking[prop]) {
-        targetValues[prop] = dataTracking[prop];
+        targetValues[prop] = {
+          value: dataTracking[prop],
+          isUpdating: true
+        };
       }
     });
     
     // Check for mapped properties
     Object.entries(propertyMap).forEach(([dataProp, localProp]) => {
       if (dataTracking[dataProp]) {
-        targetValues[localProp] = dataTracking[dataProp];
+        targetValues[localProp] = {
+          value: dataTracking[dataProp],
+          isUpdating: true
+        };
       }
     });
     
     // If no target values, don't animate
     if (Object.keys(targetValues).length === 0) return;
     
-    // Start animation
-    let animationFrame;
-    let startTime;
-    const duration = 1000; // 1 second animation
-    
-    const animate = (timestamp) => {
-      if (!startTime) startTime = timestamp;
-      const elapsed = timestamp - startTime;
-      const progress = Math.min(elapsed / duration, 1);
-      
-      // Calculate intermediate values
-      const newValues = { ...currentValues };
-      Object.entries(targetValues).forEach(([key, targetValue]) => {
-        if (currentValues[key] !== undefined) {
-          newValues[key] = currentValues[key] + (targetValue - currentValues[key]) * progress;
-        }
-      });
-      
-      // Update state with interpolated values
-      setAnimatedValues(newValues);
-      
-      // Continue animation if not complete
-      if (progress < 1) {
-        animationFrame = requestAnimationFrame(animate);
-      } else {
-        // Update game data with final values
-        setGameData(prevData => ({
-          ...prevData,
-          cognitiveMeasures: {
-            ...prevData.cognitiveMeasures,
-            ...Object.fromEntries(
-              Object.entries(newValues).map(([key, value]) => [key, Math.round(value)])
-            )
+    // Update values that have changed
+    Object.entries(targetValues).forEach(([prop, target]) => {
+      if (currentValues[prop]?.value !== target.value) {
+        setAnimatedValues(prev => ({
+          ...prev,
+          [prop]: {
+            value: target.value,
+            isUpdating: true
           }
         }));
+        
+        // Reset isUpdating after animation
+        setTimeout(() => {
+          setAnimatedValues(prev => ({
+            ...prev,
+            [prop]: {
+              value: target.value,
+              isUpdating: false
+            }
+          }));
+        }, 1000); // Match animation duration
       }
-    };
-    
-    animationFrame = requestAnimationFrame(animate);
-    
-    // Clean up
-    return () => {
-      if (animationFrame) {
-        cancelAnimationFrame(animationFrame);
-      }
-    };
+    });
   }, [dataTracking]);
   
   return (
@@ -257,11 +240,78 @@ const RightSection = ({ dataTracking = null }) => {
         
         {/* Radar visualization */}
         <Box sx={{ height: '200px', position: 'relative', mb: 1 }}>
+          {/* Reference Lines */}
+          <Box sx={{ position: 'absolute', left: 0, right: 0, height: '100%' }}>
+            {/* 100% line */}
+            <Box sx={{ 
+              position: 'absolute', 
+              top: '20px',
+              left: '40px',
+              right: '20px',
+              borderTop: '2px dashed #FFFF00',
+              opacity: 0.5
+            }}>
+              <Typography sx={{ 
+                position: 'absolute',
+                left: '-30px',
+                top: '-10px',
+                color: '#FFFF00',
+                fontSize: '0.7rem',
+                fontFamily: 'monospace'
+              }}>
+                100%
+              </Typography>
+            </Box>
+            
+            {/* 50% line */}
+            <Box sx={{ 
+              position: 'absolute', 
+              top: '75px',
+              left: '40px',
+              right: '20px',
+              borderTop: '2px dashed #FFFF00',
+              opacity: 0.5
+            }}>
+              <Typography sx={{ 
+                position: 'absolute',
+                left: '-25px',
+                top: '-10px',
+                color: '#FFFF00',
+                fontSize: '0.7rem',
+                fontFamily: 'monospace'
+              }}>
+                50%
+              </Typography>
+            </Box>
+
+            {/* 0% line */}
+            <Box sx={{ 
+              position: 'absolute', 
+              top: '130px',
+              left: '40px',
+              right: '20px',
+              borderTop: '2px dashed #FFFF00',
+              opacity: 0.5
+            }}>
+              <Typography sx={{ 
+                position: 'absolute',
+                left: '-25px',
+                top: '-10px',
+                color: '#FFFF00',
+                fontSize: '0.7rem',
+                fontFamily: 'monospace'
+              }}>
+                0%
+              </Typography>
+            </Box>
+          </Box>
+
           {/* Skill pillars */}
           {Object.entries(animatedValues).map(([skill, value], index) => {
-            const position = index * 50 + 20; // Distribute evenly
+            const position = index * 50 + 65; // Move bars right by adjusting starting position
             const displaySkill = skill.substring(0, 3).toUpperCase();
-            const effectiveValue = Math.min(Math.max(Math.round(value), 0), 100); // Clamp between 0-100
+            const effectiveValue = Math.min(Math.max(Math.round(value.value), 0), 100); // Clamp between 0-100
+            const barHeight = (effectiveValue / 100) * 130; // Scale height to match value exactly
             
             return (
               <Box 
@@ -271,27 +321,41 @@ const RightSection = ({ dataTracking = null }) => {
                   bottom: '30px',
                   left: `${position}px`,
                   width: '40px',
-                  height: '130px',
+                  height: '160px', // Increased total height
                   display: 'flex',
                   flexDirection: 'column',
+                  alignItems: 'center',
                 }}
               >
-                {/* Pillar fill - taller means better score */}
-                <Box 
-                  sx={{ 
-                    position: 'relative',
-                    width: '40px',
-                    height: `${effectiveValue * 1.3}px`,
-                    backgroundColor: effectiveValue > 85 ? '#00FF00' : effectiveValue > 75 ? '#00DD00' : '#00BB00',
-                    transition: 'height 0.3s ease-out',
-                  }} 
-                />
-                
-                {/* Pillar base */}
+                {/* Bar */}
                 <Box sx={{ 
+                  width: '100%',
+                  height: '130px',
+                  position: 'relative',
+                  backgroundColor: 'rgba(0, 255, 0, 0.1)',
+                  border: '1px solid rgba(0, 255, 0, 0.3)',
+                }}>
+                  <Box sx={{ 
+                    position: 'absolute',
+                    bottom: 0,
+                    width: '100%',
+                    height: `${barHeight}px`,
+                    backgroundColor: '#00FF00',
+                    transition: 'all 0.5s ease-in-out',
+                    animation: value.isUpdating ? 'pulse 1s infinite' : 'none',
+                    '@keyframes pulse': {
+                      '0%': { backgroundColor: '#00FF00' },
+                      '50%': { backgroundColor: '#FFFF00' },
+                      '100%': { backgroundColor: '#00FF00' }
+                    }
+                  }} />
+                </Box>
+                
+                {/* Label */}
+                <Box sx={{ 
+                  width: '100%',
                   height: '30px',
-                  width: '40px',
-                  backgroundColor: '#222222',
+                  backgroundColor: '#111',
                   border: '1px solid #00FF00',
                   display: 'flex',
                   alignItems: 'center',
@@ -299,67 +363,25 @@ const RightSection = ({ dataTracking = null }) => {
                 }}>
                   <Typography sx={{ 
                     color: '#00FF00',
-                    fontFamily: 'var(--font-geist-mono), monospace',
-                    fontSize: '0.75rem',
+                    fontSize: '0.8rem',
+                    fontFamily: 'monospace'
                   }}>
                     {displaySkill}
                   </Typography>
                 </Box>
                 
-                {/* Score label */}
+                {/* Value */}
                 <Typography sx={{ 
-                  position: 'absolute',
-                  bottom: '0',
-                  width: '100%',
-                  textAlign: 'center',
-                  color: '#CCFF00',
-                  fontFamily: 'var(--font-geist-mono), monospace',
-                  fontSize: '0.625rem',
-                  mt: 1,
-                  transform: 'translateY(24px)'
+                  color: '#00FF00',
+                  fontSize: '0.8rem',
+                  fontFamily: 'monospace',
+                  mt: 0.5
                 }}>
                   {effectiveValue}
                 </Typography>
               </Box>
             );
           })}
-          
-          {/* Reference lines */}
-          <Box sx={{ 
-            position: 'absolute', 
-            left: '10px', 
-            right: '10px', 
-            bottom: '100px', 
-            height: '1px', 
-            borderTop: '2px dashed #CCFF00'
-          }} />
-          <Typography sx={{ 
-            position: 'absolute', 
-            left: '2px', 
-            bottom: '105px', 
-            color: '#CCFF00', 
-            fontSize: '0.625rem'
-          }}>
-            70%
-          </Typography>
-          
-          <Box sx={{ 
-            position: 'absolute', 
-            left: '10px', 
-            right: '10px', 
-            bottom: '130px', 
-            height: '1px', 
-            borderTop: '2px dashed #CCFF00'
-          }} />
-          <Typography sx={{ 
-            position: 'absolute', 
-            left: '2px', 
-            bottom: '135px', 
-            color: '#CCFF00', 
-            fontSize: '0.625rem'
-          }}>
-            100%
-          </Typography>
         </Box>
       </Box>
       
