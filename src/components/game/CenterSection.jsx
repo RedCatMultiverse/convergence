@@ -317,7 +317,7 @@ const CenterSection = forwardRef(({
             if (lastIndex >= 0) {
               updatedOutput[lastIndex] = {
                 ...updatedOutput[lastIndex],
-                showCursor: false // Remove cursor when done typing
+                showCursor: false
               };
             }
             
@@ -327,6 +327,8 @@ const CenterSection = forwardRef(({
           // Typing is complete
           setIsTyping(false);
           setIsMonicaTyping(false);
+          
+          // No need for an extra scroll here since we're already scrolling during typing
         }
       };
       
@@ -908,17 +910,10 @@ const CenterSection = forwardRef(({
             <>
               {consoleOutput.map((message, index) => renderConsoleMessage(message, index))}
               
-              {/* Show typing indicator when typing */}
-              {isTyping && (
-                <Typography variant="body2" sx={{ fontFamily: 'var(--font-geist-mono), monospace', color: '#00CC00' }}>
-                  <span className="typing-indicator">_</span>
-                </Typography>
-              )}
+              {/* Reference for auto-scrolling */}
+              <div ref={consoleEndRef} style={{ height: '1px', width: '100%' }} />
             </>
           )}
-          
-          {/* Reference for auto-scrolling */}
-          <div ref={consoleEndRef} style={{ height: '1px', width: '100%' }} />
         </Box>
       </Box>
       
