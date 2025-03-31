@@ -149,6 +149,12 @@ export default function GameDemo() {
       delete window.gameplayData;
     };
   }, []);
+
+  useEffect(() => {
+    if (currentMilestone) {
+      console.log("Main page: Current milestone changed to", currentMilestone);
+    }
+  }, [currentMilestone]);
   
   // Reference to the CenterSection component
   const centerSectionRef = useRef(null);
@@ -212,6 +218,9 @@ export default function GameDemo() {
     if (centerSectionRef.current && centerSectionRef.current.jumpToTurn) {
       centerSectionRef.current.jumpToTurn(turnIndex);
       setCurrentTurnIndex(turnIndex);
+      
+      // The milestone update will be handled by the center section
+      // It will call onMilestoneChange which will update our state
     }
   };
   
@@ -222,7 +231,10 @@ export default function GameDemo() {
   
   // Update currentMilestone when it changes in CenterSection
   const handleMilestoneChange = (milestone) => {
-    setCurrentMilestone(milestone);
+    if (milestone !== currentMilestone) {
+      console.log(`Main: Updating milestone from ${currentMilestone} to ${milestone}`);
+      setCurrentMilestone(milestone);
+    }
   };
   
   // Update dataTracking when it changes in CenterSection

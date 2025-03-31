@@ -29,15 +29,17 @@ const getGameData = (currentMilestone) => {
   if (currentMilestone) {
     const currentIndex = milestoneIndexMap[currentMilestone];
     
-    allMilestones.forEach((milestone, index) => {
-      if (index < currentIndex) {
-        milestone.status = 'completed';
-      } else if (index === currentIndex) {
-        milestone.status = 'active';
-      } else {
-        milestone.status = 'unlocked';
-      }
-    });
+    if (currentIndex !== undefined) {
+      allMilestones.forEach((milestone, index) => {
+        if (index < currentIndex) {
+          milestone.status = 'completed';
+        } else if (index === currentIndex) {
+          milestone.status = 'active';
+        } else {
+          milestone.status = 'unlocked';
+        }
+      });
+    }
   }
   
   return {
@@ -56,6 +58,8 @@ const getGameData = (currentMilestone) => {
 
 const LeftSection = ({ title = "STATUS MONITOR", currentMilestone = null }) => {
   const [gameData, setGameData] = useState(getGameData(currentMilestone));
+  
+  console.log("LeftSection current milestone:", currentMilestone);
   
   // Update game data when currentMilestone changes
   useEffect(() => {
@@ -159,18 +163,18 @@ const LeftSection = ({ title = "STATUS MONITOR", currentMilestone = null }) => {
             sx={{
               backgroundColor: milestone.status === 'completed' ? '#222222' : '#111111',
               border: milestone.status === 'completed' ? '1px solid #555555' : 
-                     milestone.status === 'active' ? '2px solid #FFFF00' : 
-                     milestone.status === 'next' ? '2px solid #CCFF00' : '1px solid #33FF33',
+                     milestone.status === 'active' ? '2px solid #FFFF00' : '1px solid #33FF33',
               padding: 1.5,
+              transition: 'all 0.3s ease-in-out',
             }}
           >
             <Typography
               sx={{
                 color: milestone.status === 'completed' ? '#555555' : 
-                       milestone.status === 'active' ? '#FFFF00' : 
-                       milestone.status === 'next' ? '#CCFF00' : '#33FF33',
+                       milestone.status === 'active' ? '#FFFF00' : '#33FF33',
                 fontFamily: 'var(--font-geist-mono), monospace',
                 fontSize: '0.875rem',
+                transition: 'color 0.3s ease-in-out',
               }}
             >
               {milestone.name} [{milestone.status.toUpperCase()}]

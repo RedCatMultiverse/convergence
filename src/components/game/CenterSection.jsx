@@ -55,6 +55,9 @@ const CenterSection = forwardRef(({
   const currentCharIndexRef = useRef(0);
   const currentMessageRef = useRef("");
   
+  // Define a local state to track gameplayData availability
+  const [gameDataAvailable, setGameDataAvailable] = useState(false);
+  
   // Expose methods to parent component
   useImperativeHandle(ref, () => ({
     handleStart,
@@ -93,6 +96,9 @@ const CenterSection = forwardRef(({
   // Notify parent component when milestone changes
   useEffect(() => {
     onMilestoneChange(currentMilestone);
+    
+    // We'll add milestone announcements in a more controlled way in other functions
+    // This useEffect should not add milestone announcements
   }, [currentMilestone, onMilestoneChange]);
   
   // Clean up interval on unmount
@@ -156,6 +162,19 @@ const CenterSection = forwardRef(({
     };
   }, [isRunning, autoAdvance, isTyping, waitingForInput, isComplete, currentTurnIndex]);
   
+  // Handle data tracking updates
+  const handleDataTrackingUpdate = (dataTracking) => {
+    // Update local game stats if needed
+    if (dataTracking.criticalThinkingScore) {
+      setAccuracy(dataTracking.criticalThinkingScore);
+    }
+    
+    // Pass data tracking to parent component for radar chart update
+    onDataTrackingUpdate(dataTracking);
+    
+    // We don't need to add a message about the metrics update
+  };
+  
   // Function to process a specific turn
   const processTurn = (turnIndex) => {
     // Check if we've reached the end of the game
@@ -171,6 +190,18 @@ const CenterSection = forwardRef(({
     
     // Check for milestone change
     if (currentTurn.milestone && currentTurn.milestone !== currentMilestone) {
+      console.log(`Turn ${turnIndex} changes milestone from ${currentMilestone} to ${currentTurn.milestone}`);
+      
+      // Add milestone announcement to console output, but only when the milestone actually changes
+      setConsoleOutput(prev => [
+        ...prev,
+        {
+          speaker: "system",
+          content: `\n**** MILESTONE: ${currentTurn.milestone.toUpperCase()} ****\n`,
+          type: "milestone_announcement"
+        }
+      ]);
+      
       setCurrentMilestone(currentTurn.milestone);
     }
     
@@ -190,27 +221,6 @@ const CenterSection = forwardRef(({
     } else {
       handleRegularMessage(cleanedContent, currentTurn);
     }
-  };
-  
-  // Handle data tracking updates
-  const handleDataTrackingUpdate = (dataTracking) => {
-    // Update local game stats if needed
-    if (dataTracking.criticalThinkingScore) {
-      setAccuracy(dataTracking.criticalThinkingScore);
-    }
-    
-    // Pass data tracking to parent component for radar chart update
-    onDataTrackingUpdate(dataTracking);
-    
-    // Add a system message about the update
-    setConsoleOutput(prev => [
-      ...prev,
-      {
-        speaker: "system",
-        content: "Critical Thinking Metrics Updated",
-        type: "system_message"
-      }
-    ]);
   };
   
   // Handle challenge setup
@@ -476,12 +486,35 @@ const CenterSection = forwardRef(({
     // Properly capitalize speaker names for display
     const displaySpeaker = message.speaker === "monica" ? "Monica" : 
                          message.speaker === "rc" ? "R.C." : 
+                         message.speaker === "system" ? "SYSTEM" :
                          message.speaker;
     
-    if (message.type === "system_message") {
+    if (message.type === "milestone_announcement") {
+      return (
+        <Typography 
+          key={index} 
+          variant="body1" 
+          sx={{ 
+            fontFamily: 'monospace', 
+            color: '#FFFF00', 
+            whiteSpace: 'pre-wrap',
+            textAlign: 'center',
+            fontWeight: 'bold',
+            fontSize: '1.2rem',
+            my: 2,
+            textShadow: '0 0 5px #FFFF00',
+            borderTop: '1px dashed #FFFF00',
+            borderBottom: '1px dashed #FFFF00',
+            py: 1
+          }}
+        >
+          {message.content}
+        </Typography>
+      );
+    } else if (message.type === "system_message" || message.type === "challenge_setup" || message.type === "scenario") {
       return (
         <Typography key={index} variant="body2" sx={{ fontFamily: 'monospace', color: 'cyan', whiteSpace: 'pre-wrap' }}>
-          {message.content}
+          {message.type === "challenge_setup" || message.type === "scenario" ? `[${displaySpeaker}]: ${message.content}` : message.content}
         </Typography>
       );
     } else if (message.type === "prompt") {
@@ -529,7 +562,7 @@ const CenterSection = forwardRef(({
     }
   };
 
-  // Function to jump to a specific turn
+  // Function to jump to a specific turn - logic for adding milestone announcements
   const jumpToTurn = (turnIndex) => {
     // Clear any existing interval
     if (typingIntervalRef.current) {
@@ -546,6 +579,7 @@ const CenterSection = forwardRef(({
     if (turnIndex === 0) {
       setConsoleOutput([]);
       setCurrentTurnIndex(0);
+      setCurrentMilestone(null);
       return;
     }
     
@@ -554,6 +588,7 @@ const CenterSection = forwardRef(({
       console.warn("Cannot jump to turn: gameplayData is not initialized");
       setConsoleOutput([]);
       setCurrentTurnIndex(0);
+      setCurrentMilestone(null);
       return;
     }
     
@@ -565,18 +600,36 @@ const CenterSection = forwardRef(({
     
     // Process all turns up to the selected turn without animations
     const newConsoleOutput = [];
+    let latestMilestone = null;
+    let milestoneAdded = false;
     
     for (let i = 0; i < turnIndex; i++) {
       const turn = window.gameplayData[i];
       const cleanedContent = cleanTextFromTags(turn.content);
       
-      if (turn.speaker === "Monica") {
+      // Only add a milestone announcement when the milestone first changes
+      if (turn.milestone && turn.milestone !== latestMilestone) {
+        if (!milestoneAdded || turn.milestone !== latestMilestone) {
+          // Add the milestone announcement just before the turn that introduces the milestone
+          newConsoleOutput.push({
+            speaker: "system",
+            content: `\n**** MILESTONE: ${turn.milestone.toUpperCase()} ****\n`,
+            type: "milestone_announcement"
+          });
+          milestoneAdded = true;
+        }
+        
+        latestMilestone = turn.milestone;
+      }
+      
+      // Add the normal turn message
+      if (turn.speaker === "monica") {
         newConsoleOutput.push({
-          speaker: "Monica",
+          speaker: "monica",
           content: cleanedContent,
           type: "response"
         });
-      } else {
+      } else if (turn.message_type !== "data_tracking") { // Skip data_tracking messages
         newConsoleOutput.push({
           speaker: turn.speaker,
           content: cleanedContent,
@@ -592,6 +645,17 @@ const CenterSection = forwardRef(({
           setAccuracy(turn.skill_diagnosis.accuracy);
         }
       }
+      
+      // Handle data tracking updates silently
+      if (turn.message_type === "data_tracking" && turn.dataTracking) {
+        onDataTrackingUpdate(turn.dataTracking);
+      }
+    }
+    
+    // Update milestone based on the jumpto position
+    if (latestMilestone !== currentMilestone) {
+      console.log(`Updating milestone from ${currentMilestone} to ${latestMilestone}`);
+      setCurrentMilestone(latestMilestone);
     }
     
     // Set the new console output
@@ -600,8 +664,24 @@ const CenterSection = forwardRef(({
     // Set the current turn index
     setCurrentTurnIndex(turnIndex);
     
-    // If the current turn requires input, set waiting for input
+    // Also check the current turn for milestone
     const currentTurn = window.gameplayData[turnIndex];
+    if (currentTurn && currentTurn.milestone && currentTurn.milestone !== latestMilestone) {
+      console.log(`Updating milestone from ${latestMilestone} to ${currentTurn.milestone} (current turn)`);
+      setCurrentMilestone(currentTurn.milestone);
+      
+      // Only add a milestone announcement if this is a new milestone
+      setConsoleOutput(prev => [
+        ...prev,
+        {
+          speaker: "system",
+          content: `\n**** MILESTONE: ${currentTurn.milestone.toUpperCase()} ****\n`,
+          type: "milestone_announcement"
+        }
+      ]);
+    }
+    
+    // If the current turn requires input, set waiting for input
     if (currentTurn && currentTurn.requires_input) {
       setWaitingForInput(true);
       setInputType(currentTurn.input_type || "text");
@@ -610,6 +690,49 @@ const CenterSection = forwardRef(({
     // Scroll to bottom after a short delay to ensure rendering is complete
     setTimeout(autoScrollToBottom, 100);
   };
+
+  // Check for window.gameplayData availability
+  useEffect(() => {
+    const checkGameData = () => {
+      if (window.gameplayData && window.gameplayData.length > 0) {
+        setGameDataAvailable(true);
+      } else {
+        setTimeout(checkGameData, 100); // Check again after a short delay
+      }
+    };
+    
+    checkGameData();
+    
+    return () => {
+      // Cleanup if needed
+    };
+  }, []);
+
+  // Stats box at the bottom
+  const renderStatsBox = () => (
+    <Box
+      sx={{
+        padding: 1,
+        borderTop: '1px solid #00FF00',
+        backgroundColor: 'rgba(0, 0, 0, 0.7)',
+        display: 'flex',
+        justifyContent: 'space-between',
+      }}
+    >
+      <Typography variant="body2" sx={{ color: '#00CC00', fontFamily: 'var(--font-geist-mono), monospace' }}>
+        Points: {points}
+      </Typography>
+      <Typography variant="body2" sx={{ color: '#00CC00', fontFamily: 'var(--font-geist-mono), monospace' }}>
+        Streak: {streak}
+      </Typography>
+      <Typography variant="body2" sx={{ color: '#00CC00', fontFamily: 'var(--font-geist-mono), monospace' }}>
+        Accuracy: {accuracy}
+      </Typography>
+      <Typography variant="body2" sx={{ color: '#00CC00', fontFamily: 'var(--font-geist-mono), monospace' }}>
+        Turn: {currentTurnIndex + 1}/{window.gameplayData?.length || 1}
+      </Typography>
+    </Box>
+  );
 
   return (
     <Box
@@ -694,13 +817,21 @@ const CenterSection = forwardRef(({
             backgroundSize: '100% 4px',
           }}
         >
-          {consoleOutput.map((message, index) => renderConsoleMessage(message, index))}
-          
-          {/* Show typing indicator when typing */}
-          {isTyping && (
-            <Typography variant="body2" sx={{ fontFamily: 'var(--font-geist-mono), monospace', color: '#00CC00' }}>
-              <span className="typing-indicator">_</span>
+          {!gameDataAvailable ? (
+            <Typography variant="body1" sx={{ color: '#00CC00', fontFamily: 'var(--font-geist-mono), monospace' }}>
+              Initializing game data...
             </Typography>
+          ) : (
+            <>
+              {consoleOutput.map((message, index) => renderConsoleMessage(message, index))}
+              
+              {/* Show typing indicator when typing */}
+              {isTyping && (
+                <Typography variant="body2" sx={{ fontFamily: 'var(--font-geist-mono), monospace', color: '#00CC00' }}>
+                  <span className="typing-indicator">_</span>
+                </Typography>
+              )}
+            </>
           )}
           
           {/* Reference for auto-scrolling */}
@@ -756,28 +887,7 @@ const CenterSection = forwardRef(({
       )}
       
       {/* Game stats */}
-      <Box
-        sx={{
-          padding: 1,
-          borderTop: '1px solid #00FF00',
-          backgroundColor: 'rgba(0, 0, 0, 0.7)',
-          display: 'flex',
-          justifyContent: 'space-between',
-        }}
-      >
-        <Typography variant="body2" sx={{ color: '#00CC00', fontFamily: 'var(--font-geist-mono), monospace' }}>
-          Points: {points}
-        </Typography>
-        <Typography variant="body2" sx={{ color: '#00CC00', fontFamily: 'var(--font-geist-mono), monospace' }}>
-          Streak: {streak}
-        </Typography>
-        <Typography variant="body2" sx={{ color: '#00CC00', fontFamily: 'var(--font-geist-mono), monospace' }}>
-          Accuracy: {accuracy}
-        </Typography>
-        <Typography variant="body2" sx={{ color: '#00CC00', fontFamily: 'var(--font-geist-mono), monospace' }}>
-          Turn: {currentTurnIndex + 1}/{window.gameplayData?.length || 1}
-        </Typography>
-      </Box>
+      {renderStatsBox()}
     </Box>
   );
 });
