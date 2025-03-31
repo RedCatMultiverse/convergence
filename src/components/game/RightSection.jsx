@@ -239,7 +239,7 @@ const RightSection = ({ dataTracking = null }) => {
         </Typography>
         
         {/* Radar visualization */}
-        <Box sx={{ height: '200px', position: 'relative', mb: 1 }}>
+        <Box sx={{ height: '180px', position: 'relative', mb: 1 }}>
           {/* Reference Lines */}
           <Box sx={{ position: 'absolute', left: 0, right: 0, height: '100%' }}>
             {/* 100% line */}
@@ -318,7 +318,7 @@ const RightSection = ({ dataTracking = null }) => {
                 key={skill}
                 sx={{ 
                   position: 'absolute',
-                  bottom: 16,
+                  bottom: -4,
                   left: `${position}px`,
                   width: '40px',
                   display: 'flex',
