@@ -245,43 +245,92 @@ const CenterSection = forwardRef(({
     setIsTyping(false);
   };
   
-  // Handle Monica's responses
+  // Handle Monica's responses with more realistic typing animation
   const handleMonicaResponse = (cleanedContent, currentTurn) => {
     setIsTyping(true);
     setUserInput("");
     
-    // Reset character index
-    currentCharIndexRef.current = 0;
-    currentMessageRef.current = cleanedContent;
-    
-    // Start typing effect for Monica's response
-    typingIntervalRef.current = setInterval(() => {
-      if (currentCharIndexRef.current <= currentMessageRef.current.length) {
-        setUserInput(currentMessageRef.current.substring(0, currentCharIndexRef.current));
-        currentCharIndexRef.current++;
-      } else {
-        // Clear the interval when typing is complete
-        clearInterval(typingIntervalRef.current);
-        typingIntervalRef.current = null;
-        
-        // Add Monica's response to console output
-        setTimeout(() => {
-          setConsoleOutput(prev => [
-            ...prev,
-            {
-              speaker: "monica",
-              content: currentMessageRef.current,
-              type: "response"
-            }
-          ]);
-          
-          setUserInput("");
-          setIsTyping(false);
-          
-          // Auto-advance logic is now handled in a separate useEffect
-        }, 500);
+    // First, show the speaker name with a blinking cursor
+    setConsoleOutput(prev => [
+      ...prev,
+      {
+        speaker: "monica",
+        content: "", // Start with empty content
+        type: "response",
+        showCursor: true // Flag to show blinking cursor
       }
-    }, 15);
+    ]);
+    
+    // Artificially pause before typing starts (1-2 seconds)
+    setTimeout(() => {
+      // Reset character index
+      currentCharIndexRef.current = 0;
+      currentMessageRef.current = cleanedContent;
+      
+      // Calculate random typing speed for human-like effect
+      const getRandomTypingSpeed = () => {
+        // Base speed with random variation
+        const baseSpeed = 40; // milliseconds
+        const randomVariation = Math.random() * 80; // 0-80ms random variation
+        
+        // Occasionally add longer pauses (simulate thinking)
+        if (Math.random() < 0.10) { // 10% chance of a longer pause
+          return baseSpeed + randomVariation + Math.random() * 500; // Add 0-500ms extra
+        }
+        
+        return baseSpeed + randomVariation;
+      };
+      
+      // Function to type the next character with variable speed
+      const typeNextChar = () => {
+        if (currentCharIndexRef.current <= currentMessageRef.current.length) {
+          setConsoleOutput(prev => {
+            const updatedOutput = [...prev];
+            const lastIndex = updatedOutput.length - 1;
+            
+            if (lastIndex >= 0) {
+              updatedOutput[lastIndex] = {
+                ...updatedOutput[lastIndex],
+                content: currentMessageRef.current.substring(0, currentCharIndexRef.current),
+                showCursor: true // Keep cursor visible while typing
+              };
+            }
+            
+            return updatedOutput;
+          });
+          
+          currentCharIndexRef.current++;
+          
+          // Auto-scroll while typing
+          autoScrollToBottom();
+          
+          // Schedule the next character with a random typing speed
+          setTimeout(typeNextChar, getRandomTypingSpeed());
+        } else {
+          // Typing is complete, remove the cursor
+          setConsoleOutput(prev => {
+            const updatedOutput = [...prev];
+            const lastIndex = updatedOutput.length - 1;
+            
+            if (lastIndex >= 0) {
+              updatedOutput[lastIndex] = {
+                ...updatedOutput[lastIndex],
+                showCursor: false // Remove cursor when done typing
+              };
+            }
+            
+            return updatedOutput;
+          });
+          
+          // Typing is complete
+          setIsTyping(false);
+        }
+      };
+      
+      // Start the typing animation
+      typeNextChar();
+      
+    }, 1000 + Math.random() * 1000); // Random delay between 1-2 seconds
   };
   
   // Handle regular messages
@@ -489,18 +538,25 @@ const CenterSection = forwardRef(({
                          message.speaker === "system" ? "SYSTEM" :
                          message.speaker;
     
+    // Base typography styles with larger font
+    const baseStyles = {
+      fontFamily: 'monospace', 
+      whiteSpace: 'pre-wrap',
+      fontSize: '1.3rem',  // 30% larger font size
+      mb: 1.5
+    };
+    
     if (message.type === "milestone_announcement") {
       return (
         <Typography 
           key={index} 
           variant="body1" 
           sx={{ 
-            fontFamily: 'monospace', 
+            ...baseStyles,
             color: '#FFFF00', 
-            whiteSpace: 'pre-wrap',
             textAlign: 'center',
             fontWeight: 'bold',
-            fontSize: '1.2rem',
+            fontSize: '1.5rem',
             my: 2,
             textShadow: '0 0 5px #FFFF00',
             borderTop: '1px dashed #FFFF00',
@@ -513,49 +569,68 @@ const CenterSection = forwardRef(({
       );
     } else if (message.type === "system_message" || message.type === "challenge_setup" || message.type === "scenario") {
       return (
-        <Typography key={index} variant="body2" sx={{ fontFamily: 'monospace', color: 'cyan', whiteSpace: 'pre-wrap' }}>
+        <Typography key={index} variant="body2" sx={{ ...baseStyles, color: '#00CCFF' }}>
           {message.type === "challenge_setup" || message.type === "scenario" ? `[${displaySpeaker}]: ${message.content}` : message.content}
         </Typography>
       );
     } else if (message.type === "prompt") {
       return (
-        <Typography key={index} variant="body2" sx={{ fontFamily: 'monospace', color: 'red', whiteSpace: 'pre-wrap' }}>
+        <Typography key={index} variant="body2" sx={{ ...baseStyles, color: '#E0E0E0' }}>
           <strong>[{displaySpeaker}]:</strong> {message.content}
         </Typography>
       );
     } else if (message.type === "response") {
       return (
-        <Typography key={index} variant="body2" sx={{ fontFamily: 'monospace', color: 'green', whiteSpace: 'pre-wrap' }}>
+        <Typography key={index} variant="body2" sx={{ ...baseStyles, color: '#00FF00', position: 'relative' }}>
           <strong>[{displaySpeaker}]:</strong> {message.content}
+          {message.showCursor && (
+            <Box
+              component="span"
+              sx={{
+                display: 'inline-block',
+                position: 'relative',
+                width: '0.6rem',
+                height: '1.3rem',
+                backgroundColor: '#00FF00',
+                ml: '1px',
+                animation: 'blink 1s step-end infinite',
+                '@keyframes blink': {
+                  '0%, 100%': { opacity: 1 },
+                  '50%': { opacity: 0 }
+                },
+                verticalAlign: 'text-bottom'
+              }}
+            />
+          )}
         </Typography>
       );
     } else if (message.type === "feedback") {
       return (
-        <Typography key={index} variant="body2" sx={{ fontFamily: 'monospace', color: 'yellow', whiteSpace: 'pre-wrap' }}>
+        <Typography key={index} variant="body2" sx={{ ...baseStyles, color: '#FFFF00' }}>
           <strong>[{displaySpeaker}]:</strong> {message.content}
         </Typography>
       );
     } else if (message.type === "user_input") {
       return (
-        <Typography key={index} variant="body2" sx={{ fontFamily: 'monospace', color: 'white', whiteSpace: 'pre-wrap' }}>
+        <Typography key={index} variant="body2" sx={{ ...baseStyles, color: '#FFFFFF' }}>
           <strong>[User]:</strong> {message.content}
         </Typography>
       );
     } else if (message.type === "dashboard_report_snippet") {
       return (
-        <Typography key={index} variant="body2" sx={{ fontFamily: 'monospace', color: 'magenta', whiteSpace: 'pre-wrap' }}>
+        <Typography key={index} variant="body2" sx={{ ...baseStyles, color: '#00CCFF' }}>
           {message.content}
         </Typography>
       );
     } else if (message.type === "surprise") {
       return (
-        <Typography key={index} variant="body2" sx={{ fontFamily: 'monospace', color: 'orange', whiteSpace: 'pre-wrap' }}>
+        <Typography key={index} variant="body2" sx={{ ...baseStyles, color: '#FFAA00' }}>
           <strong>[{displaySpeaker}]:</strong> {message.content}
         </Typography>
       );
     } else {
       return (
-        <Typography key={index} variant="body2" sx={{ fontFamily: 'monospace', color: 'white', whiteSpace: 'pre-wrap' }}>
+        <Typography key={index} variant="body2" sx={{ ...baseStyles, color: '#CCCCCC' }}>
           <strong>[{displaySpeaker}]:</strong> {message.content}
         </Typography>
       );
