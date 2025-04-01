@@ -102,6 +102,8 @@ const StatusBadge = styled(Box)`
   padding: 5px 15px;
   border-radius: 15px;
   font-size: 14px;
+  width: 170px;
+  text-align: center;
   font-family: var(--font-geist-mono), monospace;
 `;
 
@@ -116,7 +118,7 @@ const ModuleTitle = styled(Typography)`
   font-size: 18px;
   font-weight: bold;
   margin-top: 0;
-  margin-left: 150px;
+  margin-left: 210px;
   margin-bottom: 10px;
   font-family: var(--font-geist-mono), monospace;
 `;
@@ -124,7 +126,7 @@ const ModuleTitle = styled(Typography)`
 const ModuleDescription = styled(Typography)`
   color: ${props => props.isActive ? '#00FF00' : '#555555'};
   font-size: 14px;
-  margin-left: 150px;
+  margin-left: 210px;
   margin-bottom: 0;
   font-family: var(--font-geist-mono), monospace;
 `;

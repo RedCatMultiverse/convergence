@@ -18,7 +18,8 @@ const allowedEmails = [
 ];
 
 const allowedDomains = [
-  'rcmlabs.io'
+  'rcmlabs.io',
+  'axa.com'
 ];
 
 const isEmailAllowed = (email) => {
