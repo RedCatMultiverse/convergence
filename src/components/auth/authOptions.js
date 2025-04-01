@@ -226,9 +226,19 @@ const authOptions = {
       });
 
       // Get the subdomain from the current URL
-      const host = typeof window !== 'undefined' 
-        ? window.location.host 
-        : process.env.HOST || '';
+      let host;
+      if (typeof window !== 'undefined') {
+        // Client-side
+        host = window.location.host;
+      } else {
+        // Server-side - try to get from the request URL
+        try {
+          const url = new URL(url);
+          host = url.host;
+        } catch (e) {
+          host = process.env.HOST || '';
+        }
+      }
       console.log('🔍 [Auth Redirect] Current host:', host);
       
       const parts = host.split('.');

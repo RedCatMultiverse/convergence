@@ -2,9 +2,11 @@ import authOptions from "@/components/auth/authOptions";
 import NextAuth from "next-auth";
 import { getSubdomain } from "@/lib/env";
 
-const handler = async (req, res) => {
-  // Get the subdomain from the request
-  const host = req.headers.host || '';
+const handler = async (req) => {
+  // Get the host from the request URL
+  const url = new URL(req.url);
+  const host = url.host;
+  console.log('🔍 [Auth Route] Request URL:', req.url);
   console.log('🔍 [Auth Route] Request host:', host);
   
   const parts = host.split('.');
@@ -26,7 +28,7 @@ const handler = async (req, res) => {
     }
   }
 
-  return NextAuth(authOptions)(req, res);
+  return NextAuth(authOptions)(req);
 };
 
 export { handler as GET, handler as POST };
