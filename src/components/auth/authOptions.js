@@ -216,63 +216,6 @@ const authOptions = {
 
       return session;
     },
-    
-
-    async redirect({ url, baseUrl }) {
-      console.log('🔵 [Auth] Redirect Callback:', { 
-        url, 
-        baseUrl,
-        fullUrl: url.toString()
-      });
-
-      // Get the subdomain from the current URL
-      let host;
-      if (typeof window !== 'undefined') {
-        // Client-side
-        host = window.location.host;
-      } else {
-        // Server-side - try to get from the request URL
-        try {
-          const url = new URL(url);
-          host = url.host;
-        } catch (e) {
-          host = process.env.HOST || '';
-        }
-      }
-      console.log('🔍 [Auth Redirect] Current host:', host);
-      
-      const parts = host.split('.');
-      const subdomain = parts.length > 2 ? parts[0].toUpperCase() : null;
-      console.log('🔍 [Auth Redirect] Extracted subdomain:', subdomain);
-
-      // If we have a subdomain, check for subdomain-specific NEXTAUTH_URL
-      if (subdomain) {
-        const subdomainNextAuthUrl = process.env[`${subdomain}_NEXTAUTH_URL`];
-        console.log('🔍 [Auth Redirect] Subdomain NEXTAUTH_URL:', {
-          key: `${subdomain}_NEXTAUTH_URL`,
-          value: subdomainNextAuthUrl,
-          currentBaseUrl: baseUrl
-        });
-        
-        if (subdomainNextAuthUrl) {
-          baseUrl = subdomainNextAuthUrl;
-          console.log('🔍 [Auth Redirect] Updated baseUrl to:', baseUrl);
-        }
-      }
-
-      // Ensure the URL is properly formed
-      let finalUrl;
-      if (url.startsWith(baseUrl)) {
-        finalUrl = url;
-      } else if (url.startsWith('/')) {
-        finalUrl = `${baseUrl}${url}`;
-      } else {
-        finalUrl = baseUrl;
-      }
-      
-      console.log('🔍 [Auth Redirect] Final URL:', finalUrl);
-      return finalUrl;
-    }
   },
   session: {
     strategy: "jwt",
