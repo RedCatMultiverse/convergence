@@ -196,6 +196,9 @@ export default function GameDemo() {
   const [dataTracking, setDataTracking] = useState(null);
   const [dataReady, setDataReady] = useState(false);
   
+  // Reference to the CenterSection component
+  const centerSectionRef = useRef(null);
+  
   // Make gameplayData available globally
   useEffect(() => {
     // Only set window.gameplayData if it's valid and not empty
@@ -217,9 +220,6 @@ export default function GameDemo() {
       console.log("Main page: Current milestone changed to", currentMilestone);
     }
   }, [currentMilestone]);
-  
-  // Reference to the CenterSection component
-  const centerSectionRef = useRef(null);
   
   // Handle toggle expand from TopSection
   const handleTopSectionToggle = (expanded) => {

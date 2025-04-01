@@ -67,6 +67,7 @@ const CenterSection = forwardRef(({
     toggleAutoAdvance,
     handleNextTurn,
     jumpToTurn,
+    processFirstTurn,
   }));
   
   // Notify parent component when running state changes
@@ -571,10 +572,23 @@ const CenterSection = forwardRef(({
           {message.content}
         </Typography>
       );
-    } else if (message.type === "system_message" || message.type === "challenge_setup") {
+    } else if (message.type === "system_message") {
       return (
         <Typography key={index} variant="body2" sx={{ ...baseStyles, color: '#00CCFF' }}>
-          {message.type === "challenge_setup" ? `[${displaySpeaker}]: ${message.content}` : message.content}
+          <strong>[SYSTEM]:</strong> {message.content}
+        </Typography>
+      );
+    } else if (message.type === "challenge_setup") {
+      return (
+        <Typography key={index} variant="body2" sx={{ ...baseStyles, color: '#00CCFF' }}>
+          <strong>[SYSTEM]:</strong> {message.content}
+        </Typography>
+      );
+    } else if (message.type === "prompt" && message.speaker === "rc") {
+      // Ensure RC always has same color
+      return (
+        <Typography key={index} variant="body2" sx={{ ...baseStyles, color: '#E0E0E0' }}>
+          <strong>[R.C.]:</strong> {message.content}
         </Typography>
       );
     } else if (message.type === "prompt") {
@@ -623,7 +637,7 @@ const CenterSection = forwardRef(({
     } else if (message.type === "dashboard_report_snippet") {
       return (
         <Typography key={index} variant="body2" sx={{ ...baseStyles, color: '#00CCFF' }}>
-          {message.content}
+          <strong>[SYSTEM]:</strong> {message.content}
         </Typography>
       );
     } else if (message.type === "surprise") {
@@ -787,6 +801,13 @@ const CenterSection = forwardRef(({
       // Cleanup if needed
     };
   }, []);
+
+  // Process only the first turn without advancing the game
+  const processFirstTurn = () => {
+    // No longer auto-display the first message
+    // User must click "Start" or "Next" to see messages
+    console.log("First turn processing is disabled - user must click Start/Next");
+  };
 
   // Stats box at the bottom
   const renderStatsBox = () => (
