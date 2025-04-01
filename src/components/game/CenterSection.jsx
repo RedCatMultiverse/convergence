@@ -228,18 +228,13 @@ const CenterSection = forwardRef(({
   const handleChallengeSetup = (cleanedContent, currentTurn) => {
     setIsTyping(true);
     
-    // Add challenge setup message to console output
+    // Just add the challenge ID to console output, we don't need to show the scenario separately
     setConsoleOutput(prev => [
       ...prev,
       {
         speaker: "system",
-        content: `Challenge: ${currentTurn.challenge_id}`,
+        content: cleanedContent,
         type: "challenge_setup"
-      },
-      {
-        speaker: "system",
-        content: `Scenario: ${currentTurn.scenario}`,
-        type: "scenario"
       }
     ]);
     
@@ -576,10 +571,10 @@ const CenterSection = forwardRef(({
           {message.content}
         </Typography>
       );
-    } else if (message.type === "system_message" || message.type === "challenge_setup" || message.type === "scenario") {
+    } else if (message.type === "system_message" || message.type === "challenge_setup") {
       return (
         <Typography key={index} variant="body2" sx={{ ...baseStyles, color: '#00CCFF' }}>
-          {message.type === "challenge_setup" || message.type === "scenario" ? `[${displaySpeaker}]: ${message.content}` : message.content}
+          {message.type === "challenge_setup" ? `[${displaySpeaker}]: ${message.content}` : message.content}
         </Typography>
       );
     } else if (message.type === "prompt") {

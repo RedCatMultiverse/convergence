@@ -16,9 +16,16 @@ const processAlphaContinuumData = () => {
   const moves = [];
   let moveIndex = 0;
   
-  // Process intro
+  // Process intro - ensure R.C. speaks first
   if (alphaContinuum.intro) {
-    alphaContinuum.intro.forEach(item => {
+    // Sort the intro so that "rc" speaker comes first
+    const sortedIntro = [...alphaContinuum.intro].sort((a, b) => {
+      if (a.speaker === "rc") return -1;
+      if (b.speaker === "rc") return 1;
+      return 0;
+    });
+    
+    sortedIntro.forEach(item => {
       moves.push({
         turn_number: ++moveIndex,
         speaker: item.speaker,
@@ -31,12 +38,12 @@ const processAlphaContinuumData = () => {
   
   // Process each milestone
   const processMilestone = (milestone, milestoneName) => {
-    // Process milestone intro
+    // Process milestone intro - ensure speaker is properly attributed
     if (milestone.intro) {
       milestone.intro.forEach(item => {
         moves.push({
           turn_number: ++moveIndex,
-          speaker: item.speaker,
+          speaker: item.speaker, // Speaker is already correctly attributed in JSON
           message_type: "system_message",
           content: item.text,
           delay_ms: 1500,
@@ -47,16 +54,79 @@ const processAlphaContinuumData = () => {
     
     // Process challenges
     if (milestone.challenges) {
-      milestone.challenges.forEach(item => {
-        if (item.speaker) {
-          // It's a move
+      let i = 0;
+      while (i < milestone.challenges.length) {
+        const item = milestone.challenges[i];
+        
+        if (item.id) {
+          // It's a challenge setup - create setup move only
+          moves.push({
+            turn_number: ++moveIndex,
+            speaker: "system",
+            message_type: "challenge_setup",
+            content: `Challenge: ${item.id}`,
+            challenge_id: item.id,
+            challenge_type: item.type || "traditional",
+            delay_ms: 1000
+          });
+          
+          // Have R.C. present the scenario and challenge text in one move
+          moves.push({
+            turn_number: ++moveIndex,
+            speaker: "rc",
+            message_type: "prompt",
+            content: `${item.scenario}\n\n${item.text}`,
+            delay_ms: 1500
+          });
+          
+          i++; // Move to next item
+          
+          // Process Monica's response if it follows
+          if (i < milestone.challenges.length && milestone.challenges[i].speaker === "monica") {
+            moves.push({
+              turn_number: ++moveIndex,
+              speaker: milestone.challenges[i].speaker,
+              message_type: "response",
+              content: milestone.challenges[i].text,
+              delay_ms: 1500
+            });
+            i++; // Move to next item
+            
+            // Process R.C.'s feedback if it follows
+            if (i < milestone.challenges.length && milestone.challenges[i].speaker === "rc") {
+              moves.push({
+                turn_number: ++moveIndex,
+                speaker: milestone.challenges[i].speaker,
+                message_type: "prompt",
+                content: milestone.challenges[i].text,
+                delay_ms: 1500
+              });
+              i++; // Move to next item
+            }
+            
+            // Process dataTracking if it follows
+            if (i < milestone.challenges.length && milestone.challenges[i].dataTracking) {
+              moves.push({
+                turn_number: ++moveIndex,
+                speaker: "system",
+                message_type: "data_tracking",
+                content: "Updating critical thinking metrics...",
+                delay_ms: 1000,
+                dataTracking: milestone.challenges[i].dataTracking
+              });
+              i++; // Move to next item
+            }
+          }
+        } else if (item.speaker) {
+          // It's a regular dialogue move
           moves.push({
             turn_number: ++moveIndex,
             speaker: item.speaker,
             message_type: item.speaker === "rc" ? "prompt" : "response",
             content: item.text,
-            delay_ms: 1000
+            delay_ms: 1500
           });
+          i++; // Move to next item
         } else if (item.dataTracking) {
           // It's a data tracking update
           moves.push({
@@ -67,21 +137,13 @@ const processAlphaContinuumData = () => {
             delay_ms: 1000,
             dataTracking: item.dataTracking
           });
-        } else if (item.id) {
-          // It's a challenge setup
-          const challengeType = item.type || "traditional";
-          moves.push({
-            turn_number: ++moveIndex,
-            speaker: "system",
-            message_type: "challenge_setup",
-            content: `Setting up challenge: ${item.id}`,
-            challenge_id: item.id,
-            challenge_type: challengeType,
-            scenario: item.scenario,
-            delay_ms: 1000
-          });
+          i++; // Move to next item
+        } else {
+          // Unknown item type, skip it
+          console.warn("Unknown item type in challenges:", item);
+          i++; // Move to next item
         }
-      });
+      }
     }
   };
   
