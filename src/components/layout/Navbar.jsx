@@ -25,7 +25,7 @@ import LockIcon from '@mui/icons-material/Lock';
 import { SignOutDialog } from '../auth/SignOutDialog';
 
 const navigationLinks = [
-  { name: 'GAMES', href: '/games' },
+  { name: 'CONVERGENCE MODULES', href: '/games' },
   { name: 'ABOUT', href: '/about' },
 ];
 
