@@ -225,6 +225,21 @@ const authOptions = {
         fullUrl: url.toString()
       });
 
+      // Get the subdomain from the current URL
+      const host = typeof window !== 'undefined' 
+        ? window.location.host 
+        : process.env.HOST || '';
+      const parts = host.split('.');
+      const subdomain = parts.length > 2 ? parts[0].toUpperCase() : null;
+
+      // If we have a subdomain, check for subdomain-specific NEXTAUTH_URL
+      if (subdomain) {
+        const subdomainNextAuthUrl = process.env[`${subdomain}_NEXTAUTH_URL`];
+        if (subdomainNextAuthUrl) {
+          baseUrl = subdomainNextAuthUrl;
+        }
+      }
+
       // Ensure the URL is properly formed
       if (url.startsWith(baseUrl)) return url;
       if (url.startsWith('/')) return `${baseUrl}${url}`;
