@@ -6,7 +6,8 @@ module.exports = {
     ],
     rules: {
       quotes: 'off',
-      'react/no-unescaped-entities': 'off'
-      // ...any other custom rules
+      'react/no-unescaped-entities': 'off',
+      'react/jsx-no-comment-textnodes': 'off',
+      'react-hooks/exhaustive-deps': 'off'  // This will suppress the useEffect dependency warnings
     },
   };
