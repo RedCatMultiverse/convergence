@@ -6,6 +6,7 @@ import { PrismaAdapter } from "@next-auth/prisma-adapter";
 import prisma from "@/lib/prisma/client";
 import formData from 'form-data';
 import sgMail from '@sendgrid/mail';
+import { env } from '@/lib/env';
 
 // Initialize SendGrid with API key
 sgMail.setApiKey(process.env.SENDGRID_API_KEY);
@@ -149,8 +150,8 @@ const authOptions = {
   adapter: PrismaAdapter(prisma),
   providers: [
     GoogleProvider({
-      clientId: process.env.GOOGLE_CLIENT_ID,
-      clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+      clientId: env.googleClientId,
+      clientSecret: env.googleClientSecret,
     }),
     EmailProvider({
       from: process.env.EMAIL_FROM,

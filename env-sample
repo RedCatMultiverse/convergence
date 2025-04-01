@@ -8,26 +8,35 @@
 
 DATABASE_URL="mysql://user:password@localhost:3306/rcm"
 
-# App Url
-
+# Default App URL (used when no subdomain-specific URL is set)
 APP_URL="http://localhost:1980"
+
+# Subdomain-specific App URLs (optional)
+# AXA_APP_URL="https://axa.domain.com"
+# OTHER_APP_URL="https://other.domain.com"
 
 ##### ALSO CHANGE PORT IN package.json
 
-# Next Auth params:
-
+# Default Next Auth params (used when no subdomain-specific URL is set)
 NEXTAUTH_URL="http://localhost:1980"
 
-# To generate secret, run "openssl rand -base64 32"
+# Subdomain-specific Next Auth URLs (optional)
+# AXA_NEXTAUTH_URL="https://axa.domain.com"
+# OTHER_NEXTAUTH_URL="https://other.domain.com"
 
+# To generate secret, run "openssl rand -base64 32"
 NEXTAUTH_SECRET="lzGnKrKLdlwCZoGxETlf1ZgOF5+ANiluf7uKgl+kUpA="
 
-# Google OAuth Stuff:
-
+# Default Google OAuth Stuff (used when no subdomain-specific credentials are set)
 GOOGLE_CLIENT_ID="175402907566-hid4bv9u4uveim8t2quvr43n03b9eos7.apps.googleusercontent.com"
 GOOGLE_CLIENT_SECRET="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"
 
-# Sendgrid Stuff (FJL)
+# Subdomain-specific Google OAuth credentials (optional)
+# AXA_GOOGLE_CLIENT_ID="your-axa-client-id"
+# AXA_GOOGLE_CLIENT_SECRET="your-axa-client-secret"
+# OTHER_GOOGLE_CLIENT_ID="your-other-client-id"
+# OTHER_GOOGLE_CLIENT_SECRET="your-other-client-secret"
 
+# Sendgrid Stuff (FJL)
 SENDGRID_API_KEY=""
 EMAIL_FROM=""
