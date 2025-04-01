@@ -4,113 +4,100 @@ import { getSubdomain } from "@/lib/env";
 import { headers } from "next/headers";
 import GoogleProvider from "next-auth/providers/google";
 
-// Function to get the correct NEXTAUTH_URL based on subdomain
-function getNextAuthUrl(host) {
-  const parts = host.split('.');
-  const subdomain = parts.length > 2 ? parts[0].toUpperCase() : null;
-  
-  if (subdomain) {
-    const subdomainKey = `${subdomain}_NEXTAUTH_URL`;
-    const subdomainUrl = process.env[subdomainKey];
-    if (subdomainUrl) {
-      console.log(`🔍 [Auth] Using ${subdomainKey}:`, subdomainUrl);
-      return subdomainUrl;
-    }
-  }
-  
-  return process.env.NEXTAUTH_URL;
-}
-
-// Function to get subdomain-specific Google credentials when available
-function getGoogleCredentials(host) {
-  const parts = host.split('.');
-  const subdomain = parts.length > 2 ? parts[0].toUpperCase() : null;
-  
-  if (subdomain) {
-    const clientIdKey = `${subdomain}_GOOGLE_CLIENT_ID`;
-    const clientSecretKey = `${subdomain}_GOOGLE_CLIENT_SECRET`;
-    
-    const clientId = process.env[clientIdKey];
-    const clientSecret = process.env[clientSecretKey];
-    
-    if (clientId && clientSecret) {
-      console.log(`🔍 [Auth] Using ${clientIdKey} and ${clientSecretKey}`);
-      return { clientId, clientSecret };
-    }
-  }
-  
-  return { 
-    clientId: process.env.GOOGLE_CLIENT_ID,
-    clientSecret: process.env.GOOGLE_CLIENT_SECRET
-  };
-}
-
 // This is the correct way to create a route handler with NextAuth in App Router
-const handler = (req, ctx) => {
+export async function GET(request, context) {
+  return await handleAuth(request, context);
+}
+
+export async function POST(request, context) {
+  return await handleAuth(request, context);
+}
+
+// Main handler function that temporarily sets environment variables
+async function handleAuth(request, context) {
   // Get host from request headers
   const headersList = headers();
   const host = headersList.get("host") || "";
-  console.log('🔍 [Auth Init] Request host:', host);
+  console.log('🔍 [Auth] Request host:', host);
   
-  // Override NEXTAUTH_URL for this request
-  const url = getNextAuthUrl(host);
+  // Extract subdomain
+  const parts = host.split('.');
+  const subdomain = parts.length > 2 ? parts[0].toUpperCase() : null;
+  console.log('🔍 [Auth] Extracted subdomain:', subdomain);
+
+  // Save original environment variables
+  const originalNextAuthUrl = process.env.NEXTAUTH_URL;
+  const originalGoogleClientId = process.env.GOOGLE_CLIENT_ID;
+  const originalGoogleClientSecret = process.env.GOOGLE_CLIENT_SECRET;
   
-  // Get subdomain-specific Google credentials if available
-  const googleCreds = getGoogleCredentials(host);
-  console.log('🔍 [Auth Init] Google credentials:', {
-    clientId: googleCreds.clientId ? `${googleCreds.clientId.substring(0, 8)}...` : 'not set',
-  });
-  
-  // Create a modified providers array with the correct Google credentials
-  const providers = [...authOptions.providers];
-  
-  // Find and replace the Google provider with our subdomain-specific one
-  const googleProviderIndex = providers.findIndex(
-    provider => provider.id === 'google'
-  );
-  
-  if (googleProviderIndex !== -1) {
-    providers[googleProviderIndex] = GoogleProvider({
-      clientId: googleCreds.clientId,
-      clientSecret: googleCreds.clientSecret,
-    });
-  }
-  
-  // Create a custom options object with the correct URL and providers
-  const options = {
-    ...authOptions,
-    providers,
-    basePath: null, // Ensures NextAuth doesn't try to use a custom base path
-    url: url, // Explicitly set the URL
-    callbacks: {
-      ...authOptions.callbacks,
-      async redirect({ url, baseUrl }) {
-        // Get host from request headers again (in case it changed during the request)
-        const host = headersList.get("host") || "";
-        console.log('🔍 [Auth Redirect] Request host:', host);
-        
-        // Get the correct URL based on subdomain
-        const correctBaseUrl = getNextAuthUrl(host);
-        console.log('🔍 [Auth Redirect] Original baseUrl:', baseUrl);
-        console.log('🔍 [Auth Redirect] Correct baseUrl:', correctBaseUrl);
-        
-        // Use the correct baseUrl for redirection
-        let finalUrl;
-        if (url.startsWith(correctBaseUrl)) {
-          finalUrl = url;
-        } else if (url.startsWith('/')) {
-          finalUrl = `${correctBaseUrl}${url}`;
-        } else {
-          finalUrl = correctBaseUrl;
-        }
-        
-        console.log('🔍 [Auth Redirect] Final URL:', finalUrl);
-        return finalUrl;
+  try {
+    // Apply subdomain-specific overrides if available
+    if (subdomain) {
+      // Override NEXTAUTH_URL
+      const subdomainNextAuthUrl = process.env[`${subdomain}_NEXTAUTH_URL`];
+      if (subdomainNextAuthUrl) {
+        console.log(`🔍 [Auth] Temporarily setting NEXTAUTH_URL to ${subdomainNextAuthUrl}`);
+        process.env.NEXTAUTH_URL = subdomainNextAuthUrl;
+      }
+      
+      // Override Google OAuth credentials
+      const subdomainGoogleClientId = process.env[`${subdomain}_GOOGLE_CLIENT_ID`];
+      const subdomainGoogleClientSecret = process.env[`${subdomain}_GOOGLE_CLIENT_SECRET`];
+      if (subdomainGoogleClientId && subdomainGoogleClientSecret) {
+        console.log(`🔍 [Auth] Temporarily setting Google OAuth credentials for ${subdomain}`);
+        process.env.GOOGLE_CLIENT_ID = subdomainGoogleClientId;
+        process.env.GOOGLE_CLIENT_SECRET = subdomainGoogleClientSecret;
       }
     }
-  };
-  
-  return NextAuth(options)(req, ctx);
-};
+    
+    // Create a custom configuration with modified providers
+    const options = {
+      ...authOptions,
+      providers: getProvidersWithSubdomainSupport(subdomain, authOptions.providers),
+      debug: true, // Enable debug to see more information
+    };
 
-export { handler as GET, handler as POST };
+    // Process the request with NextAuth
+    return await NextAuth(options)(request, context);
+  } finally {
+    // Restore original environment variables
+    process.env.NEXTAUTH_URL = originalNextAuthUrl;
+    process.env.GOOGLE_CLIENT_ID = originalGoogleClientId;
+    process.env.GOOGLE_CLIENT_SECRET = originalGoogleClientSecret;
+    console.log('🔍 [Auth] Restored original environment variables');
+  }
+}
+
+// Helper function to create providers with subdomain-specific credentials
+function getProvidersWithSubdomainSupport(subdomain, originalProviders) {
+  // If no subdomain, return original providers
+  if (!subdomain) return originalProviders;
+  
+  // Create a copy of the providers array
+  const providers = [...originalProviders];
+  
+  // Find Google provider and replace it with subdomain-specific one if available
+  const googleProviderIndex = providers.findIndex(provider => provider.id === 'google');
+  
+  if (googleProviderIndex !== -1) {
+    const subdomainGoogleClientId = process.env[`${subdomain}_GOOGLE_CLIENT_ID`];
+    const subdomainGoogleClientSecret = process.env[`${subdomain}_GOOGLE_CLIENT_SECRET`];
+    
+    if (subdomainGoogleClientId && subdomainGoogleClientSecret) {
+      providers[googleProviderIndex] = GoogleProvider({
+        clientId: subdomainGoogleClientId,
+        clientSecret: subdomainGoogleClientSecret,
+        authorization: {
+          params: {
+            prompt: "consent",
+            access_type: "offline",
+            response_type: "code"
+          }
+        }
+      });
+      console.log(`🔍 [Auth] Created custom Google provider for ${subdomain}`);
+    }
+  }
+  
+  return providers;
+}
