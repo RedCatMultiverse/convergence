@@ -229,21 +229,39 @@ const authOptions = {
       const host = typeof window !== 'undefined' 
         ? window.location.host 
         : process.env.HOST || '';
+      console.log('🔍 [Auth Redirect] Current host:', host);
+      
       const parts = host.split('.');
       const subdomain = parts.length > 2 ? parts[0].toUpperCase() : null;
+      console.log('🔍 [Auth Redirect] Extracted subdomain:', subdomain);
 
       // If we have a subdomain, check for subdomain-specific NEXTAUTH_URL
       if (subdomain) {
         const subdomainNextAuthUrl = process.env[`${subdomain}_NEXTAUTH_URL`];
+        console.log('🔍 [Auth Redirect] Subdomain NEXTAUTH_URL:', {
+          key: `${subdomain}_NEXTAUTH_URL`,
+          value: subdomainNextAuthUrl,
+          currentBaseUrl: baseUrl
+        });
+        
         if (subdomainNextAuthUrl) {
           baseUrl = subdomainNextAuthUrl;
+          console.log('🔍 [Auth Redirect] Updated baseUrl to:', baseUrl);
         }
       }
 
       // Ensure the URL is properly formed
-      if (url.startsWith(baseUrl)) return url;
-      if (url.startsWith('/')) return `${baseUrl}${url}`;
-      return baseUrl;
+      let finalUrl;
+      if (url.startsWith(baseUrl)) {
+        finalUrl = url;
+      } else if (url.startsWith('/')) {
+        finalUrl = `${baseUrl}${url}`;
+      } else {
+        finalUrl = baseUrl;
+      }
+      
+      console.log('🔍 [Auth Redirect] Final URL:', finalUrl);
+      return finalUrl;
     }
   },
   session: {
